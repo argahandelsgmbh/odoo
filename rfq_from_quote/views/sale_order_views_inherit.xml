@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sale_order_rfq_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.rfq.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_cancel']" position="after">
+                    <button name="open_so_to_rfq_wizard" string="Create RFQ/PO" type="object" class="oe_highlight"/>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="after">
+                     <field name="is_po_created" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="open_related_po" type="object" class="oe_stat_button" icon="fa-shopping-cart" attrs="{'invisible': [('purchase_count', '=', 0)]}">
+                        <field name="purchase_count" widget="statinfo" string="RFQ/PO"/>
+                    </button>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>
