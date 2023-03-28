@@ -4,8 +4,8 @@
     'summary': '',
     'description': '',
     'category': 'Sales',
-    'author': 'Hunain AK',
-    'website': 'www.haktechnologies.com',
+    'author': 'abc',
+    'website': 'www.abc.tech',
     'depends': ['sale_management', 'purchase'],
     'data': [
         'security/ir.model.access.csv',

@@ -8,7 +8,8 @@ class SaleQuoteToRfq(models.TransientModel):
 
     name = fields.Char(string='Name')
     sale_id = fields.Many2one('sale.order', string='Quotation/Sale order')
-    vendor_id = fields.Many2one('res.partner', string='Vendor')
+    vendor_id = fields.Many2one('res.partner', string='Vendor', domain="[('supplier_rank', '>', 0)]")
+    vendor_ids = fields.Many2many('res.partner', string='Vendors', domain="[('supplier_rank', '>', 0)]")
     sale_line_ids = fields.Many2many('sale.order.line', string='Products')
     select_po_rfq = fields.Selection([('rfq', 'RFQ'), ('po', 'PO')], string='Create', default='rfq')
 
@@ -18,8 +19,9 @@ class SaleQuoteToRfq(models.TransientModel):
 
         FiscalPosition = self.env['account.fiscal.position']
         purchase_obj = self.env['purchase.order']
-        po_vals = []
-        for vendor in self.vendor_id:
+        # po_vals = []
+        for vendor in self.vendor_ids:
+            po_vals = []
             payment_term = vendor.property_supplier_payment_term_id
 
             fpos = FiscalPosition.with_company(self.sale_id.company_id).get_fiscal_position(vendor.id)
@@ -35,33 +37,34 @@ class SaleQuoteToRfq(models.TransientModel):
             # Create PO lines if necessary
             order_lines = []
             for line in self.sale_line_ids:
-                # Compute name
-                product_lang = line.product_id.with_context(
-                    lang=partner.lang,
-                    partner_id=partner.id
-                )
-                name = product_lang.display_name
-                if product_lang.description_purchase:
-                    name += '\n' + product_lang.description_purchase
+                if vendor.id in line.product_id.seller_ids.mapped('name.id'):
+                    # Compute name
+                    product_lang = line.product_id.with_context(
+                        lang=partner.lang,
+                        partner_id=partner.id
+                    )
+                    name = product_lang.display_name
+                    if product_lang.description_purchase:
+                        name += '\n' + product_lang.description_purchase
 
-                # Compute taxes
-                taxes_ids = fpos.map_tax(line.product_id.supplier_taxes_id.filtered(
-                    lambda tax: tax.company_id == self.sale_id.company_id)).ids
+                    # Compute taxes
+                    taxes_ids = fpos.map_tax(line.product_id.supplier_taxes_id.filtered(
+                        lambda tax: tax.company_id == self.sale_id.company_id)).ids
 
-                # Compute quantity and price_unit
-                if line.product_uom != line.product_id.uom_po_id:
-                    product_qty = line.product_uom._compute_quantity(line.product_uom_qty, line.product_id.uom_po_id)
-                    price_unit = line.product_uom._compute_price(line.price_unit, line.product_id.uom_po_id)
-                else:
-                    product_qty = line.product_uom_qty
-                    price_unit = line.price_unit
+                    # Compute quantity and price_unit
+                    if line.product_uom != line.product_id.uom_po_id:
+                        product_qty = line.product_uom._compute_quantity(line.product_uom_qty, line.product_id.uom_po_id)
+                        price_unit = line.product_uom._compute_price(line.price_unit, line.product_id.uom_po_id)
+                    else:
+                        product_qty = line.product_uom_qty
+                        price_unit = line.price_unit
 
-                # Create PO line
-                order_line_values = self._prepare_purchase_order_line(
-                    name=name, product_id=line.product_id, product_qty=product_qty, price_unit=price_unit,
-                    taxes_ids=taxes_ids)
-                # order_line_values['sale_line_ids'] = [(4, line.id, 0)]
-                order_lines.append((0, 0, order_line_values))
+                    # Create PO line
+                    order_line_values = self._prepare_purchase_order_line(
+                        name=name, product_id=line.product_id, product_qty=product_qty, price_unit=price_unit,
+                        taxes_ids=taxes_ids)
+                    # order_line_values['sale_line_ids'] = [(4, line.id, 0)]
+                    order_lines.append((0, 0, order_line_values))
             po_vals += [{
                 'partner_id': vendor.id,
                 'fiscal_position_id': fiscal_position_id,
@@ -74,13 +77,14 @@ class SaleQuoteToRfq(models.TransientModel):
                 'date_order': date_order,
                 'order_line': order_lines
             }]
-        new_po_ids = purchase_obj.create(po_vals)
-        if self.select_po_rfq == "po":
-            new_po_ids.button_confirm()
-        action = self.env.ref('purchase.purchase_rfq').sudo().read()[0]
-        action['domain'] = [('id', 'in', new_po_ids.ids)]
+            new_po_ids = purchase_obj.create(po_vals)
+            # order_lines = []
+            if self.select_po_rfq == "po":
+                new_po_ids.button_confirm()
+            # action = self.env.ref('purchase.purchase_rfq').sudo().read()[0]
+            # action['domain'] = [('id', 'in', new_po_ids.ids)]
         self.sale_id.is_po_created = True
-        return action
+            # return action
 
     def _prepare_purchase_order_line(self, name, product_id, product_qty=0.0, price_unit=0.0, taxes_ids=False):
         self.ensure_one()

@@ -10,7 +10,8 @@
                     <sheet>
                         <group col="4">
                             <field name="sale_id" readonly="1"/>
-                            <field name="vendor_id" required="1"/>
+<!--                            <field name="vendor_id" required="1"/>-->
+                            <field name="vendor_ids" readonly="1" widget="many2many_tags"/>
                             <field name="select_po_rfq" widget="radio"/>
                         </group>
                         <notebook>
