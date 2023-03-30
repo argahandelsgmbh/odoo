@@ -249,6 +249,7 @@ class InheritRCSOtto(models.TransientModel):
 
     def otto_import_orders(self):
         try:
+            self.otto_generate_token()
             otto_token, otto_credentials_type = self.otto_request_essentials()
 
             headers = {
