@@ -200,7 +200,6 @@ class InheritRCSOtto(models.TransientModel):
 
     def otto_update_products_qty(self):
         try:
-            # self.otto_token_expiry_check()
             IrConfigParameter = self.env['ir.config_parameter'].sudo()
             otto_token = IrConfigParameter.get_param('otto_market_integration.otto_token')
             otto_credentials_type = self.otto_get_credentials_type()
@@ -249,7 +248,6 @@ class InheritRCSOtto(models.TransientModel):
 
     def otto_import_orders(self):
         try:
-            
             otto_token, otto_credentials_type = self.otto_request_essentials()
 
             headers = {
@@ -265,7 +263,8 @@ class InheritRCSOtto(models.TransientModel):
                     else:
                         break
                     if orders_response.get('links'):
-                        pass
+                        next_link = list(filter(lambda link: link['rel'] == 'next', orders_response.get('links')))
+                        url = otto_credentials_type + next_link[0]['href']
                     else:
                         break
                 else:

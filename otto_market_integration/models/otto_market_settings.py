@@ -19,12 +19,27 @@ class Credentials(models.Model):
                                  default=lambda self: self.env.company)
     active = fields.Boolean('Active')
 
-    def otto_generate_token(self):
+    def auto_otto_generate_token(self):
+        self.otto_generate_token(True)
+
+    def otto_generate_token(self, auto=False):
         """
         Generate OTTO Token for API
         :return:
         """
         try:
+            if auto:
+                currentCompany = self.env.company
+                ottoCredentials = self.env['otto.credentials'].search([('company_id', '=', currentCompany.id),
+                                                                       ('active', '=', True)])
+                if len(ottoCredentials.ids) > 1:
+                    raise ValidationError(
+                        "Multiple Credentials are active for current company. Please select/active only one at a time.")
+                elif len(ottoCredentials.ids) == 0:
+                    raise ValidationError(
+                        "No credential is assign to current company. Please go to Istikbal/Credentials.")
+                else:
+                    self = ottoCredentials
             IrConfigParameter = self.env['ir.config_parameter'].sudo()
             otto_username = self.otto_username
             otto_password = self.otto_password
@@ -44,10 +59,12 @@ class Credentials(models.Model):
                 IrConfigParameter.set_param('otto_market_integration.otto_token', token_response['access_token'])
                 IrConfigParameter.set_param('otto_market_integration.otto_refresh_token', token_response['refresh_token'])
                 IrConfigParameter.set_param('otto_market_integration.otto_expires_in', int(round(time.time() * 1000)))
-                return self.action_of_button('Successful', 'Successfully Connected to Otto Market')
+                if not auto:
+                    return self.action_of_button('Successful', 'Successfully Connected to Otto Market')
             else:
                 token_response = json.loads(response.text)
-                return self.action_of_button('Failed', token_response['error_description'])
+                if not auto:
+                    return self.action_of_button('Failed', token_response['error_description'])
         except Exception as e:
             raise ValidationError(e)
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="import_orders_scheduler" model="ir.cron">
+        <field name="name">Import Otto Orders</field>
+        <field name="model_id" ref="model_res_config_settings" />
+        <field name="state">code</field>
+        <field name="active">0</field>
+        <field name="code">model.otto_import_orders()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <record id="token_generation_scheduler" model="ir.cron">
+        <field name="name">Token Generation</field>
+        <field name="model_id" ref="model_otto_credentials" />
+        <field name="state">code</field>
+        <field name="active">0</field>
+        <field name="code">model.auto_otto_generate_token()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+</odoo>
