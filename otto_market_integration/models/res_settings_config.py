@@ -153,7 +153,7 @@ class InheritRCSOtto(models.TransientModel):
             odooCategory = self.env['product.category'].search([('name', '=', product['productDescription']['category'])])
             odooBrand = self.env['otto.brand'].search([('otto_id', '=', product['productDescription']['brandId'])])
 
-            odooProductTemplate = self.env['product.template'].search([('default_code', '=', product['sku'])])
+            odooProductTemplate = self.env['product.template'].search([('default_code', '=', product['sku'])], limit=1)
             if not odooProductTemplate:
                 odooProductTemplate = self.env['product.template'].create({
                     'name': product['productReference'],
@@ -228,7 +228,7 @@ class InheritRCSOtto(models.TransientModel):
 
     def otto_update_quantity(self, products):
         for product in products:
-            odooProduct = self.env['product.template'].search([('default_code', '=', product['sku'])])
+            odooProduct = self.env['product.template'].search([('default_code', '=', product['sku'])], limit=1)
             product_product = self.env['product.product'].search(
                 [('product_tmpl_id', '=', odooProduct.id)])
             odooStock = self.env['stock.quant'].search([('product_id', '=', product_product.id)])
