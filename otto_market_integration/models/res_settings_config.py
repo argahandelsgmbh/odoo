@@ -231,7 +231,7 @@ class InheritRCSOtto(models.TransientModel):
             odooProduct = self.env['product.template'].search([('default_code', '=', product['sku'])], limit=1)
             product_product = self.env['product.product'].search(
                 [('product_tmpl_id', '=', odooProduct.id)])
-            odooStock = self.env['stock.quant'].search([('product_id', '=', product_product.id)])
+            odooStock = self.env['stock.quant'].search([('product_id', '=', product_product.id)], limit=1)
             if odooStock:
                 odooStock.sudo().write({
                     'inventory_quantity': istikbal_product['quantity'],
@@ -276,7 +276,7 @@ class InheritRCSOtto(models.TransientModel):
     def otto_create_orders(self, orders):
         for order in orders:
             if order.get('deliveryAddress'):
-                odooOrder = self.env['sale.order'].search([('otto_order_id', '=', order['salesOrderId'])])
+                odooOrder = self.env['sale.order'].search([('otto_order_id', '=', order['salesOrderId'])], limit=1)
                 orderCustomer = self.otto_get_customer(order['deliveryAddress'], order['invoiceAddress'])
                 orderDate = datetime.strptime(order['orderDate'], '%Y-%m-%dT%H:%M:%S.%f%z').date()
 
@@ -302,7 +302,7 @@ class InheritRCSOtto(models.TransientModel):
     def otto_create_order_line(self, lines, odooOrder):
         for line in lines:
             if line.get('product'):
-                orderProduct = self.env['product.template'].search([('default_code', '=', line['product']['sku'])])
+                orderProduct = self.env['product.template'].search([('default_code', '=', line['product']['sku'])], limit=1)
                 if not orderProduct:
                     orderProduct = self.otto_get_order_line_product(line['product']['sku'])
                 odoo_product = self.env['product.product'].search([('product_tmpl_id', '=', orderProduct.id)])[0]
@@ -340,7 +340,7 @@ class InheritRCSOtto(models.TransientModel):
     def otto_get_customer(self, deliveryAddress, invoiceAddress):
         partner = self.env['res.partner']
         name = deliveryAddress['salutation'] + " " + deliveryAddress['firstName'] + " " + deliveryAddress['lastName']
-        odooCustomer = partner.search([('name', '=', name)])
+        odooCustomer = partner.search([('name', '=', name)], limit=1)
         if not odooCustomer:
             odooCustomer = partner.create({
                 'name': name,
@@ -354,7 +354,7 @@ class InheritRCSOtto(models.TransientModel):
         partner = self.env['res.partner']
         odooCustomerDeliveryAddress = partner.search([('parent_id', '=', odooCustomer.id), ('zip', '=', deliveryAddress['zipCode'])])
         if not odooCustomerDeliveryAddress:
-            odooCountry = self.env['res.country'].search([('code', '=', deliveryAddress['countryCode'])])
+            odooCountry = self.env['res.country'].search([('code', '=', deliveryAddress['countryCode'])], limit=1)
             street2 = None
             if deliveryAddress.get('addition'):
                 street2 = deliveryAddress['addition']
