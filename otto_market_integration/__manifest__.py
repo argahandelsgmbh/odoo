@@ -18,6 +18,7 @@
     # for the full list
     'category': 'Uncategorized',
     'version': '2.3',
+    'license': 'OPL-1',
 
     # any module necessary for this one to work correctly
     'depends': ['stock', 'sale_management'],
