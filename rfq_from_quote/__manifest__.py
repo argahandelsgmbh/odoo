@@ -3,6 +3,7 @@
     'version': '1.0',
     'summary': '',
     'description': '',
+    'license': 'OPL-1',
     'category': 'Sales',
     'author': 'abc',
     'website': 'www.abc.tech',
