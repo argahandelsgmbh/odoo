@@ -19,14 +19,8 @@ new section and move sale order line under the correct sections.
         Auto Section,
         auto section
     """,
-    'price': "35",
     'license': 'OPL-1',
-    'version':'10.0'
-    'website': 'https://www.fiverr.com/share/3229Vx',
-    'currency': 'USD',
-    'author': 'Avision Infosoft',
-    'images': ['static/description/img_4.png'],
-    'company': 'Avision Infosoft',
+
     'depends': ['base', 'sale', 'account'],
     'data': [
         'security/ir.model.access.csv',
