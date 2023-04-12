@@ -10,5 +10,6 @@ from datetime import datetime, timedelta
 class OttoCategoryGroup(models.Model):
     _name = 'otto.category.group'
     _rec_name = 'otto_name'
+    _description = "otto category"
 
     otto_name = fields.Char(string='Name')
