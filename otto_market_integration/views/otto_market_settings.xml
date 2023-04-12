@@ -22,9 +22,18 @@
         </record>
 
 
+        <record model="ir.actions.act_window" id="otto_order_action">
+            <field name="name">Otto Orders</field>
+            <field name="res_model">sale.order</field>
+            <field name="domain">[('otto_order_id','!=',False)]</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
         <menuitem id="otto_root" web_icon="otto_market_integration,static/description/icon.png" name="Otto Market"/>
 
         <menuitem id="otto_credentials_action_menu" parent="otto_root" name="Credentials" action="otto_credentials_action"/>
+        <menuitem id="otto_sale_orders" parent="otto_root" name="Otto Orders" action="otto_order_action"/>
 
     </data>
 </odoo>
