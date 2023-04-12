@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 class OttoBrand(models.Model):
     _name = 'otto.brand'
     _rec_name = 'otto_name'
+    _description = "otto brand"
 
     otto_id = fields.Char('Otto Id')
     otto_name = fields.Char(string='Name')
