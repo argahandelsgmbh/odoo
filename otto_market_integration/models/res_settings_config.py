@@ -54,9 +54,10 @@ class InheritRCSOtto(models.TransientModel):
                     else:
                         break
                 else:
-                    break
+                    raise ValidationError(response.text)
                 page_number += 1
             self.env.cr.commit()
+            return self.action_of_button("Otto Brands", "Importing brands operations has been finished successfully.")
         except Exception as e:
             raise ValidationError(e)
 
@@ -95,9 +96,10 @@ class InheritRCSOtto(models.TransientModel):
                     else:
                         break
                 else:
-                    break
+                    raise ValidationError(response.text)
                 page_number += 1
             self.env.cr.commit()
+            return self.action_of_button("Otto Categories", "Importing categories operations has been finished successfully.")
         except Exception as e:
             raise ValidationError(e)
 
@@ -142,9 +144,10 @@ class InheritRCSOtto(models.TransientModel):
                     else:
                         break
                 else:
-                    break
+                    raise ValidationError(response.text)
                 page_number += 1
             self.env.cr.commit()
+            return self.action_of_button("Otto Products", "Importing products operations has been finished successfully.")
         except Exception as e:
             raise ValidationError(e)
 
@@ -268,8 +271,9 @@ class InheritRCSOtto(models.TransientModel):
                     else:
                         break
                 else:
-                    break
+                    raise ValidationError(response.text)
             self.env.cr.commit()
+            return self.action_of_button("Otto Orders", "Importing orders operations has been finished successfully.")
         except Exception as e:
             raise ValidationError(e)
 
@@ -301,7 +305,7 @@ class InheritRCSOtto(models.TransientModel):
     def otto_create_order_line(self, lines, odooOrder):
         for line in lines:
             if line.get('product'):
-                orderProduct = self.env['product.template'].search([('default_code', '=', line['product']['sku'])])
+                orderProduct = self.env['product.template'].search([('default_code', '=', line['product']['sku'])], limit=1)
                 if not orderProduct:
                     orderProduct = self.otto_get_order_line_product(line['product']['sku'])
                 odoo_product = self.env['product.product'].search([('product_tmpl_id', '=', orderProduct.id)])[0]
