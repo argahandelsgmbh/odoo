@@ -9,7 +9,7 @@
         Otto Market Connector
     """,
 
-    'author': "HAKTechnologies",
+    'author': "HAK Technologies",
     'website': "http://www.HAKTechnologies.com",
 
     # Categories can be used to filter modules in modules listing
@@ -17,6 +17,7 @@
     # for the full list
     'category': 'Uncategorized',
     'version': '2.5',
+    'license': 'LGPL-3',
 
     # any module necessary for this one to work correctly
     'depends': ['stock', 'sale_management'],
