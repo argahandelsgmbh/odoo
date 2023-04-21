@@ -229,30 +229,9 @@ class InheritRCSOtto(models.TransientModel):
         except Exception as e:
             raise ValidationError(e)
 
-    def otto_update_quantity(self, products):
-        for product in products:
-            odooProduct = self.env['product.template'].search([('default_code', '=', product['sku'])], limit=1)
-            product_product = self.env['product.product'].search(
-                [('product_tmpl_id', '=', odooProduct.id)])
-            odooStock = self.env['stock.quant'].search([('product_id', '=', product_product.id)])
-            if odooStock:
-                odooStock.sudo().write({
-                    'inventory_quantity': istikbal_product['quantity'],
-                    'quantity': istikbal_product['quantity'],
-                })
-            else:
-                odooLocation = self.env['stock.location'].search([('name', '=', 'Stock')])
-                self.env['stock.quant'].sudo().create({
-                    'inventory_quantity': istikbal_product['quantity'],
-                    'quantity': istikbal_product['quantity'],
-                    'product_id': odoo_product.id,
-                    'location_id': odooLocation.id
-                })
-
     def otto_import_orders(self):
         try:
             otto_token, otto_credentials_type = self.otto_request_essentials()
-
             headers = {
                 'Authorization': 'Bearer ' + otto_token
             }
@@ -264,6 +243,9 @@ class InheritRCSOtto(models.TransientModel):
                     if len(orders_response['resources']) > 0:
                         self.otto_create_orders(orders_response['resources'])
                     else:
+                        otto_log = self.env['otto.log.notes'].create({
+                            'error': "No orders found"+ str(orders_response['resources']),
+                        })
                         break
                     if orders_response.get('links'):
                         next_link = list(filter(lambda link: link['rel'] == 'next', orders_response.get('links')))
@@ -271,13 +253,19 @@ class InheritRCSOtto(models.TransientModel):
                     else:
                         break
                 else:
-                    raise ValidationError(response.text)
+                    otto_log = self.env['otto.log.notes'].create({
+                        'error': response.text,
+                    })
+
             self.env.cr.commit()
-            return self.action_of_button("Otto Orders", "Importing orders operations has been finished successfully.")
+
         except Exception as e:
-            raise ValidationError(e)
+            otto_log = self.env['otto.log.notes'].create({
+                'error': str(e),
+            })
 
     def otto_create_orders(self, orders):
+        count=0
         for order in orders:
             if order.get('deliveryAddress'):
                 odooOrder = self.env['sale.order'].search([('otto_order_id', '=', order['salesOrderId'])])
@@ -285,6 +273,7 @@ class InheritRCSOtto(models.TransientModel):
                 orderDate = datetime.strptime(order['orderDate'], '%Y-%m-%dT%H:%M:%S.%f%z').date()
 
                 if not odooOrder:
+                    count=count+1
                     odooOrder = self.env['sale.order'].create({
                         'otto_order_id': order['salesOrderId'],
                         "name": order["orderNumber"],
@@ -301,7 +290,9 @@ class InheritRCSOtto(models.TransientModel):
                         "state": 'sale',
                         "date_order": orderDate,
                     })
-
+        otto_log = self.env['otto.log.notes'].create({
+            'error': "Successfully created new orders "+ str(count),
+        })
     def otto_create_order_line(self, lines, odooOrder):
         for line in lines:
             if line.get('product'):
@@ -394,31 +385,32 @@ class InheritRCSOtto(models.TransientModel):
             })
 
     def otto_import_shipments(self):
-        try:
-            otto_token, otto_credentials_type = self.otto_request_essentials()
-
-            datefrom = str(datetime.strptime(IrConfigParameter.get_param('otto_market_integration.otto_shipment_date_from'), '%Y-%m-%d %H:%M:%S').date())
-            headers = {
-                'Authorization': 'Bearer ' + otto_token
-            }
-            url = otto_credentials_type + "/v1/shipments?datefrom=" + datefrom
-            while True:
-                response = requests.request("GET", url, headers=headers)
-                if response.status_code == 200:
-                    shipments_response = json.loads(response.text)
-                    if len(shipments_response['resources']) > 0:
-                        self.otto_create_shipments(shipments_response['resources'])
-                    else:
-                        break
-                    if shipments_response.get('links'):
-                        pass
-                    else:
-                        break
-                else:
-                    break
-            self.env.cr.commit()
-        except Exception as e:
-            raise ValidationError(e)
+        pass
+        # try:
+        #     otto_token, otto_credentials_type = self.otto_request_essentials()
+        #
+        #     datefrom = str(datetime.strptime(IrConfigParameter.get_param('otto_market_integration.otto_shipment_date_from'), '%Y-%m-%d %H:%M:%S').date())
+        #     headers = {
+        #         'Authorization': 'Bearer ' + otto_token
+        #     }
+        #     url = otto_credentials_type + "/v1/shipments?datefrom=" + datefrom
+        #     while True:
+        #         response = requests.request("GET", url, headers=headers)
+        #         if response.status_code == 200:
+        #             shipments_response = json.loads(response.text)
+        #             if len(shipments_response['resources']) > 0:
+        #                 self.otto_create_shipments(shipments_response['resources'])
+        #             else:
+        #                 break
+        #             if shipments_response.get('links'):
+        #                 pass
+        #             else:
+        #                 break
+        #         else:
+        #             break
+        #     self.env.cr.commit()
+        # except Exception as e:
+        #     raise ValidationError(e)
 
     def otto_create_shipments(self, shipments):
         for shipment in shipments:

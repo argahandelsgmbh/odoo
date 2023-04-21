@@ -7,3 +7,4 @@ from . import product_category_group
 from . import product_category
 from . import product_template
 from . import sale_order
+from . import otto_log_notes

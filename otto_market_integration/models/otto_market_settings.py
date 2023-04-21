@@ -29,22 +29,11 @@ class Credentials(models.Model):
         :return:
         """
         try:
-            if auto:
-                currentCompany = self.env.company
-                ottoCredentials = self.env['otto.credentials'].search([('company_id', '=', currentCompany.id),
-                                                                       ('active', '=', True)])
-                if len(ottoCredentials.ids) > 1:
-                    raise ValidationError(
-                        "Multiple Credentials are active for current company. Please select/active only one at a time.")
-                elif len(ottoCredentials.ids) == 0:
-                    raise ValidationError(
-                        "No credential is assign to current company. Please go to Istikbal/Credentials.")
-                else:
-                    self = ottoCredentials
+            ottoCredentials = self.env['otto.credentials'].search([],limit=1)
             IrConfigParameter = self.env['ir.config_parameter'].sudo()
-            otto_username = self.otto_username
-            otto_password = self.otto_password
-            otto_credentials_type = self.otto_credentials_type
+            otto_username = ottoCredentials.otto_username
+            otto_password = ottoCredentials.otto_password
+            otto_credentials_type = ottoCredentials.otto_credentials_type
             url = otto_credentials_type + "/v1/token"
 
             payload = 'username=%s&password=%s&grant_type=password&client_id=token-otto-api' % (otto_username, otto_password)
