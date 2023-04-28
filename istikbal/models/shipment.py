@@ -106,17 +106,20 @@ class ShipmentDetails(models.Model):
             rec.subtotal = rec.price * rec.quantity
 
     def action_receive_po(self):
-        if self.purchase_id.state == 'purchase':
+        if self.purchase_id.state == 'purchase' and not self.is_received:
             lines = self.purchase_id.order_line.filtered(lambda i: i.product_id.default_code == self.productCode)
             if lines:
                 if not self.picking_id:
-                        self.picking_id = lines.move_ids.filtered(
-                            lambda h: h.product_id.default_code == self.productCode).picking_id.id
-                        if self.picking_id.state == 'done':
-                            self.is_received = True
+                    pick = lines.move_ids.filtered(
+                        lambda h: h.product_id.default_code == self.productCode).picking_id.ids
+                    pick_id = pick[-2] if len(pick) > 1 else pick[0]
+                    # self.picking_id = pick_id
+                    if self.picking_id.state == 'done':
+                        self.picking_id = pick_id
+                        self.is_received = True
                 for move in lines.move_ids:
                     if move.state not in ['done', 'cancel']:
-                        move.quantity_done = move.product_uom_qty
+                        move.quantity_done = self.quantity
                 # if self.purchase_id.name == 'BNR*85 * 00013':
                 #     print('hhh')
                 if len(lines.move_ids) > 1:
@@ -130,19 +133,29 @@ class ShipmentDetails(models.Model):
                         #     r.is_received = True
                         # if r.productCode in products_codes:
                     if not self.picking_id:
-                        self.picking_id = lines.move_ids.filtered(
-                            lambda h: h.product_id.default_code == self.productCode).picking_id.id
-                        if self.picking_id.state == 'done':
+                        pick = lines.move_ids.filtered(
+                            lambda h: h.product_id.default_code == self.productCode).picking_id.ids
+                        pick_id = pick[-2] if len(pick) > 1 else pick[0]
+                        stock_picking = self.env['stock.picking'].browse([pick_id])
+
+                        if stock_picking.state == 'done':
+                            self.picking_id = pick_id
                             self.is_received = True
                     # self.is_received = True
                 else:
                     action_data = lines.move_ids.filtered(
                         lambda h: h.state not in ['done', 'cancel']).picking_id.with_context(
                         skip_backorder=False).button_validate()
+                    if 'context' in str(action_data):
+                        backorder_wizard = self.env['stock.backorder.confirmation'].with_context(action_data['context'])
+                        backorder_wizard.process()
                     if not self.picking_id:
-                        self.picking_id = lines.move_ids.filtered(
-                            lambda h: h.product_id.default_code == self.productCode).picking_id.id
-                        if self.picking_id.state == 'done':
+                        pick = lines.move_ids.filtered(lambda h: h.product_id.default_code == self.productCode).picking_id.ids
+                        pick_id = pick[-2] if len(pick) > 1 else pick[0]
+                        stock_picking = self.env['stock.picking'].browse([pick_id])
+
+                        if stock_picking.state == 'done':
+                            self.picking_id = pick_id
                             self.is_received = True
                     # self.is_received = True
 

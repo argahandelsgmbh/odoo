@@ -29,18 +29,19 @@ class IstikbalLogNotes(models.Model):
 
     def action_receive_po(self):
         try:
-            purchase_order = self.detail_ids.mapped('purchase_id')
+            purchase_order = self.detail_ids.filtered(lambda r: not r.is_received).mapped('purchase_id')
             print(purchase_order)
             for po in purchase_order:
                 if po.state == 'purchase':
-                    products_codes = self.detail_ids.filtered(lambda j: j.purchase_id.id == po.id).mapped(
+                    products_codes = self.detail_ids.filtered(lambda j: j.purchase_id.id == po.id and not j.is_received).mapped(
                         'productCode')
                     lines = po.order_line.filtered(lambda i: i.product_id.default_code in products_codes)
                     if lines:
                         print(po.name)
                         for move in lines.move_ids:
                             if move.state not in ['done', 'cancel']:
-                                move.quantity_done = move.product_uom_qty
+                                qty = self.detail_ids.filtered(lambda k:k.purchase_id.id == po.id and k.productCode == move.product_id.default_code and not k.is_received).quantity
+                                move.quantity_done = qty
                         if len(lines.move_ids) > 1:
                             action_data = lines.move_ids.filtered(
                                 lambda h: h.state not in ['done', 'cancel']).picking_id.with_context(
@@ -53,14 +54,26 @@ class IstikbalLogNotes(models.Model):
                             action_data = lines.move_ids.filtered(
                                 lambda h: h.state not in ['done', 'cancel']).picking_id.with_context(
                                 skip_backorder=False).button_validate()
+                            if 'context' in str(action_data):
+                                backorder_wizard = self.env['stock.backorder.confirmation'].with_context(
+                                    action_data['context'])
+                                backorder_wizard.process()
                         for r in self.detail_ids:
                             # if r.purchase_id.id == po.id:
                             #     r.is_received = True
                             # if r.productCode in products_codes:
-                            if not r.picking_id:
-                                stml = self.env['stock.move.line'].search([('picking_id.purchase_id.name','=', r.purchase_id.name)],limit=1)
-                                r.picking_id = stml.picking_id.id
-                                if r.picking_id.state == 'done':
+                            if not r.is_received and not r.picking_id:
+                                # stml = self.env['stock.move.line'].search([('picking_id.purchase_id.name','=', r.purchase_id.name)],limit=1)
+                                # r.picking_id = stml.picking_id.id
+                                # if r.picking_id.state == 'done':
+                                #     r.is_received = True
+
+                                pick = self.env['stock.move.line'].search([('picking_id.purchase_id.name', '=', r.purchase_id.name)], order='id asc').picking_id.ids
+                                pick_id = pick[-2] if len(pick) > 1 else pick[0]
+                                stock_picking = self.env['stock.picking'].browse([pick_id])
+
+                                if stock_picking.state == 'done':
+                                    r.picking_id = stock_picking.id
                                     r.is_received = True
                             # if all(line.state == 'done' for line in r.purchase_id.picking_ids):
                             #     r.picking_id = r.purchase_id
