@@ -5,3 +5,4 @@ from . import res_config_settings
 from . import product_template
 from . import bellona_schedulers
 from . import bellona_log_notes
+from . import bellona_receiveing
