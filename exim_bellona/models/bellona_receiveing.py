@@ -17,6 +17,7 @@ class BellonaReceive(models.Model):
     gtip = fields.Char()
     quantity = fields.Float()
     musteri_referans = fields.Char('Customer Reference')
+    po_no = fields.Char('Purchase Order')
     fob_brfiyat = fields.Float("Unit Price")
     fob_tutar = fields.Char()
     doviz_cinsi = fields.Char("Currency")
@@ -32,6 +33,7 @@ class BellonaReceive(models.Model):
     is_received = fields.Boolean(copy=False)
 
     def action_receive(self):
+        self.purchase_id = self.env['purchase.order'].search([("name", '=', self.po_no)], limit=1)
         if self.is_received:
             raise UserError('Already Received.')
         if self.purchase_id.state != 'purchase':
