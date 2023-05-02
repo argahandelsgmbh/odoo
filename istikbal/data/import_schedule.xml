@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
+    <data noupdate="1">
      
 
     <record id="import_receipt_detials_scheduler" model="ir.cron">
@@ -36,4 +36,5 @@
         <field name="interval_type">hours</field>
         <field name="numbercall">-1</field>
     </record>
+             <data>
 </odoo>
