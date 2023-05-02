@@ -49,9 +49,7 @@
                 <field name="internal_ref" />
                 <field name="product_name" />
                 <field name="satinalma_siparis_no" />
-
                 <field name="quantity" />
-                <field name="mal_referans" />
                 <field name="musteri_referans" />
                 <field name="hacim" />
                 <field name="purchase_id" />
