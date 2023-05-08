@@ -1,5 +1,17 @@
 <odoo>
 
+     <record id="action_confirm_purchase_receiving" model="ir.actions.server">
+            <field name="name">Confirm PO Receiving</field>
+            <field name="model_id" ref="model_bellona_receiving"/>
+            <field name="binding_model_id" ref="model_bellona_receiving"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                records.receive_all_products()
+            </field>
+        </record>
+
     <record model="ir.ui.view" id="bellona_receiving_form">
         <field name="name">bellona.receiving.form</field>
         <field name="model">bellona.receiving</field>
@@ -45,15 +57,18 @@
         <field name="model">bellona.receiving</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="invoice" />
-                <field name="packet_no" />
-                <field name="internal_ref" />
-                <field name="product_name" />
-                <field name="satinalma_siparis_no" />
-                <field name="quantity" />
-                <field name="musteri_referans" />
-                <field name="hacim" />
-                <field name="purchase_id" />
+                <field name="invoice"/>
+                <field name="packet_no"/>
+                <field name="internal_ref"/>
+                <field name="product_name"/>
+                <field name="satinalma_siparis_no"/>
+                <field name="quantity"/>
+                <field name="musteri_referans"/>
+                <field name="hacim"/>
+                <field name="po_no"/>
+                <field name="purchase_id"/>
+                <field name="picking_id"/>
+                <field name="is_received"/>
             </tree>
         </field>
     </record>
@@ -61,6 +76,7 @@
     <record model="ir.actions.act_window" id="bellona_receiving_action">
         <field name="name">Bellona Receiving</field>
         <field name="res_model">bellona.receiving</field>
+        <field name="context">{'search_default_invoice': 1}</field>
         <field name="view_mode">tree,form</field>
     </record>
 
