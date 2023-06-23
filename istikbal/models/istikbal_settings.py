@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 class Credentials(models.Model):
     _name = 'istikbal.credentials'
-    scription = "Istikbal Credentials"
+    _description = "Istikbal Credentials"
 
     username = fields.Char('Username')
     password = fields.Char('Password')
