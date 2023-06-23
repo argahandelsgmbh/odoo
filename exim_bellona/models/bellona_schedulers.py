@@ -55,7 +55,7 @@ class Integration(models.TransientModel):
                 if not shipment_obj:
                     shipment_obj = self.env['bellona.shipments'].sudo().create({
                         'productcode': shipment['productcode'],
-                        'product_template': product_template.id if product_template else False,
+                        'product_template': product_template if product_template else False,
                         'ordeR_QUANTITY': shipment['ordeR_QUANTITY'],
                         'stocK_QUANTITY': shipment['stocK_QUANTITY'],
                         'customerref': shipment['customerref'],
@@ -82,7 +82,7 @@ class Integration(models.TransientModel):
                 else:
                     shipment_obj = self.env['bellona.shipments'].write({
                         'productcode': shipment['productcode'],
-                        'product_template': product_template.id if product_template else False,
+                        'product_template': product_template if product_template else False,
                         'ordeR_QUANTITY': shipment['ordeR_QUANTITY'],
                         'stocK_QUANTITY': shipment['stocK_QUANTITY'],
                         'customerref': shipment['customerref'],
@@ -106,15 +106,16 @@ class Integration(models.TransientModel):
 
                 purchase_order = self.env['purchase.order'].search([('name', '=', shipment['customerbarcode'])],
                                                                    limit=1)
-                if purchase_order and shipment_obj:
-                    sale_order = self.env['sale.order'].search([('name', '=', purchase_order.origin)], limit=1)
-                    purchase_order.bellona_shipments = [(4, shipment_obj.id)]
-                    if sale_order and shipment_obj:
-                        sale_order.bellona_shipments = [(4, shipment_obj.id)]
+                if shipment_obj:
+                    if purchase_order and shipment_obj:
+                        sale_order = self.env['sale.order'].search([('name', '=', purchase_order.origin)], limit=1)
+                        purchase_order.bellona_shipments = [(4, shipment_obj.id)]
+                        if sale_order and shipment_obj:
+                            sale_order.bellona_shipments = [(4, shipment_obj.id)]
 
             except Exception as e:
                 log_notes = self.env["bellona.log.notes"].sudo().create(
-                    {"error": "shipments creation error " + shipment['saleS_ORDER']+str(e)})
+                    {"error": "shipments creation error " + shipment['saleS_ORDER']+" "+str(e)})
         if count:
             log_notes = self.env["bellona.log.notes"].sudo().create(
                 {"error": "shipments imported " + str(count)})
