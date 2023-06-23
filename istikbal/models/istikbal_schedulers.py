@@ -98,7 +98,7 @@ class Integration(models.TransientModel):
 
         company_name = self.env['res.company'].search([("id", '=', company_id)]).name
         log_notes = self.env["istikbal.log.notes"].sudo().create(
-            {'error': "Sucessfully imported inventory" + str(count) + " " + company_name})
+            {'error': "Sucessfully imported inventory " + str(count) + " " + company_name})
 
 
 
@@ -235,7 +235,7 @@ class Integration(models.TransientModel):
                 })
         company_name = self.env['res.company'].search([("id", '=', company_id)]).name
         log_notes = self.env["istikbal.log.notes"].sudo().create(
-            {'error': "Sucessfully imported materials" + str(count) + " " + company_name})
+            {'error': "Sucessfully imported materials " + str(count) + " " + company_name})
 
 
 
@@ -305,7 +305,7 @@ class Integration(models.TransientModel):
         self.env.cr.commit()
         company_name = self.env['res.company'].search([("id", '=', company_id)]).name
         log_notes = self.env["istikbal.log.notes"].sudo().create(
-            {'error': "Sucessfully imported headers" + str(count) + " " + company_name})
+            {'error': "Sucessfully imported headers " + str(count) + " " + company_name})
         self.createShipmentsDetailsScheduler(shipmentsDetails,company_id)
 
     def createShipmentsDetailsScheduler(self, details,company_id):
@@ -372,7 +372,7 @@ class Integration(models.TransientModel):
                 })
         company_name = self.env['res.company'].search([("id", '=', company_id)]).name
         log_notes = self.env["istikbal.log.notes"].sudo().create(
-            {'error': "Sucessfully imported shipment details" + str(count) + " " + company_name})
+            {'error': "Sucessfully imported shipment details " + str(count) + " " + company_name})
 
 
 
