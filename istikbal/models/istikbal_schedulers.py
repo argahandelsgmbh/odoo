@@ -46,6 +46,8 @@ class Integration(models.TransientModel):
                         {'Import Inventory {}{}'.format(company.company_id.name, str(e))})
 
     def createIncomingShipmentScheduler(self, products,company_id):
+        count=0
+
         for product in products:
             try:
                 odooProduct = self.env['istikbal.incoming.shipments'].search([('producCode', '=', product['producCode']),('customerBarCode', '=', product['customerBarcode'])])
@@ -69,6 +71,7 @@ class Integration(models.TransientModel):
                          })
 
                 else:
+                    count=count+1
                     odooProduct = self.env['istikbal.incoming.shipments'].create(
                         {
                         'bdtCode': product['bdtCode'],
@@ -92,6 +95,17 @@ class Integration(models.TransientModel):
                 if 'Connection aborted' not in str(e):
                     log_notes = self.env["istikbal.log.notes"].sudo().create(
                         {'Create Inventory {}'.format(str(e))})
+
+        company_name = self.env['res.company'].search([("id", '=', company_id)])
+        log_notes = self.env["istikbal.log.notes"].sudo().create(
+            {'error': "Sucessfully imported inventory" + str(count) + " " + company_name})
+
+
+
+
+
+
+
 
     def importMaterialsScheduler(self):
         istikbal_company = self.env['istikbal.credentials'].search([])
@@ -125,6 +139,7 @@ class Integration(models.TransientModel):
 
 
     def createMaterialsScheduler(self, materials,company_id):
+        count=0
         for material in materials:
             odooMaterials = self.env['istikbal.materials'].search([('materialNumber', '=', material['materialNumber'])])
             if odooMaterials:
@@ -169,6 +184,7 @@ class Integration(models.TransientModel):
                     'company_id': company_id,
                 })
             else:
+                count=count+1
                 odooMaterials = self.env['istikbal.materials'].create({
                     'materialNumber': material['materialNumber'],
                     'bdtModelName': material['bdtModelName'],
@@ -217,6 +233,12 @@ class Integration(models.TransientModel):
                 odooProduct.write({
                     'material_ids': [[4, odooMaterials.id]]
                 })
+        company_name = self.env['res.company'].search([("id", '=', company_id)])
+        log_notes = self.env["istikbal.log.notes"].sudo().create(
+            {'error': "Sucessfully imported materials" + str(count) + " " + company_name})
+
+
+
 
     def importShipmentsScheduler(self):
         istikbal_company = self.env['istikbal.credentials'].search([])
@@ -248,10 +270,12 @@ class Integration(models.TransientModel):
 
 
     def createShipmentsHeaderScheduler(self, headers,shipmentsDetails,company_id):
+        count=0
         for header in headers:
             odooHeader = self.env['istikbal.shipments.header'].search([('shipmentNumber', '=', header['shipmentNumber'])])
             shipmentDate = datetime.strptime(header['shipmentDate'], '%Y-%m-%dT%H:%M:%S')
             if not odooHeader:
+                count=count+1
                 self.env['istikbal.shipments.header'].create({
                     'disPactDate': header['dispatchDate'],
                     'containerNumber': header['containerNumber'],
@@ -279,9 +303,13 @@ class Integration(models.TransientModel):
                     'company_id': company_id,
                 })
         self.env.cr.commit()
+        company_name = self.env['res.company'].search([("id", '=', company_id)])
+        log_notes = self.env["istikbal.log.notes"].sudo().create(
+            {'error': "Sucessfully imported headers" + str(count) + " " + company_name})
         self.createShipmentsDetailsScheduler(shipmentsDetails,company_id)
 
     def createShipmentsDetailsScheduler(self, details,company_id):
+        count=0
         for detail in details:
             odooHeader = self.env['istikbal.shipments.header'].search([('shipmentNumber', '=', detail['shipmentNumber'])],limit=1)
             odooDetails = self.env['istikbal.shipments.details'].search([('shipMentNumber', '=', detail['shipmentNumber']), ('pakageEnum', '=', detail['packageNum'])],limit=1)
@@ -315,6 +343,7 @@ class Integration(models.TransientModel):
                 })
 
             else:
+                count=count+1
                 odooDetails = self.env['istikbal.shipments.details'].create({
                     'shipment_id': odooHeader.id,
                     'pakageEnum': detail['packageNum'],
@@ -341,6 +370,19 @@ class Integration(models.TransientModel):
                     'voleh': detail['voleh'],
                     'company_id': company_id,
                 })
+        company_name = self.env['res.company'].search([("id", '=', company_id)])
+        log_notes = self.env["istikbal.log.notes"].sudo().create(
+            {'error': "Sucessfully imported shipment details" + str(count) + " " + company_name})
+
+
+
+
+
+
+
+
+
+
 
     def importSaleOrderAnalysis(self):
         username, password = self.getCredentials()
