@@ -4,7 +4,7 @@ from odoo.exceptions import UserError
 
 class BellonaReceive(models.Model):
     _name = 'bellona.receiving'
-    scription = "Bellona Receiving"
+    _description = "Bellona Receiving"
 
     name = fields.Char()
     invoice = fields.Char()
