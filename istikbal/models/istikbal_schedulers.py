@@ -96,7 +96,7 @@ class Integration(models.TransientModel):
                     log_notes = self.env["istikbal.log.notes"].sudo().create(
                         {'Create Inventory {}'.format(str(e))})
 
-        company_name = self.env['res.company'].search([("id", '=', company_id)])
+        company_name = self.env['res.company'].search([("id", '=', company_id)]).name
         log_notes = self.env["istikbal.log.notes"].sudo().create(
             {'error': "Sucessfully imported inventory" + str(count) + " " + company_name})
 
@@ -233,7 +233,7 @@ class Integration(models.TransientModel):
                 odooProduct.write({
                     'material_ids': [[4, odooMaterials.id]]
                 })
-        company_name = self.env['res.company'].search([("id", '=', company_id)])
+        company_name = self.env['res.company'].search([("id", '=', company_id)]).name
         log_notes = self.env["istikbal.log.notes"].sudo().create(
             {'error': "Sucessfully imported materials" + str(count) + " " + company_name})
 
@@ -303,7 +303,7 @@ class Integration(models.TransientModel):
                     'company_id': company_id,
                 })
         self.env.cr.commit()
-        company_name = self.env['res.company'].search([("id", '=', company_id)])
+        company_name = self.env['res.company'].search([("id", '=', company_id)]).name
         log_notes = self.env["istikbal.log.notes"].sudo().create(
             {'error': "Sucessfully imported headers" + str(count) + " " + company_name})
         self.createShipmentsDetailsScheduler(shipmentsDetails,company_id)
@@ -370,7 +370,7 @@ class Integration(models.TransientModel):
                     'voleh': detail['voleh'],
                     'company_id': company_id,
                 })
-        company_name = self.env['res.company'].search([("id", '=', company_id)])
+        company_name = self.env['res.company'].search([("id", '=', company_id)]).name
         log_notes = self.env["istikbal.log.notes"].sudo().create(
             {'error': "Sucessfully imported shipment details" + str(count) + " " + company_name})
 
