@@ -108,11 +108,11 @@ class Integration(models.TransientModel):
                 })
        
             purchase_order = self.env['purchase.order'].search([('name', '=', shipment['customerbarcode'])],limit=1)
-            if purchase_order:
-                sale_order = self.env['sale.order'].search([('name', '=', purchase_order.origin)], limit=1)
-                purchase_order.bellona_shipments=[(4,shipment_obj.id)]
-                if sale_order:
-                    sale_order.bellona_shipments = [(4,shipment_obj.id)]
+            # if purchase_order:
+            #     sale_order = self.env['sale.order'].search([('name', '=', purchase_order.origin)], limit=1)
+            #     purchase_order.bellona_shipments=[(4,shipment_obj.id)]
+            #     if sale_order:
+            #         sale_order.bellona_shipments = [(4,shipment_obj.id)]
     #Bellona Materials
     def importBellonaMaterials(self):
         token = self.getBellonaCredentials()
