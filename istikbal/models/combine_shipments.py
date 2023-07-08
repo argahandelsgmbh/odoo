@@ -70,12 +70,13 @@ class IstikbalLogNotes(models.Model):
                                 #     r.is_received = True
 
                                 pick = self.env['stock.move.line'].search([('picking_id.purchase_id.name', '=', r.purchase_id.name)], order='id asc').picking_id.ids
-                                pick_id = pick[-2] if len(pick) > 1 else pick[0]
-                                stock_picking = self.env['stock.picking'].browse([pick_id])
-
-                                if stock_picking.state == 'done':
-                                    r.picking_id = stock_picking.id
-                                    r.is_received = True
+                                if pick:
+                                    pick_id = pick[-2] if len(pick) > 1 else pick[0]
+                                    stock_picking = self.env['stock.picking'].browse([pick_id])
+    
+                                    if stock_picking.state == 'done':
+                                        r.picking_id = stock_picking.id
+                                        r.is_received = True
                             # if all(line.state == 'done' for line in r.purchase_id.picking_ids):
                             #     r.picking_id = r.purchase_id
                             # lines.move_ids.filtered(
