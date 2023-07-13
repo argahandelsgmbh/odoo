@@ -4,6 +4,43 @@ from odoo import models, fields, api
 import datetime
 from datetime import timedelta
 
+
+class RepairOrderInh(models.Model):
+    _inherit = 'repair.order'
+
+    def action_repair_end(self):
+        if self.ticket_id:
+            done_state = self.env['helpdesk.stage'].search([('name', '=', 'Done')], limit=1)
+            if done_state:
+                self.ticket_id.stage_id = done_state.id
+        return super().action_repair_end()
+
+
+class HelpdeskTicketInh(models.Model):
+    _inherit = 'helpdesk.ticket'
+
+    @api.model
+    def create(self, vals_list):
+        rec = super().create(vals_list)
+        rec.action_create_repair()
+        return rec
+
+    def action_create_repair(self):
+        event = self.env['repair.order'].sudo().create({
+            'partner_id': self.partner_id.id,
+            'description': self.description,
+            'product_qty': self.sale_line_id.product_uom_qty,
+            'schedule_date': datetime.datetime.today().date(),
+            # 'description': self.service,
+            'user_id': self.user_id.id,
+            'ticket_id': self.id,
+            'location_id': 8,
+            'sale_order_id': self.sale_line_id.order_id.id,
+            'product_id': self.sale_line_id.product_id.id,
+            'product_uom': self.sale_line_id.product_uom.id,
+        })
+
+
 class ProjectTaskInh(models.Model):
     _inherit = 'project.task'
 
@@ -43,7 +80,7 @@ class SaleOrderInh(models.Model):
     receipt_status = fields.Selection(selection=[
         ('draft', 'Draft'), ('waiting', 'Waiting for another Operations'),
         ('confirmed', 'Waiting'), ('assigned', 'Ready'),
-        ('done', 'Done'),  ('cancel', 'Cancelled'),('', '    ')
+        ('done', 'Done'), ('cancel', 'Cancelled'), ('', '    ')
     ], string='Receipt Status', compute='_compute_total_qty', readonly=True, copy=False)
     do_status = fields.Selection(selection=[
         ('draft', 'Draft'), ('waiting', 'Waiting for another Operations'),
@@ -56,43 +93,42 @@ class SaleOrderInh(models.Model):
         ('to approve', 'To Approve'),
         ('purchase', 'Purchase Order'),
         ('done', 'Done'),
-        ('cancel', 'Cancelled'),('', '    ')
+        ('cancel', 'Cancelled'), ('', '    ')
     ], 'PO Status', compute='_compute_total_qty', readonly=True)
 
-
-    @api.depends('invoice_ids', 'invoice_ids.amount_total', 'invoice_ids.amount_residual','invoice_ids.amount_residual_signed')
+    @api.depends('invoice_ids', 'invoice_ids.amount_total', 'invoice_ids.amount_residual',
+                 'invoice_ids.amount_residual_signed')
     def compute_invoices_amount(self):
         for rec in self:
             amount = sum(rec.invoice_ids.mapped('amount_total'))
             due = sum(rec.invoice_ids.mapped('amount_residual'))
             rec.total_invoice_amount = amount
             rec.total_invoice_paid = amount - due
-            rec.total_open_amount = rec.amount_total-rec.total_invoice_paid
+            rec.total_open_amount = rec.amount_total - rec.total_invoice_paid
 
     def _compute_total_qty(self):
         for rec in self:
-            purchase_order=self.env['purchase.order'].search([("origin","=",rec.name)])
-            receipt = self.env['purchase.order'].search([("origin", "=", rec.name)],limit=1)
-            po_qty=0
-            istikabl_qty=0
-            bellona_qty=0
-            received_qty=0
+            purchase_order = self.env['purchase.order'].search([("origin", "=", rec.name)])
+            receipt = self.env['purchase.order'].search([("origin", "=", rec.name)], limit=1)
+            po_qty = 0
+            istikabl_qty = 0
+            bellona_qty = 0
+            received_qty = 0
             for po in purchase_order:
-                po_qty=po_qty+po.total_lines
-                istikabl_qty=istikabl_qty+po.total_istikbal_lines
-                bellona_qty= bellona_qty+po.total_bellona_lines
-                received_qty=received_qty+po.total_received
-            rec.po_qty=po_qty
-            rec.istikabl_qty=istikabl_qty
-            rec.bellona_qty=bellona_qty
-            rec.received_qty=received_qty
-            rec.total_qty=len(rec.order_line.filtered(lambda i: i.product_id.type == 'product').mapped('id'))
-            rec.do_qty=len(self.env['stock.move.line'].search([("origin","=",rec.name),("state","=",'done')]))
-
+                po_qty = po_qty + po.total_lines
+                istikabl_qty = istikabl_qty + po.total_istikbal_lines
+                bellona_qty = bellona_qty + po.total_bellona_lines
+                received_qty = received_qty + po.total_received
+            rec.po_qty = po_qty
+            rec.istikabl_qty = istikabl_qty
+            rec.bellona_qty = bellona_qty
+            rec.received_qty = received_qty
+            rec.total_qty = len(rec.order_line.filtered(lambda i: i.product_id.type == 'product').mapped('id'))
+            rec.do_qty = len(self.env['stock.move.line'].search([("origin", "=", rec.name), ("state", "=", 'done')]))
 
             if receipt:
-                rec.receipt_status=receipt.receipt_status
-                rec.po_state=receipt.state
+                rec.receipt_status = receipt.receipt_status
+                rec.po_state = receipt.state
             else:
                 rec.receipt_status = ''
                 rec.po_state = ''
@@ -110,24 +146,60 @@ class SaleOrderInh(models.Model):
                 if all(line.state == 'cancel' for line in rec.picking_ids):
                     rec.do_status = 'cancel'
 
-
     def write(self, vals):
         res = super(SaleOrderInh, self).write(vals)
         if vals.get('delivery_date'):
             project_task = self.env['project.task'].search([("sale_line_id.order_id", '=', self.id)], limit=1)
-            project_task.delivery_date=self.delivery_date
-            project_task.planned_date_begin=self.delivery_date
-            project_task.date_deadline=self.delivery_date
+            project_task.delivery_date = self.delivery_date
+            project_task.planned_date_begin = self.delivery_date
+            project_task.date_deadline = self.delivery_date
+            self.action_update_appoint()
             for k in self.picking_ids:
-                if k.state not in ['done','cancel']:
-                    k.delivery_date=self.delivery_date
+                if k.state not in ['done', 'cancel']:
+                    k.delivery_date = self.delivery_date
         return res
+
+    @api.model
+    def create(self, vals):
+        rec = super().create(vals)
+        if vals.get('delivery_date'):
+            rec.action_create_appoint()
+        return rec
+
+    def action_update_appoint(self):
+        event_search = self.env['calendar.event'].sudo().search([('sale_id', '=', self.id)])
+        if event_search:
+            event_search.update({
+                'privacy': 'private',
+                'show_as': 'free',
+                'start': self.delivery_date,
+                'stop': self.delivery_date + timedelta(minutes=30),
+                'user_id': self.user_id.id,
+                'partner_ids': [(4, self.partner_id.id)],
+            })
+        else:
+            self.action_create_appoint()
+
+    def action_create_appoint(self):
+        name = self.name + "-" + self.partner_id.name
+        event = self.env['calendar.event'].sudo().create({
+            'name': name,
+            'privacy': 'private',
+            'show_as': 'free',
+            # 'duration': self.duration,
+            'start': self.delivery_date,
+            'stop': self.delivery_date,
+            # 'description': self.service,
+            'user_id': self.user_id.id,
+            'sale_id': self.id,
+            'partner_ids': [(4, self.partner_id.id)],
+        })
 
 
 class SaleOrderLineInh(models.Model):
     _inherit = 'sale.order.line'
 
-    number = fields.Integer(string="Sr#",compute='_compute_get_number',default=1)
+    number = fields.Integer(string="Sr#", compute='_compute_get_number', default=1)
     available = fields.Float('Available Qty', related="product_id.qty_available")
     remaining_qty = fields.Float('Not Available')
     qty_in = fields.Float()
@@ -148,7 +220,6 @@ class SaleOrderLineInh(models.Model):
     #
     #         rec.free_qty=(rec.available+rec.qty_in)-rec.qty_out
 
-
     @api.depends('order_id')
     def _compute_get_number(self):
         for order in self.mapped('order_id'):
@@ -161,7 +232,6 @@ class SaleOrderLineInh(models.Model):
                     line.number = number
 
 
-
 class StockPickingInh(models.Model):
     _inherit = 'stock.picking'
 
@@ -169,29 +239,28 @@ class StockPickingInh(models.Model):
     remaining_amt = fields.Float('Open Amount', compute='_compute_total_amt')
     delivery_date = fields.Datetime(string='Delivery Date', copy=False)
 
-
     def _compute_total_amt(self):
         for i in self:
-            sale_order=self.env['sale.order'].search([("name",'=',i.origin)],limit=1)
-            i.invoice_total=sale_order.amount_total
-            i.remaining_amt=sale_order.total_open_amount
+            sale_order = self.env['sale.order'].search([("name", '=', i.origin)], limit=1)
+            i.invoice_total = sale_order.amount_total
+            i.remaining_amt = sale_order.total_open_amount
 
     def write(self, vals):
         res = super(StockPickingInh, self).write(vals)
         if vals.get('delivery_date'):
             sale_order = self.env['sale.order'].search([("name", '=', self.origin)], limit=1)
-            if sale_order and sale_order.delivery_date!=self.delivery_date:
+            if sale_order and sale_order.delivery_date != self.delivery_date:
                 sale_order.delivery_date = self.delivery_date
-#                 obj = self.env['calendar.event'].search([("picking_id", '=', self.id)])
-#                 if obj:
-#                     obj.sudo().write({
-#                         'name': self.name,
-#                         'start': self.delivery_date,
-#                         'duration': 1,
-#                         'privacy': 'confidential',
-#                         'stop':self.delivery_date + timedelta(hours=1),
-#                         'description': self.note,
-#                     })
+        #                 obj = self.env['calendar.event'].search([("picking_id", '=', self.id)])
+        #                 if obj:
+        #                     obj.sudo().write({
+        #                         'name': self.name,
+        #                         'start': self.delivery_date,
+        #                         'duration': 1,
+        #                         'privacy': 'confidential',
+        #                         'stop':self.delivery_date + timedelta(hours=1),
+        #                         'description': self.note,
+        #                     })
         return res
 
 
@@ -206,7 +275,6 @@ class StockPickingInh(models.Model):
 #         res_ids = super(StockPickingInh, self).create(vals_list)
 #         res_ids._create_calander_envent()
 #         return res_ids
-
 
 
 #     def _create_calander_envent(self):
@@ -229,38 +297,37 @@ class StockPickingInh(models.Model):
 #             })
 
 
-
 class CalendarEvent(models.Model):
     _inherit = "calendar.event"
 
     picking_id = fields.Many2one('stock.picking', "Picking")
+    sale_id = fields.Many2one('sale.order')
 
 
 class PurchaseOrderInh(models.Model):
     _inherit = 'purchase.order'
 
-
     sale_order = fields.Many2one('sale.order', compute='_compute_sale_order')
     receipt_status = fields.Selection(selection=[
         ('draft', 'Draft'), ('waiting', 'Waiting for another Operations'),
         ('confirmed', 'Waiting'), ('assigned', 'Ready'),
-        ('done', 'Done'),  ('cancel', 'Cancelled')
+        ('done', 'Done'), ('cancel', 'Cancelled')
     ], string='Receipt Status', compute='_compute_sale_order', readonly=True, copy=False)
 
     total_lines = fields.Integer(compute='_compute_lines')
-    total_istikbal_lines = fields.Integer(string="Istikbal Lines",compute='_compute_lines')
-    total_bellona_lines = fields.Integer(string="Bellona Lines",compute='_compute_lines')
-    total_received = fields.Integer(string="Received",compute='_compute_lines')
+    total_istikbal_lines = fields.Integer(string="Istikbal Lines", compute='_compute_lines')
+    total_bellona_lines = fields.Integer(string="Bellona Lines", compute='_compute_lines')
+    total_received = fields.Integer(string="Received", compute='_compute_lines')
 
-    @api.depends('order_line','istikbal_shp_details','bellona_shipments','picking_ids')
+    @api.depends('order_line', 'istikbal_shp_details', 'bellona_shipments', 'picking_ids')
     def _compute_lines(self):
         for rec in self:
-            moves = len(self.env['stock.move.line'].search([("move_id.picking_id.purchase_id", '=', rec.id),("state", '=', 'done')]))
+            moves = len(self.env['stock.move.line'].search(
+                [("move_id.picking_id.purchase_id", '=', rec.id), ("state", '=', 'done')]))
             rec.total_lines = len(rec.order_line.mapped('id'))
             rec.total_istikbal_lines = len(rec.istikbal_shp_details.mapped('id'))
             rec.total_bellona_lines = len(rec.bellona_shipments.mapped('id'))
             rec.total_received = moves if moves else 0
-
 
     def _compute_sale_order(self):
         for rec in self:
@@ -276,9 +343,9 @@ class PurchaseOrderInh(models.Model):
                     rec.receipt_status = 'done'
                 if all(line.state == 'cancel' for line in rec.picking_ids):
                     rec.receipt_status = 'cancel'
-            sale_order=self.env['sale.order'].search([("name",'=',rec.origin)],limit=1).id
-            rec.sale_order=sale_order
-            
+            sale_order = self.env['sale.order'].search([("name", '=', rec.origin)], limit=1).id
+            rec.sale_order = sale_order
+
 
 class PurchaseOrderLineInh(models.Model):
     _inherit = 'purchase.order.line'
@@ -291,8 +358,4 @@ class PurchaseOrderLineInh(models.Model):
             number = 1
             for line in order.order_line:
                 line.number = number
-                number += 1           
-
-
-
-
+                number += 1

@@ -1,9 +1,37 @@
 <odoo>
     <data>
-         <record id="quotation_inherit_arga_tree" model="ir.ui.view">
+
+<!--        <record id="helpdesk_ticket_view_form_inherit" model="ir.ui.view">-->
+<!--            <field name='name'>helpdesk.ticket.form.inherit.invoicing</field>-->
+<!--            <field name="model">helpdesk.ticket</field>-->
+<!--            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>-->
+<!--            <field name="arch" type="xml">-->
+
+<!--                <xpath expr="//header" position="inside">-->
+<!--                  <button string="Create Repair" type="object" name="action_create_repair"/>-->
+<!--                </xpath>-->
+<!--                -->
+<!--            </field>-->
+<!--        </record>-->
+
+        <record id="view_calendar_event_form_inh" model="ir.ui.view">
+            <field name="name">calendar.event.form.inh</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='allday']" position="after">
+                    <field name="sale_id" string="Sale" readonly="1"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <record id="quotation_inherit_arga_tree" model="ir.ui.view">
             <field name="name">sale order</field>
             <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_quotation_tree"/>	
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='user_id']" position="after">
                     <field name="total_qty" optional="show" />
@@ -16,6 +44,7 @@
                     <field name="po_state" optional="show" widget="badge" decoration-success="po_state == 'done'" decoration-info="po_state not in ('done', 'cancel', 'draft')" decoration-muted="po_state == 'draft'"/>
                     <field name="receipt_status" optional="show" widget="badge" decoration-success="receipt_status == 'done'" decoration-info="receipt_status not in ('done', 'cancel', 'draft')" decoration-muted="receipt_status == 'draft'"/>
                 </xpath>
+
             </field>
         </record>
 
@@ -68,6 +97,10 @@
                 <xpath expr="//field[@name='date_order']" position="after">
                     <field name="delivery_date"/>
                 </xpath>
+
+<!--                <xpath expr="//header" position="inside">-->
+<!--                    <button string="Test" type="object" name="action_create_appoint"/>-->
+<!--                </xpath>-->
             </field>
         </record>
 
