@@ -55,7 +55,7 @@ class ProjectTaskInh(models.Model):
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
-    _name = _inherit
+
 
     @api.model
     def create(self, vals):
