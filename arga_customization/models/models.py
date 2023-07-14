@@ -8,37 +8,37 @@ from datetime import timedelta
 class RepairOrderInh(models.Model):
     _inherit = 'repair.order'
 
-    def action_repair_end(self):
-        if self.ticket_id:
-            done_state = self.env['helpdesk.stage'].search([('name', '=', 'Done')], limit=1)
-            if done_state:
-                self.ticket_id.stage_id = done_state.id
-        return super().action_repair_end()
+    # def action_repair_end(self):
+    #     if self.ticket_id:
+    #         done_state = self.env['helpdesk.stage'].search([('name', '=', 'Done')], limit=1)
+    #         if done_state:
+    #             self.ticket_id.stage_id = done_state.id
+    #     return super().action_repair_end()
 
 
 class HelpdeskTicketInh(models.Model):
     _inherit = 'helpdesk.ticket'
 
-    @api.model
-    def create(self, vals_list):
-        rec = super().create(vals_list)
-        rec.action_create_repair()
-        return rec
+    # @api.model
+    # def create(self, vals_list):
+    #     rec = super().create(vals_list)
+    #     rec.action_create_repair()
+    #     return rec
 
-    def action_create_repair(self):
-        event = self.env['repair.order'].sudo().create({
-            'partner_id': self.partner_id.id,
-            'description': self.description,
-            'product_qty': self.sale_line_id.product_uom_qty,
-            'schedule_date': datetime.datetime.today().date(),
-            # 'description': self.service,
-            'user_id': self.user_id.id,
-            'ticket_id': self.id,
-            'location_id': 8,
-            'sale_order_id': self.sale_line_id.order_id.id,
-            'product_id': self.sale_line_id.product_id.id,
-            'product_uom': self.sale_line_id.product_uom.id,
-        })
+    # def action_create_repair(self):
+    #     event = self.env['repair.order'].sudo().create({
+    #         'partner_id': self.partner_id.id,
+    #         'description': self.description,
+    #         'product_qty': self.sale_line_id.product_uom_qty,
+    #         'schedule_date': datetime.datetime.today().date(),
+    #         # 'description': self.service,
+    #         'user_id': self.user_id.id,
+    #         'ticket_id': self.id,
+    #         'location_id': 8,
+    #         'sale_order_id': self.sale_line_id.order_id.id,
+    #         'product_id': self.sale_line_id.product_id.id,
+    #         'product_uom': self.sale_line_id.product_uom.id,
+    #     })
 
 
 class ProjectTaskInh(models.Model):
