@@ -76,7 +76,6 @@
                                         <field name="vrkme" optional="hide"/>
                                         <field name="is_received" optional="show"/>
                                         <button string="Receive PO" type="object" name="action_receive_po"/>
-
                                     </tree>
                                 </field>
                             </page>
@@ -91,7 +90,7 @@
         <field name="model">istikbal.combine.shipments</field>
         <field name="arch" type="xml">
             <tree default_order="shipmentDate desc" >
-                <!-- <field name="shipmentNumber" /> -->
+                 <field name="name" />
                 <field name="invoiceNumber" />
                 <field name="disPactDate" />
                 <field name="containerNumber" />
