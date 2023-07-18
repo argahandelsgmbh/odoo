@@ -83,15 +83,15 @@ class HelpdeskTicketInh(models.Model):
         event = self.env['repair.order'].sudo().create({
             'partner_id': self.partner_id.id,
             'description': self.description,
-            'product_qty': self.sale_line_id.product_uom_qty,
+            'product_qty': self.sale_line_id.product_uom_qty or False,
             'schedule_date': datetime.datetime.today().date(),
             # 'description': self.service,
-            'user_id': self.user_id.id,
+            'user_id': self.user_id.id or False,
             'ticket_id': self.id,
             'location_id': 8,
-            'sale_order_id': self.sale_line_id.order_id.id,
-            'product_id': self.sale_line_id.product_id.id,
-            'product_uom': self.sale_line_id.product_uom.id,
+            'sale_order_id': self.sale_line_id.order_id.id or False,
+            'product_id': self.sale_line_id.product_id.id or False,
+            'product_uom': self.sale_line_id.product_uom.id or False,
         })
 
 
