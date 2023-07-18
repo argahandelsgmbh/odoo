@@ -21,13 +21,15 @@
     'license': 'OPL-1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale', 'stock', 'calendar', 'account', 'purchase', 'exim_bellona', 'istikbal', 'project', 'helpdesk', 'repair'],
+    'depends': ['base', 'sale', 'stock', 'calendar', 'account', 'purchase', 'exim_bellona', 'istikbal', 'project', 'helpdesk', 'repair', 'bsi_repair_parts_immediate_buying'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/views.xml',
         'views/report_delivery_order.xml',
+        'wizard/repair_to_rfq_wiz_view.xml',
+        'wizard/repair_to_delivery_wiz_view.xml',
         "data/sequencer.xml"
     ],
 

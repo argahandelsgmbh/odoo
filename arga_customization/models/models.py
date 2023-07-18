@@ -5,15 +5,69 @@ import datetime
 from datetime import timedelta
 
 
+class RepairOrderLineInh(models.Model):
+    _inherit = 'repair.line'
+
+    qty_available = fields.Float(related='product_id.qty_available')
+
+
 class RepairOrderInh(models.Model):
     _inherit = 'repair.order'
 
-    # def action_repair_end(self):
-    #     if self.ticket_id:
-    #         done_state = self.env['helpdesk.stage'].search([('name', '=', 'Done')], limit=1)
-    #         if done_state:
-    #             self.ticket_id.stage_id = done_state.id
-    #     return super().action_repair_end()
+    def action_repair_end(self):
+        if self.ticket_id:
+            done_state = self.env['helpdesk.stage'].search([('name', '=', 'Done')], limit=1)
+            if done_state:
+                self.ticket_id.stage_id = done_state.id
+        return super().action_repair_end()
+
+    delivery_count = fields.Integer(string='Delivery Count', compute='count_delivery')
+    is_po_created = fields.Boolean()
+
+    def action_open_delivery(self):
+        self.ensure_one()
+        return {
+            'name': 'purchases',
+            'res_model': 'stock.picking',
+            'domain': [('origin', '=', self.name)],
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+            'context': "{'create': False}"
+        }
+
+    def count_delivery(self):
+        for rec in self:
+            rec.delivery_count = self.env['stock.picking'].search_count([('origin', '=', self.name)])
+
+    # def open_related_po(self):
+    #     po_id = self.env['purchase.order'].search([('origin', '=', self.name)])
+    #     action = self.env.ref('purchase.purchase_rfq').read()[0]
+    #     action['domain'] = [('id', '=', po_id.id)]
+    #     return action
+
+    def open_repair_to_rfq_wizard(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Create RFQ/PO',
+            'view_id': self.env.ref('arga_customization.repair_to_rfq_wizard_form', False).id,
+            'context': {'default_repair_id': self.id, 'default_vendor_id': self.partner_id.id,
+                        'default_repair_line_ids': self.operations.mapped('id')},
+            'target': 'new',
+            'res_model': 'repair.rfq.wizard',
+            'view_mode': 'form',
+        }
+
+    def open_repair_to_delivery_wizard(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Create Delivery',
+            'view_id': self.env.ref('arga_customization.repair_to_delivery_wizard_form', False).id,
+            'context': {'default_repair_id': self.id, 'default_partner_id': self.partner_id.id,
+                        'default_repair_line_ids': self.operations.mapped('id')},
+            'target': 'new',
+            'res_model': 'repair.delivery.wizard',
+            'view_mode': 'form',
+        }
 
 
 class HelpdeskTicketInh(models.Model):
@@ -25,20 +79,20 @@ class HelpdeskTicketInh(models.Model):
     #     rec.action_create_repair()
     #     return rec
 
-    # def action_create_repair(self):
-    #     event = self.env['repair.order'].sudo().create({
-    #         'partner_id': self.partner_id.id,
-    #         'description': self.description,
-    #         'product_qty': self.sale_line_id.product_uom_qty,
-    #         'schedule_date': datetime.datetime.today().date(),
-    #         # 'description': self.service,
-    #         'user_id': self.user_id.id,
-    #         'ticket_id': self.id,
-    #         'location_id': 8,
-    #         'sale_order_id': self.sale_line_id.order_id.id,
-    #         'product_id': self.sale_line_id.product_id.id,
-    #         'product_uom': self.sale_line_id.product_uom.id,
-    #     })
+    def action_create_repair(self):
+        event = self.env['repair.order'].sudo().create({
+            'partner_id': self.partner_id.id,
+            'description': self.description,
+            'product_qty': self.sale_line_id.product_uom_qty,
+            'schedule_date': datetime.datetime.today().date(),
+            # 'description': self.service,
+            'user_id': self.user_id.id,
+            'ticket_id': self.id,
+            'location_id': 8,
+            'sale_order_id': self.sale_line_id.order_id.id,
+            'product_id': self.sale_line_id.product_id.id,
+            'product_uom': self.sale_line_id.product_uom.id,
+        })
 
 
 class ProjectTaskInh(models.Model):
@@ -55,7 +109,7 @@ class ProjectTaskInh(models.Model):
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
-
+    _name = _inherit
 
     @api.model
     def create(self, vals):

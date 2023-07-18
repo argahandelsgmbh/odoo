@@ -73,7 +73,7 @@ class Repair(models.Model):
             'name': 'purchases',
             'res_model': 'purchase.order',
             'domain': [('repair_order_id', '=', self.id)],
-            'view_mode': 'tree',
+            'view_mode': 'tree,form',
             'type': 'ir.actions.act_window',
             'context': "{'create': False}"
         }

@@ -1,18 +1,41 @@
 <odoo>
     <data>
 
-<!--        <record id="helpdesk_ticket_view_form_inherit" model="ir.ui.view">-->
-<!--            <field name='name'>helpdesk.ticket.form.inherit.invoicing</field>-->
-<!--            <field name="model">helpdesk.ticket</field>-->
-<!--            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>-->
-<!--            <field name="arch" type="xml">-->
+        <record id="repair_order_view_form_inherit" model="ir.ui.view">
+            <field name='name'>repair.order.form.inherit</field>
+            <field name="model">repair.order</field>
+            <field name="inherit_id" ref="repair.view_repair_order_form"/>
+            <field name="arch" type="xml">
 
-<!--                <xpath expr="//header" position="inside">-->
-<!--                  <button string="Create Repair" type="object" name="action_create_repair"/>-->
-<!--                </xpath>-->
-<!--                -->
-<!--            </field>-->
-<!--        </record>-->
+                <xpath expr="//header" position="inside">
+                     <button name="open_repair_to_rfq_wizard" string="Create RFQ/PO" type="object" class="oe_highlight"/>
+                     <button name="open_repair_to_delivery_wizard" string="Create Delivery" type="object" class="oe_highlight"/>
+                </xpath>
+
+                <div name="button_box" position="inside">
+                <button type="object" class="oe_stat_button" icon="fa-truck" name="action_open_delivery">
+                    <field string="Delivered" name="delivery_count" widget="statinfo"/>
+                </button>
+            </div>
+
+            </field>
+        </record>
+
+        <record id="helpdesk_ticket_view_form_inherit" model="ir.ui.view">
+            <field name='name'>helpdesk.ticket.form.inherit.invoicing</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//header" position="inside">
+                  <button string="Create Repair" type="object" name="action_create_repair" class="oe_highlight"/>
+                </xpath>
+
+<!--                                    <button name="open_so_to_rfq_wizard" string="Create RFQ/PO" type="object" class="oe_highlight"/>-->
+
+
+            </field>
+        </record>
 
         <record id="view_calendar_event_form_inh" model="ir.ui.view">
             <field name="name">calendar.event.form.inh</field>
