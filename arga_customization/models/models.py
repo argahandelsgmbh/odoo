@@ -91,7 +91,7 @@ class HelpdeskTicketInh(models.Model):
             'location_id': 8,
             'sale_order_id': self.sale_line_id.order_id.id or False,
             'product_id': self.product_id.id or False,
-            'product_uom': self.product_id.product_uom.id or False,
+            'product_uom': self.product_id.uom_id.id or False,
         })
 
 
