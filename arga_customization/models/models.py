@@ -4,6 +4,8 @@ from odoo import models, fields, api
 import datetime
 from datetime import timedelta
 
+from odoo.exceptions import UserError
+
 
 class RepairOrderLineInh(models.Model):
     _inherit = 'repair.line'
@@ -83,16 +85,27 @@ class HelpdeskTicketInh(models.Model):
         event = self.env['repair.order'].sudo().create({
             'partner_id': self.partner_id.id,
             'description': self.description,
-            'product_qty': self.sale_line_id.product_uom_qty or False,
+            'product_qty': self.sale_line_id.product_uom_qty,
             'schedule_date': datetime.datetime.today().date(),
             # 'description': self.service,
-            'user_id': self.user_id.id or False,
+            'user_id': self.user_id.id,
             'ticket_id': self.id,
-            'location_id': False,
-            'sale_order_id': self.sale_order_id.id or False,
-            'product_id': self.product_id.id or False,
-            'product_uom': self.product_id.uom_id.id or False,
+            'location_id': 8,
+            'sale_order_id': self.sale_line_id.order_id.id,
+            'product_id': self.sale_line_id.product_id.id,
+            'product_uom': self.sale_line_id.product_uom.id,
         })
+
+
+class AccountLineInh(models.Model):
+    _inherit = 'account.analytic.line'
+
+    def write(self, vals):
+        res = super(AccountLineInh, self).write(vals)
+        planning = self.env['planning.slot'].search([('employee_id', '=', self.employee_id.id)]).filtered(lambda i:i.start_datetime.date() >= self.date and i.end_datetime.date() <= self.date)
+        if not planning:
+            raise UserError('This employee is not available on this slot.')
+        return res
 
 
 class ProjectTaskInh(models.Model):
