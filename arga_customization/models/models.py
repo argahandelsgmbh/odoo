@@ -82,18 +82,18 @@ class HelpdeskTicketInh(models.Model):
     #     return rec
 
     def action_create_repair(self):
+        location = self.env['stock.location'].search([('company_id', '=', self.company_id.id), ('usage', '=', 'internal')], limit=1)
         event = self.env['repair.order'].sudo().create({
             'partner_id': self.partner_id.id,
             'description': self.description,
-            'product_qty': self.sale_line_id.product_uom_qty,
+            'product_qty': self.sale_line_id.product_uom_qty ,
             'schedule_date': datetime.datetime.today().date(),
-            # 'description': self.service,
-            'user_id': self.user_id.id,
+            'user_id': self.user_id.id or False,
             'ticket_id': self.id,
-            'location_id': 8,
-            'sale_order_id': self.sale_line_id.order_id.id,
-            'product_id': self.sale_line_id.product_id.id,
-            'product_uom': self.sale_line_id.product_uom.id,
+            'location_id': location.id,
+            'sale_order_id': self.sale_line_id.order_id.id or False,
+            'product_id': self.product_id.id,
+            'product_uom': self.product_id.uom_id.id,
         })
 
 
@@ -273,19 +273,7 @@ class SaleOrderLineInh(models.Model):
     qty_out = fields.Float()
     free_qty = fields.Float()
 
-    # @api.depends('product_id')
-    # def compute_in(self):
-    #     for rec in self:
-    #         if rec.product_uom_qty > rec.available:
-    #             rec.remaining_qty = rec.product_uom_qty - rec.available
-    #         else:
-    #             rec.remaining_qty = 0
-    #         qty_in = rec.product_id.incoming_qty
-    #         qty_out = 0
-    #         rec.qty_in = qty_in
-    #         rec.qty_out = qty_out
-    #
-    #         rec.free_qty=(rec.available+rec.qty_in)-rec.qty_out
+
 
     @api.depends('order_id')
     def _compute_get_number(self):
@@ -375,6 +363,7 @@ class PurchaseOrderInh(models.Model):
     _inherit = 'purchase.order'
 
     sale_order = fields.Many2one('sale.order', compute='_compute_sale_order')
+    sale_repair_id = fields.Many2one('sale.order')
     receipt_status = fields.Selection(selection=[
         ('draft', 'Draft'), ('waiting', 'Waiting for another Operations'),
         ('confirmed', 'Waiting'), ('assigned', 'Ready'),

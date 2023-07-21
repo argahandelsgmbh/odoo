@@ -73,9 +73,11 @@ class SaleQuoteToRfq(models.TransientModel):
 
                 # 'notes': notes,
                 'date_order': date_order,
+                'sale_repair_id': self.repair_id.sale_order_id.id,
                 'order_line': order_lines
             }]
         new_po_ids = purchase_obj.create(po_vals)
+        new_po_ids.name = new_po_ids.name + '-' + self.env['ir.sequence'].next_by_code('purchase.repair')
         if self.select_po_rfq == "po":
             new_po_ids.button_confirm()
         action = self.env.ref('purchase.purchase_rfq').sudo().read()[0]

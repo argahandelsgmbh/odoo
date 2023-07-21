@@ -21,7 +21,7 @@
     'license': 'OPL-1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale', 'stock', 'calendar', 'account', 'purchase', 'exim_bellona', 'istikbal', 'project', 'helpdesk', 'repair', 'bsi_repair_parts_immediate_buying'],
+    'depends': ['base', 'sale', 'stock', 'calendar', 'account', 'purchase', 'exim_bellona', 'istikbal', 'project', 'helpdesk', 'repair', 'bsi_repair_parts_immediate_buying','planning','helpdesk_sale_timesheet','helpdesk_repair'],
 
     # always loaded
     'data': [

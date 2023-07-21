@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-#
-#    odoo extensions
-#
-#    © 2017-now Josef Kaser (<http://www.pragmasoft.de>).
-#
-#   See the LICENSE file in the toplevel directory for copyright
-#   and license details.
-#
--->
 
 <odoo>
     <data noupdate="1">
@@ -18,5 +8,14 @@
             <field name="prefix"></field>
             <field name="padding" eval="6"/>
         </record>
+
+        <record id="sequence_purchase_repair_number" model="ir.sequence">
+            <field name="name">Purchase Repair Sequence</field>
+            <field name="code">purchase.repair</field>
+             <field name="prefix">BNR-RO</field>
+            <field name="padding">5</field>
+            <field name="padding" eval="4"/>
+        </record>
+
     </data>
 </odoo>
