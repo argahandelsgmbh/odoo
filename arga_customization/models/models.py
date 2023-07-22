@@ -102,9 +102,10 @@ class AccountLineInh(models.Model):
 
     def write(self, vals):
         res = super(AccountLineInh, self).write(vals)
-        planning = self.env['planning.slot'].search([('employee_id', '=', self.employee_id.id)]).filtered(lambda i:i.start_datetime.date() >= self.date and i.end_datetime.date() <= self.date)
-        if not planning:
-            raise UserError('This employee is not available on this slot.')
+        if "date" in vals:
+            planning = self.env['planning.slot'].search([('employee_id', '=', self.employee_id.id)]).filtered(lambda i:i.start_datetime.date() >= self.date and i.end_datetime.date() <= self.date)
+            if not planning:
+                raise UserError('This employee is not available on this slot.')
         return res
 
 
