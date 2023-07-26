@@ -72,7 +72,7 @@
             </field>
         </record>
 
-        <record id="sale_order_inherit_arga_tree" model="ir.ui.view">
+<!--         <record id="sale_order_inherit_arga_tree" model="ir.ui.view">
             <field name="name">sale order</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_tree"/>
@@ -91,9 +91,9 @@
                     <field name="receipt_status" optional="show" widget="badge" decoration-success="receipt_status == 'done'" decoration-info="receipt_status not in ('done', 'cancel', 'draft')" decoration-muted="receipt_status == 'draft'"/>
                 </xpath>
             </field>
-        </record>
+        </record> -->
 
-        <record id="sale_order_inherit_arga" model="ir.ui.view">
+<!--         <record id="sale_order_inherit_arga" model="ir.ui.view">
             <field name="name">sale order</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
@@ -126,7 +126,7 @@
 <!--                    <button string="Test" type="object" name="action_create_appoint"/>-->
 <!--                </xpath>-->
             </field>
-        </record>
+        </record> -->
 
 
         <record id="stock_picking_inherit_arga" model="ir.ui.view">
