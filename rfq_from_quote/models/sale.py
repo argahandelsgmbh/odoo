@@ -22,6 +22,7 @@ class SaleOrderRFQ(models.Model):
     def get_products_vendor(self):
         vendor_list = []
         for line in self.order_line:
+          if line.product_id.type == 'product': 
             if line.product_id.type == 'product' and line.product_id.seller_ids:
                 vendor_list.append(line.product_id.seller_ids[0].name.id)
         return vendor_list
