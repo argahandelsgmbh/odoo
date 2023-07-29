@@ -33,7 +33,7 @@ class SaleOrderRFQ(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Create RFQ/PO',
             'view_id': self.env.ref('rfq_from_quote.so_to_rfq_wizard_form', False).id,
-            'context': {'default_sale_id': self.id, 'default_vendor_id': self.partner_id.id, 'default_vendor_ids': self.get_products_vendor(), 'default_sale_line_ids': self.order_line.mapped('id')},
+            'context': {'default_sale_id': self.id, 'default_vendor_id': self.partner_id.id, 'default_vendor_ids': self.get_products_vendor(), 'default_sale_line_ids': sale_line_ids},
             'target': 'new',
             'res_model': 'quote.rfq.wizard',
             'view_mode': 'form',
