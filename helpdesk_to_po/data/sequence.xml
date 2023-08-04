@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+#
+#    odoo extensions
+#
+#    © 2017-now Josef Kaser (<http://www.pragmasoft.de>).
+#
+#   See the LICENSE file in the toplevel directory for copyright
+#   and license details.
+#
+-->
+
+<odoo>
+    <data noupdate="1">
+
+        <record id="sequence_purchase_helpdesk_number" model="ir.sequence">
+            <field name="name">Purchase Helpdesk Sequence</field>
+            <field name="code">purchase.helpdesk</field>
+            <field name="prefix"></field>
+            <field name="padding" eval="3"/>
+        </record>
+
+    </data>
+</odoo>
