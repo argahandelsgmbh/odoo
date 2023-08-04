@@ -20,5 +20,18 @@
       </field>
     </record>
 
+     <record id="purchase_order_view_form_inherit" model="ir.ui.view">
+      <field name='name'>purchase.order.form.inherit</field>
+      <field name="model">purchase.order</field>
+      <field name="inherit_id" ref="purchase.purchase_order_form"/>
+      <field name="arch" type="xml">
+
+        <xpath expr="//group[1]/group[2]" position="inside">
+          <field name="received_status"/>
+        </xpath>
+
+      </field>
+    </record>
+
   </data>
 </odoo>

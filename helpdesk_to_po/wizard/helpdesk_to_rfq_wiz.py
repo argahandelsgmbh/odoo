@@ -2,10 +2,7 @@ from odoo import api, fields, models
 from datetime import datetime
 
 
-class PurchaseOrderInh(models.Model):
-    _inherit = 'purchase.order'
 
-    ticket_id = fields.Many2one('helpdesk.ticket', string='Ticket')
 
 
 class HelpdeskToRfq(models.TransientModel):

@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-#
-#    odoo extensions
-#
-#    © 2017-now Josef Kaser (<http://www.pragmasoft.de>).
-#
-#   See the LICENSE file in the toplevel directory for copyright
-#   and license details.
-#
--->
+
 
 <odoo>
     <data noupdate="1">
+
+         <record id="purchase_check_qty_cron" model="ir.cron">
+        <field name="name">Purchase Check Qty Cron</field>
+        <field name="active" eval="True" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False" />
+        <field name="model_id" ref="purchase.model_purchase_order" />
+        <field name="code">model.action_purchase_qty()</field>
+        <field name="state">code</field>
+    </record>
 
         <record id="sequence_purchase_helpdesk_number" model="ir.sequence">
             <field name="name">Purchase Helpdesk Sequence</field>

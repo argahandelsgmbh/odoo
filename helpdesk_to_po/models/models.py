@@ -3,6 +3,27 @@
 from odoo import models, fields, api
 
 
+class PurchaseOrderInh(models.Model):
+    _inherit = 'purchase.order'
+
+    ticket_id = fields.Many2one('helpdesk.ticket', string='Ticket')
+    received_status = fields.Selection([
+        ('received', 'Received'),
+        ('not_received', 'Not Received'),
+    ], 'Receiving Status', readonly=True)
+
+    def action_purchase_qty(self):
+        orders = self.env['purchase.order'].search([('state', '=', 'purchase')])
+        # orders = self.env['purchase.order'].search([('id', '=', 1857)])
+        for purchase in orders:
+            res = all(line.product_qty == line.qty_received for line in purchase.order_line)
+            if not res:
+                purchase.received_status = 'not_received'
+            else:
+                purchase.button_done()
+                purchase.received_status = 'received'
+
+
 class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
