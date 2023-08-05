@@ -55,7 +55,7 @@ class HelpdeskToRfq(models.TransientModel):
                 'order_line': order_lines
             }]
         new_po_ids = purchase_obj.create(po_vals)
-        new_po_ids.name = "BNR/H-" + self.env['ir.sequence'].next_by_code('purchase.helpdesk')
+        # new_po_ids.name = "BNR/H-" + self.env['ir.sequence'].next_by_code('purchase.helpdesk')
         if self.select_po_rfq == "po":
             new_po_ids.button_confirm()
 
