@@ -14,7 +14,6 @@ class PurchaseOrderInh(models.Model):
 
     def action_purchase_qty(self):
         orders = self.env['purchase.order'].search([('state', '=', 'purchase')])
-        # orders = self.env['purchase.order'].search([('id', '=', 1857)])
         for purchase in orders:
             res = all(line.product_qty == line.qty_received for line in purchase.order_line)
             if not res:
@@ -45,12 +44,6 @@ class HelpdeskTicket(models.Model):
         }
 
     def open_helpdesk_to_rfq_wizard(self):
-        # lines = [(0, 0, {"product_id": self.id,
-        #                                           "name": self.name,
-        #                                           "product_qty": self.product_uom_qty,
-        #                                           "price_unit": self.price_unit,
-        #                                           "product_uom": self.product_uom.id,
-        #                                           "date_planned": date.today()})]
         return {
             'type': 'ir.actions.act_window',
             'name': 'Create RFQ/PO',
