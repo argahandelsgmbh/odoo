@@ -14,6 +14,7 @@ class PurchaseOrderInh(models.Model):
 
     def action_purchase_qty(self):
         orders = self.env['purchase.order'].search([('state', '=', 'purchase')])
+        # orders = self.env['purchase.order'].search([('id', '=', 1857)])
         for purchase in orders:
             res = all(line.product_qty == line.qty_received for line in purchase.order_line)
             if not res:
@@ -44,13 +45,12 @@ class HelpdeskTicket(models.Model):
         }
 
     def open_helpdesk_to_rfq_wizard(self):
+        lines = [(0, 0, {"product_id": self.product_id.id, "price_unit": 1})]
         return {
             'type': 'ir.actions.act_window',
             'name': 'Create RFQ/PO',
             'view_id': self.env.ref('helpdesk_to_po.helpdesk_to_rfq_wizard_form', False).id,
-            'context': {'default_ticket_id': self.id, 'default_vendor_id': self.partner_id.id,
-                    },
+            'context': {'default_ticket_id': self.id, 'default_vendor_id': self.partner_id.id, 'default_helpdesk_lines': lines},
             'target': 'new',
             'res_model': 'helpdesk.rfq.wizard',
-            'view_mode': 'form',
-        }
+            'view_mode': 'form'}
