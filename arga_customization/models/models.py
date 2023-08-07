@@ -112,7 +112,7 @@ class AccountLineInh(models.Model):
 class ProjectTaskInh(models.Model):
     _inherit = 'project.task'
 
-    delivery_date = fields.Datetime(string='Delivery Date', copy=False)
+    delivery_date = fields.Date(string='Delivery Date', copy=False)
 
     def write(self, vals):
         res = super(ProjectTaskInh, self).write(vals)
@@ -134,7 +134,7 @@ class ResPartner(models.Model):
 class SaleOrderInh(models.Model):
     _inherit = 'sale.order'
 
-    delivery_date = fields.Datetime(string='Delivery Date', copy=False)
+    delivery_date = fields.Date(string='Delivery Date', copy=False)
     total_invoice_paid = fields.Float(compute='compute_invoices_amount')
     total_invoice_amount = fields.Float(compute='compute_invoices_amount')
     total_open_amount = fields.Float(compute='compute_invoices_amount')
@@ -293,7 +293,7 @@ class StockPickingInh(models.Model):
 
     invoice_total = fields.Float('Order Total', compute='_compute_total_amt')
     remaining_amt = fields.Float('Open Amount', compute='_compute_total_amt')
-    delivery_date = fields.Datetime(string='Delivery Date', copy=False)
+    delivery_date = fields.Date(string='Delivery Date', copy=False)
 
     def _compute_total_amt(self):
         for i in self:
