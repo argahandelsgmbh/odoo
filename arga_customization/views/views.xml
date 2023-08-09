@@ -59,7 +59,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='user_id']" position="after">
                        <field name="delivery_date"  />
-<!--                     <field name="total_qty" optional="hide" />
+                    <field name="total_qty" optional="hide" />
                     <field name="do_qty" optional="hide" />
                     <field name="po_qty" optional="hide" />
                     <field name="received_qty" optional="hide" />
@@ -67,7 +67,7 @@
                     <field name="bellona_qty" optional="hide" />
                     <field name="do_status" optional="hide" widget="badge" decoration-success="do_status == 'done'" decoration-info="do_status not in ('done', 'cancel', 'draft')" decoration-muted="do_status == 'draft'"/>
                     <field name="po_state" optional="hide" widget="badge" decoration-success="po_state == 'done'" decoration-info="po_state not in ('done', 'cancel', 'draft')" decoration-muted="po_state == 'draft'"/>
-                    <field name="receipt_status" optional="hide" widget="badge" decoration-success="receipt_status == 'done'" decoration-info="receipt_status not in ('done', 'cancel', 'draft')" decoration-muted="receipt_status == 'draft'"/> -->
+                    <field name="receipt_status" optional="hide" widget="badge" decoration-success="receipt_status == 'done'" decoration-info="receipt_status not in ('done', 'cancel', 'draft')" decoration-muted="receipt_status == 'draft'"/>
                 </xpath>
 
             </field>
@@ -80,7 +80,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='state']" position="after">
                        <field name="delivery_date"  />
-<!--                     <field name="total_qty" optional="hide" />
+                    <field name="total_qty" optional="hide" />
                     <field name="do_qty" optional="hide" />
                     <field name="po_qty" optional="hide" />
                     <field name="received_qty" optional="hide" />
@@ -90,7 +90,7 @@
 
                     <field name="do_status" optional="hide" widget="badge" decoration-success="do_status == 'done'" decoration-info="do_status not in ('done', 'cancel', 'draft')" decoration-muted="do_status == 'draft'"/>
                     <field name="po_state" optional="hide" widget="badge" decoration-success="po_state == 'done'" decoration-info="po_state not in ('done', 'cancel', 'draft')" decoration-muted="po_state == 'draft'"/>
-                    <field name="receipt_status" optional="hide" widget="badge" decoration-success="receipt_status == 'done'" decoration-info="receipt_status not in ('done', 'cancel', 'draft')" decoration-muted="receipt_status == 'draft'"/> -->
+                    <field name="receipt_status" optional="hide" widget="badge" decoration-success="receipt_status == 'done'" decoration-info="receipt_status not in ('done', 'cancel', 'draft')" decoration-muted="receipt_status == 'draft'"/>
                 </xpath>
             </field>
         </record>
@@ -190,10 +190,10 @@
                 <xpath expr="//field[@name='state']" position="after">
                     <field name="picking_ids" optional="hide" widget="many2many_tags" string="Receipts"/>
                     <field name="receipt_status" optional="hide" string="Receipts Status"  widget="badge" decoration-success="receipt_status == 'done'" decoration-info="receipt_status not in ('done', 'cancel', 'draft')" decoration-muted="receipt_status == 'draft'"/>
-<!--                     <field name="total_lines" optional="hide" />
+                    <field name="total_lines" optional="hide" />
                     <field name="total_istikbal_lines" optional="hide" />
                     <field name="total_bellona_lines" optional="hide" />
-                    <field name="total_received" optional="hide" /> -->
+                    <field name="total_received" optional="hide" />
                 </xpath>
             </field>
         </record>
@@ -206,10 +206,10 @@
                 <xpath expr="//field[@name='state']" position="after">
                     <field name="picking_ids" optional="hide" widget="many2many_tags" string="Receipts"/>
                     <field name="receipt_status" optional="hide" string="Receipts status"   widget="badge" decoration-success="receipt_status == 'done'" decoration-info="receipt_status not in ('done', 'cancel', 'draft')" decoration-muted="receipt_status == 'draft'"/>
-<!--                     <field name="total_lines" optional="hide" />
+                    <field name="total_lines" optional="hide" />
                     <field name="total_istikbal_lines" optional="hide" />
                     <field name="total_bellona_lines" optional="hide" />
-                    <field name="total_received" optional="hide" /> -->
+                    <field name="total_received" optional="hide" />
                 </xpath>
             </field>
         </record>
