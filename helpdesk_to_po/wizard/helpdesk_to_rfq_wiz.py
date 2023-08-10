@@ -65,7 +65,7 @@ class HelpdeskToRfq(models.TransientModel):
                 # order_line_values['sale_line_ids'] = [(4, line.id, 0)]
                 order_lines.append((0, 0, order_line_values))
             po_vals += [{
-                'partner_id': vendor.id,
+                'partner_id': False,
                 'fiscal_position_id': fiscal_position_id,
                 # 'payment_term_id': payment_term_id or False,
                 'company_id': company_id,
