@@ -9,7 +9,7 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//notebook/page[@name='other_information']" position="after">
-                    <page name="advance_payment_page" string="Advance Payment Information" groups="so_po_advance_payment_app.group_sale_advance_payment">
+                    <page name="advance_payment_page" string="Advance Payment Information">
                         <field name="payment_history_ids" readonly="1">
                             <tree>
                                 <field name="name" string="Name"/>
