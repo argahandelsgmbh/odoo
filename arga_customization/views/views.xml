@@ -111,8 +111,8 @@
                     <field name="number" width=".3" class="text-end"/>
                 </xpath>
 
-                   <xpath expr="//field[@name='order_line']/tree/field[@name='discount']" position="before">
-                    <field name="total_price"/>
+                   <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+                    <field name="total_price" optional="hide"/>
                 </xpath>
 
                 <xpath expr="//field[@name='date_order']" position="after">
