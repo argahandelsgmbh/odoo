@@ -273,6 +273,7 @@ class SaleOrderLineInh(models.Model):
     qty_in = fields.Float()
     qty_out = fields.Float()
     free_qty = fields.Float()
+    total_price = fields.Float("Before Discount")
 
 
 
@@ -286,6 +287,12 @@ class SaleOrderLineInh(models.Model):
                     number += 1
                 else:
                     line.number = number
+
+
+    @api.depends('product_id','price_unit','product_uom_qty')
+    def _compute_total_price(self):
+        for rec in self:
+            rec.total_price=rec.product_uom_qty*rec.price_unit
 
 
 class StockPickingInh(models.Model):
