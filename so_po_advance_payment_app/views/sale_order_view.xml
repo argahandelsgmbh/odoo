@@ -27,7 +27,7 @@
                     </page>
                 </xpath>
                 <xpath expr="//button[@id='action_confirm']" position="before">
-                    <button class="oe_highlight" type="object" name="set_sale_advance_payment" string=" Advance Payment" icon="fa-money" attrs="{'invisible': [('state', 'not in', ['draft','done','sale'])]}" groups="so_po_advance_payment_app.group_sale_advance_payment"/>
+                    <button class="oe_highlight" type="object" name="set_sale_advance_payment" string=" Advance Payment" icon="fa-money" />
                 </xpath>
                 <xpath expr="//field[@name='tax_totals_json']" position="after">
                     <field name="advance_amount"/>
