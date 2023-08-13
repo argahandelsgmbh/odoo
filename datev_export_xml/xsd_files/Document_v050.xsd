@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://xml.datev.de/bedi/tps/document/v05.0" xmlns:de="http://xml.datev.de/DD/DE/bedi/tps/document/v050" targetNamespace="http://xml.datev.de/bedi/tps/document/v05.0" elementFormDefault="qualified">
 	<xsd:import namespace="http://xml.datev.de/DD/DE/bedi/tps/document/v050" schemaLocation="Document_types_v050.xsd"/>
+
 	<xsd:element name="archive" type="archive">
 		<xsd:annotation>
 			<xsd:documentation>Rootelement</xsd:documentation>

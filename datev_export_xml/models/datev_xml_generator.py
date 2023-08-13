@@ -8,7 +8,9 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 import logging
+import os
 import re
+from os.path import dirname, abspath
 
 from lxml import etree
 
@@ -25,9 +27,14 @@ class DatevXmlGenerator(models.AbstractModel):
     @api.model
     def check_xml_file(self, doc_name, root, xsd=None):
         if not xsd:
-            xsd = "Document_v050.xsd"
+            print('gg')
+            xsd =  abspath(dirname(dirname(dirname(__file__)))) + '/datev_export_xml/xsd_files/Document_v050.xsd'
 
-        schema = tools.file_open(xsd, subdir="addons/datev_export_xml/xsd_files")
+        # schema = tools.file_open(xsd, subdir="/datev_export_xml/xsd_files")
+        # file_path = os.path.join(dirname,'../datev_export_xml/xsd_files/Document_v050.xsd')
+        # loc = abspath(dirname(dirname(dirname(__file__)))) + '/datev_export_xml/xsd_files/Document_v050.xsd'
+
+        schema = tools.file_open(xsd)
         try:
             schema = etree.XMLSchema(etree.parse(schema))
             schema.assertValid(root)
@@ -55,7 +62,7 @@ class DatevXmlGenerator(models.AbstractModel):
             self.check_xml_file(
                 "document.xml",
                 root,
-                "Document_v050.xsd",
+                abspath(dirname(dirname(dirname(__file__)))) + '/datev_export_xml/xsd_files/Document_v050.xsd',
             )
 
         return "document.xml", etree.tostring(root)
@@ -73,7 +80,7 @@ class DatevXmlGenerator(models.AbstractModel):
             self.check_xml_file(
                 doc_name,
                 root,
-                "Belegverwaltung_online_invoice_v050.xsd",
+                abspath(dirname(dirname(dirname(__file__)))) + "/datev_export_xml/xsd_files/Belegverwaltung_online_invoice_v050.xsd",
             )
 
         return doc_name, etree.tostring(root)
