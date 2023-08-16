@@ -195,7 +195,3 @@ class PurchaseOrderInh(models.Model):
     code = fields.Char(string='Code')
 
 
-
-    def compute_the_code(self):
-        for k in self:
-            k.code=str(''.join([n for n in k.name if n.isdigit()]))
