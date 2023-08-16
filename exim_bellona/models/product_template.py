@@ -192,7 +192,7 @@ class PurchaseOrderInh(models.Model):
     _inherit = 'purchase.order'
 
     bellona_shipments = fields.Many2many('bellona.shipments', string='Bellona Shipments')
-    code = fields.Char(string='Code',compute="compute_the_code")
+    code = fields.Char(string='Code')
 
 
 
