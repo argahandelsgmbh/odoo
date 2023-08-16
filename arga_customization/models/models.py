@@ -135,26 +135,26 @@ class SaleOrderInh(models.Model):
     _inherit = 'sale.order'
 
     delivery_date = fields.Date(string='Delivery Date', copy=False)
-    total_invoice_paid = fields.Float(compute='compute_invoices_amount')
-    total_invoice_amount = fields.Float(compute='compute_invoices_amount')
-    total_open_amount = fields.Float(compute='compute_invoices_amount')
-    total_qty = fields.Float('Total Lines', compute='_compute_total_qty')
-    istikabl_qty = fields.Float('Istikabal', compute='_compute_total_qty')
-    bellona_qty = fields.Float('Bellona', compute='_compute_total_qty')
-    po_qty = fields.Float('PO', compute='_compute_total_qty')
-    do_qty = fields.Float('DO', compute='_compute_total_qty')
+    total_invoice_paid = fields.Float()
+    total_invoice_amount = fields.Float()
+    total_open_amount = fields.Float()
+    total_qty = fields.Float('Total Lines')
+    istikabl_qty = fields.Float('Istikabal')
+    bellona_qty = fields.Float('Bellona')
+    po_qty = fields.Float('PO')
+    do_qty = fields.Float('DO')
     received_qty = fields.Float('Received', compute='_compute_total_qty')
     remaining_qty = fields.Float('Not Available Qty')
     receipt_status = fields.Selection(selection=[
         ('draft', 'Draft'), ('waiting', 'Waiting for another Operations'),
         ('confirmed', 'Waiting'), ('assigned', 'Ready'),
         ('done', 'Done'), ('cancel', 'Cancelled'), ('', '    ')
-    ], string='Receipt Status', compute='_compute_total_qty', readonly=True, copy=False)
+    ], string='Receipt Status', readonly=True, copy=False)
     do_status = fields.Selection(selection=[
         ('draft', 'Draft'), ('waiting', 'Waiting for another Operations'),
         ('confirmed', 'Waiting'), ('assigned', 'Ready'),
         ('done', 'Done'), ('cancel', 'Cancelled')
-    ], string='DO Status', compute='_compute_total_qty', readonly=True, copy=False)
+    ], string='DO Status', readonly=True, copy=False)
     po_state = fields.Selection([
         ('draft', 'Draft RFQ'),
         ('sent', 'RFQ Sent'),
@@ -162,17 +162,8 @@ class SaleOrderInh(models.Model):
         ('purchase', 'Purchase Order'),
         ('done', 'Done'),
         ('cancel', 'Cancelled'), ('', '    ')
-    ], 'PO Status', compute='_compute_total_qty', readonly=True)
+    ], 'PO Status', readonly=True)
 
-    @api.depends('invoice_ids', 'invoice_ids.amount_total', 'invoice_ids.amount_residual',
-                 'invoice_ids.amount_residual_signed')
-    def compute_invoices_amount(self):
-        for rec in self:
-            amount = sum(rec.invoice_ids.mapped('amount_total'))
-            due = sum(rec.invoice_ids.mapped('amount_residual'))
-            rec.total_invoice_amount = amount
-            rec.total_invoice_paid = amount - due
-            rec.total_open_amount = rec.amount_total - rec.total_invoice_paid
 
     def _compute_total_qty(self):
         for rec in self:
@@ -298,8 +289,8 @@ class SaleOrderLineInh(models.Model):
 class StockPickingInh(models.Model):
     _inherit = 'stock.picking'
 
-    invoice_total = fields.Float('Order Total', compute='_compute_total_amt')
-    remaining_amt = fields.Float('Open Amount', compute='_compute_total_amt')
+    invoice_total = fields.Float('Order Total')
+    remaining_amt = fields.Float('Open Amount')
     delivery_date = fields.Date(string='Delivery Date', copy=False)
 
     def _compute_total_amt(self):
@@ -370,18 +361,18 @@ class CalendarEvent(models.Model):
 class PurchaseOrderInh(models.Model):
     _inherit = 'purchase.order'
 
-    sale_order = fields.Many2one('sale.order', compute='_compute_sale_order')
+    sale_order = fields.Many2one('sale.order', compute='_compute_sale_order',store=True)
     sale_repair_id = fields.Many2one('sale.order')
     receipt_status = fields.Selection(selection=[
         ('draft', 'Draft'), ('waiting', 'Waiting for another Operations'),
         ('confirmed', 'Waiting'), ('assigned', 'Ready'),
         ('done', 'Done'), ('cancel', 'Cancelled')
-    ], string='Receipt Status', compute='_compute_sale_order', readonly=True, copy=False)
+    ], string='Receipt Status', readonly=True, copy=False)
 
-    total_lines = fields.Integer(compute='_compute_lines')
-    total_istikbal_lines = fields.Integer(string="Istikbal Lines", compute='_compute_lines')
-    total_bellona_lines = fields.Integer(string="Bellona Lines", compute='_compute_lines')
-    total_received = fields.Integer(string="Received", compute='_compute_lines')
+    total_lines = fields.Integer()
+    total_istikbal_lines = fields.Integer(string="Istikbal Lines")
+    total_bellona_lines = fields.Integer(string="Bellona Lines")
+    total_received = fields.Integer(string="Received")
 
     @api.depends('order_line', 'istikbal_shp_details', 'bellona_shipments', 'picking_ids')
     def _compute_lines(self):
