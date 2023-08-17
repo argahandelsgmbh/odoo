@@ -264,7 +264,7 @@ class SaleOrderLineInh(models.Model):
     qty_in = fields.Float()
     qty_out = fields.Float()
     free_qty = fields.Float()
-    total_price = fields.Float("Before Discount")
+    total_price = fields.Float("Before Discount",compute="_compute_total_price",store=True)
 
 
 
