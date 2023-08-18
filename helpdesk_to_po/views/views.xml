@@ -1,0 +1,37 @@
+<odoo>
+  <data>
+
+    <record id="helpdesk_ticket_view_form_inherit" model="ir.ui.view">
+      <field name='name'>helpdesk.ticket.form.inherit</field>
+      <field name="model">helpdesk.ticket</field>
+      <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+      <field name="arch" type="xml">
+
+        <xpath expr="//header" position="inside">
+          <button name="open_helpdesk_to_rfq_wizard" string="Create RFQ/PO" type="object" class="oe_highlight"/>
+        </xpath>
+
+        <div name="button_box" position="inside">
+          <button type="object" class="oe_stat_button" icon="fa-truck" name="action_open_po">
+            <field string="Purchase Order" name="po_count" widget="statinfo"/>
+          </button>
+        </div>
+
+      </field>
+    </record>
+
+     <record id="purchase_order_view_form_inherit" model="ir.ui.view">
+      <field name='name'>purchase.order.form.inherit</field>
+      <field name="model">purchase.order</field>
+      <field name="inherit_id" ref="purchase.purchase_order_form"/>
+      <field name="arch" type="xml">
+
+        <xpath expr="//group[1]/group[2]" position="inside">
+          <field name="received_status"/>
+        </xpath>
+
+      </field>
+    </record>
+
+  </data>
+</odoo>
