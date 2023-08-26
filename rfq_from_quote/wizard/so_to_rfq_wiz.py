@@ -64,6 +64,7 @@ class SaleQuoteToRfq(models.TransientModel):
                         name=name, product_id=line.product_id, product_qty=product_qty, price_unit=price_unit,
                         taxes_ids=taxes_ids)
                     # order_line_values['sale_line_ids'] = [(4, line.id, 0)]
+                    line.product_status = 'po'
                     order_lines.append((0, 0, order_line_values))
             po_vals += [{
                 'partner_id': vendor.id,

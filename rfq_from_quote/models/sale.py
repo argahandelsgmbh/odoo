@@ -3,6 +3,12 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 
+class SaleOrderLineInh(models.Model):
+    _inherit = 'sale.order.line'
+
+    product_status = fields.Selection([('stock', 'Stock'), ('po', 'PO')], string='Product Status', default='stock')
+
+
 class SaleOrderRFQ(models.Model):
     _inherit = 'sale.order'
 
@@ -28,7 +34,7 @@ class SaleOrderRFQ(models.Model):
         return vendor_list
 
     def open_so_to_rfq_wizard(self):
-        sale_line_ids=self.order_line.filtered(lambda line: line.product_id.type in ['product']).mapped('id')
+        sale_line_ids = self.order_line.filtered(lambda line: line.product_id.type in ['product']).mapped('id')
         return {
             'type': 'ir.actions.act_window',
             'name': 'Create RFQ/PO',

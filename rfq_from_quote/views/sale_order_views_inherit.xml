@@ -11,7 +11,11 @@
                     <button name="open_so_to_rfq_wizard" string="Create RFQ/PO" type="object" class="oe_highlight"/>
                 </xpath>
                 <xpath expr="//field[@name='date_order']" position="after">
-                     <field name="is_po_created" invisible="1"/>
+                    <field name="is_po_created" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="before">
+                    <field name="product_status" readonly="1"/>
                 </xpath>
 
                 <xpath expr="//div[@name='button_box']" position="inside">
