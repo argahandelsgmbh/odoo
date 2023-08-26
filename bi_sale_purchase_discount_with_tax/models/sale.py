@@ -173,18 +173,19 @@ class sale_order(models.Model):
     discount_amt = fields.Monetary(compute='_amount_all', string='Discount', store=True, readonly=True)
     discount_type = fields.Selection([('line', 'Order Line'), ('global', 'Global')], string='Discount Applies to',
                                      default='global')
-    discount_amt_line = fields.Float(compute='_amount_all', string='Line Discount', digits='Line Discount', store=True,
-                                     readonly=True)
-    total_discount_line = fields.Float(string='Total Line Discount', digits='Line Discount', compute='_compute_total_discount')
+    discount_amt_line = fields.Float(compute='_amount_all', string='Line Discount', digits='Line Discount', store=True, readonly=True)
+    total_discount_line = fields.Float(compute='_compute_total_discount', string='Total with Discount', digits='Line Discount', store=True, readonly=True)
 
-    @api.depends('order_line.discount_method', 'order_line.discount_amount', 'order_line.price_unit', 'order_line.product_uom_qty')
+    @api.depends('order_line.discount_method', 'order_line.discount_amount', 'order_line.price_unit',
+                 'order_line.product_uom_qty')
     def _compute_total_discount(self):
         disc = 0
         for rec in self.order_line:
             if rec.discount_method == 'fix':
-                disc += rec.discount_amount * rec.product_uom_qty
+                disc += (rec.price_unit * rec.product_uom_qty) - rec.discount_amount
             elif rec.discount_method == 'per':
-                disc += ((rec.discount_amount / 100) * (rec.price_unit * rec.product_uom_qty))
+                disc += (rec.price_unit * rec.product_uom_qty) - (
+                            (rec.discount_amount / 100) * (rec.price_unit * rec.product_uom_qty))
         self.total_discount_line = disc
 
     def _prepare_invoice(self):
@@ -432,16 +433,16 @@ class sale_order_line(models.Model):
     discount_type = fields.Selection(related='order_id.discount_type', string="Discount Applies to")
     discount_amount = fields.Float('Discount Amount')
     discount_amt = fields.Float('Discount Final Amount')
-    total_discount = fields.Float('Total Discount', compute='compute_total_discount')
+    total_discount = fields.Float('Subtotal With Discount', compute='compute_total_discount')
 
     @api.depends('discount_method', 'discount_amount', 'price_unit', 'product_uom_qty')
     def compute_total_discount(self):
         for rec in self:
             disc = 0
             if rec.discount_method == 'fix':
-                disc = rec.discount_amount * rec.product_uom_qty
+                disc = (rec.price_unit*rec.product_uom_qty) - rec.discount_amount
             elif rec.discount_method == 'per':
-                disc = ((rec.discount_amount/100)*(rec.price_unit*rec.product_uom_qty))
+                disc = (rec.price_unit*rec.product_uom_qty) - ((rec.discount_amount/100)*(rec.price_unit*rec.product_uom_qty))
             rec.total_discount = disc
 
     def _prepare_invoice_line(self, **optional_values):
