@@ -16,11 +16,24 @@ class account_move(models.Model):
     _inherit = 'account.move'
 
     is_line = fields.Boolean('Is a line')
+    total_discount_line = fields.Float(compute='_compute_total_discount', string='Total with Discount',
+                                       digits='Line Discount', store=True, readonly=True)
+
+    @api.depends('invoice_line_ids.discount_method', 'invoice_line_ids.discount_amount', 'invoice_line_ids.price_unit',
+                 'invoice_line_ids.quantity')
+    def _compute_total_discount(self):
+        disc = 0
+        for rec in self.invoice_line_ids:
+            if rec.discount_method == 'fix':
+                disc += (rec.price_unit * rec.quantity) - rec.discount_amount
+            elif rec.discount_method == 'per':
+                disc += (rec.price_unit * rec.quantity) - (
+                        (rec.discount_amount / 100) * (rec.price_unit * rec.quantity))
+        self.total_discount_line = disc
 
     def _check_balanced(self):
         return True
 
-        
     def calc_discount(self):
         for calculate in self:
             calculate._calculate_discount()
@@ -119,7 +132,6 @@ class account_move(models.Model):
 
             currency = len(currencies) == 1 and currencies.pop() or move.company_id.currency_id
 
-           
             new_pmt_state = 'not_paid' if move.move_type != 'entry' else False
 
             if move.is_invoice(include_receipts=True) and move.state == 'posted':
@@ -137,7 +149,6 @@ class account_move(models.Model):
                 reverse_moves = self.env['account.move'].search(
                     [('reversed_entry_id', '=', move.id), ('state', '=', 'posted'), ('move_type', '=', reverse_type)])
 
-               
                 reverse_moves_full_recs = reverse_moves.mapped('line_ids.full_reconcile_id')
                 if reverse_moves_full_recs.mapped('reconciled_line_ids.move_id').filtered(lambda x: x not in (
                         reverse_moves + reverse_moves_full_recs.mapped('exchange_move_id'))) == move:
@@ -207,7 +218,7 @@ class account_move(models.Model):
                                     if line.tax_ids:
                                         if rec.amount_untaxed:
                                             final_discount = (
-                                                        (rec.discount_amt * line.price_subtotal) / rec.amount_untaxed)
+                                                    (rec.discount_amt * line.price_subtotal) / rec.amount_untaxed)
                                             discount = line.price_subtotal - final_discount
 
                                             taxes = line.tax_ids.compute_all(discount, rec.currency_id, 1.0,
@@ -308,7 +319,7 @@ class account_move(models.Model):
                             elif base_line.discount_method == 'per':
                                 quantity = 1.0
                                 price_unit_wo_discount = base_line.price_subtotal * (
-                                            1 - (base_line.discount_amount / 100.0))
+                                        1 - (base_line.discount_amount / 100.0))
                             else:
                                 if self._context.get('default_move_type') in ['out_invoice', 'out_receipt']:
                                     price_unit_wo_discount = -(price_unit_wo_discount)
@@ -385,7 +396,6 @@ class account_move(models.Model):
                     tax_vals['tax_repartition_line_id'])
                 tax = tax_repartition_line.invoice_tax_id or tax_repartition_line.refund_tax_id
 
-
                 taxes_map_entry = taxes_map.setdefault(grouping_key, {
                     'tax_line': None,
                     'amount': 0.0,
@@ -400,25 +410,23 @@ class account_move(models.Model):
                 taxes_map_entry['grouping_dict'] = grouping_dict
 
         for taxes_map_entry in taxes_map.values():
-         
+
             if taxes_map_entry['tax_line'] and not taxes_map_entry['grouping_dict']:
                 self.line_ids -= taxes_map_entry['tax_line']
                 continue
 
             currency = self.env['res.currency'].browse(taxes_map_entry['grouping_dict']['currency_id'])
 
-          
             if currency.is_zero(taxes_map_entry['amount']):
                 if taxes_map_entry['tax_line']:
                     self.line_ids -= taxes_map_entry['tax_line']
                 continue
 
             tax_base_amount = (-1 if self.is_inbound() else 1) * taxes_map_entry['tax_base_amount']
-        
+
             tax_base_amount = currency._convert(tax_base_amount, self.company_currency_id, self.company_id,
                                                 self.date or fields.Date.context_today(self))
 
-        
             if taxes_map_entry['tax_line'] and recompute_tax_base_amount:
                 taxes_map_entry['tax_line'].tax_base_amount = tax_base_amount
                 continue
@@ -438,7 +446,7 @@ class account_move(models.Model):
             }
 
             if taxes_map_entry['tax_line']:
-             
+
                 taxes_map_entry['tax_line'].update(to_write_on_line)
             else:
                 create_method = in_draft_mode and self.env['account.move.line'].new or self.env[
@@ -464,7 +472,6 @@ class account_move(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-      
 
         if any('state' in vals and vals.get('state') == 'posted' for vals in vals_list):
             raise UserError(
@@ -483,7 +490,7 @@ class account_move(models.Model):
                     name = line.name
                 if rslt.discount_type == 'line':
                     price = rslt.discount_amt_line
-              
+
                 elif rslt.discount_type == 'global':
                     price = rslt.discount_amt
                 else:
@@ -518,7 +525,7 @@ class account_move(models.Model):
             for line in self.invoice_line_ids:
                 if line.discount_method == 'per':
                     total += line.price_unit * (line.discount_amount / 100)
-             
+
                 elif line.discount_method == 'fix':
                     total += line.discount_amount
             self.discount_amount_line = total
@@ -526,21 +533,18 @@ class account_move(models.Model):
     @api.onchange('invoice_vendor_bill_id')
     def _onchange_invoice_vendor_bill(self):
         if self.invoice_vendor_bill_id:
-            
+
             for line in self.invoice_vendor_bill_id.invoice_line_ids:
                 copied_vals = line.copy_data()[0]
                 copied_vals['move_id'] = self.id
                 new_line = self.env['account.move.line'].new(copied_vals)
                 new_line.recompute_tax_line = True
 
-          
             self.invoice_payment_term_id = self.invoice_vendor_bill_id.invoice_payment_term_id
 
-         
             if self.currency_id != self.invoice_vendor_bill_id.currency_id:
                 self.currency_id = self.invoice_vendor_bill_id.currency_id
 
-           
             self.invoice_vendor_bill_id = False
             self._recompute_dynamic_lines()
 
@@ -605,3 +609,16 @@ class account_move_line(models.Model):
         for line in self:
             if not line.tax_repartition_line_id:
                 line.recompute_tax_line = True
+
+    total_discount = fields.Float('Subtotal With Discount', compute='compute_total_discount')
+
+    @api.depends('discount_method', 'discount_amount', 'price_unit', 'quantity')
+    def compute_total_discount(self):
+        for rec in self:
+            disc = 0
+            if rec.discount_method == 'fix':
+                disc = (rec.price_unit * rec.quantity) - rec.discount_amount
+            elif rec.discount_method == 'per':
+                disc = (rec.price_unit * rec.quantity) - (
+                        (rec.discount_amount / 100) * (rec.price_unit * rec.quantity))
+            rec.total_discount = disc

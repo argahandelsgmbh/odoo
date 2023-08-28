@@ -181,11 +181,7 @@ class sale_order(models.Model):
     def _compute_total_discount(self):
         disc = 0
         for rec in self.order_line:
-            if rec.discount_method == 'fix':
-                disc += (rec.price_unit * rec.product_uom_qty) - rec.discount_amount
-            elif rec.discount_method == 'per':
-                disc += (rec.price_unit * rec.product_uom_qty) - (
-                            (rec.discount_amount / 100) * (rec.price_unit * rec.product_uom_qty))
+            disc += rec.price_unit * rec.product_uom_qty
         self.total_discount_line = disc
 
     def _prepare_invoice(self):

@@ -102,6 +102,7 @@
                 <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
                     <field name="discount_amt" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible': [('discount_type','=','line')]}" colspan="2"/>
                     <field name="discount_amt_line" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible': [('discount_type','=','global')]}"/>
+                    <field name="total_discount_line" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible': [('discount_type','=','global')]}" colspan="2"/>
                     <field name="discount_amount_line"  invisible="1"/>
                     <field name="tax_totals_json" widget="account-tax-totals-field" nolabel="1" colspan="2"/>
                 </group>
@@ -116,6 +117,10 @@
                 <field name="discount_method" attrs="{'column_invisible': [('parent.discount_type', '=', 'global')],'invisible': [('discount_type','=','global')]}"/>
                 <field name="discount_amount" attrs="{'column_invisible': [('parent.discount_type', '=', 'global')],'invisible': [('discount_type','=','global')]}"/>
                 <field name="discount_amt" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//tree/field[@name='tax_ids']" position="after">
+                <field name="total_discount" attrs="{'column_invisible': [('parent.discount_type', '=', 'global')],'invisible': [('discount_type','=','global')]}"/>
             </xpath>
 
             <xpath expr="//field[@name='line_ids']/tree/field[@name='analytic_tag_ids']" position="after">
