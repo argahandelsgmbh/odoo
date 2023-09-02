@@ -1,17 +1,21 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "sales_actions",
+    'name': "Sale Menus",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        Menues in sales order""",
 
     'description': """
-        Long description of module's purpose
+         Menues in sales order
+1.Quotation
+2.Orders
+3.PO orders
+4.Ready Orders
+5.Done Orders
     """,
 
-    'author': "My Company",
-    'website': "http://www.yourcompany.com",
+    'author': "HAK Technologies",
+    'website': "http://www.HAKTechnologies.com",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
