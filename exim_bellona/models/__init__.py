@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from . import bellona_settings
-from . import res_config_settings
-from . import product_template
-from . import bellona_schedulers
-from . import bellona_log_notes
-from . import bellona_receiveing
+from . import config_settings
+from . import log_notes
+from . import models
+from . import receiveing
+from . import schedulers
+from . import settings
