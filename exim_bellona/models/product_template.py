@@ -186,12 +186,25 @@ class BeloonaPTInherit(models.Model):
 class SaleOrderInh(models.Model):
     _inherit = 'sale.order'
 
-    bellona_shipments = fields.Many2many('bellona.shipments', string='Bellona Shipments')
+    bellona_shipments = fields.Many2many('bellona.shipments', string='Bellona Shipments',compute="compute_the_bellona_shipments")
+
+
+
+    def compute_the_bellona_shipments(self):
+        for i in self:
+            purchase_order = self.env['purchase.order'].search(['|',('sale_order', '=', i.id),('origin', '=', i.name)])
+            i.bellona_shipments=purchase_order.bellona_shipments.ids
 
 class PurchaseOrderInh(models.Model):
     _inherit = 'purchase.order'
 
-    bellona_shipments = fields.Many2many('bellona.shipments', string='Bellona Shipments')
+    bellona_shipments = fields.Many2many('bellona.shipments', string='Bellona Shipments',compute="compute_the_bellona_shipments")
     code = fields.Char(string='Code')
+
+
+    def compute_the_bellona_shipments(self):
+        for i in self:
+            shipments = self.env['bellona.shipments'].search([('customerbarcode', '=', i.name)]).ids
+            i.bellona_shipments=shipments
 
 
