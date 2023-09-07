@@ -25,9 +25,9 @@ class SaleOrder(models.Model):
     @api.depends('name', 'write_date')
     def compute_is_po_draft(self):
         for r in self:
-            po = self.env['purchase.order'].search([('origin', '=', r.name)])
+            po = self.env['purchase.order'].search(['|',('sale_order', '=', r.id),('origin', '=', r.name)])
             if po:
-                res = all(rec.state == 'draft' for rec in po)
+                res = all(rec.state != 'done' for rec in po)
                 r.is_po_draft = res
             else:
                 r.is_po_draft = False
