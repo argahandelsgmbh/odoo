@@ -12,6 +12,11 @@
                     <field name="is_po_draft"/>
                 </xpath>
 
+                <xpath expr="//header" position="inside">
+                    <button string="Create Payment" type="object" name="action_open_payment"/>
+
+                </xpath>
+
             </field>
         </record>
 
