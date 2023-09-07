@@ -198,8 +198,8 @@ class Materials(models.Model):
 class IstikbalSaleOrderInh(models.Model):
     _inherit = 'sale.order'
 
-    istikbal_shipments = fields.Many2many('istikbal.incoming.shipments', string='Istikbal Inventory')
-    istikbal_shp_details = fields.Many2many('istikbal.shipments.details', string='Istikbal Shipment details')
+    istikbal_shipments = fields.Many2many('istikbal.incoming.shipments', string='Istikbal Inventory',compute="compute_the_shipments")
+    istikbal_shp_details = fields.Many2many('istikbal.shipments.details', string='Istikbal Shipment details',compute="compute_the_shipments")
     
 
     def compute_the_shipments(self):
@@ -213,8 +213,8 @@ class IstikbalSaleOrderInh(models.Model):
 class IstikbalPurchaseOrderInh(models.Model):
     _inherit = 'purchase.order'
 
-    istikbal_shipments = fields.Many2many('istikbal.incoming.shipments', string='Istikbal Shipments')
-    istikbal_shp_details = fields.Many2many('istikbal.shipments.details', string='Istikbal Shipment details')
+    istikbal_shipments = fields.Many2many('istikbal.incoming.shipments', string='Istikbal Shipments',compute="compute_the_shipments")
+    istikbal_shp_details = fields.Many2many('istikbal.shipments.details', string='Istikbal Shipment details',compute="compute_the_shipments")
 
     def compute_the_shipments(self):
         for i in self:
