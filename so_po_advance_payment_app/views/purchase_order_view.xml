@@ -24,9 +24,6 @@
 							</field>
 					</page>
 				</xpath>
-				<xpath expr="//button[@id='bid_confirm']" position="before">
-					<button class="oe_highlight" type="object" name="set_purchase_advance_payment" string=" Advance Payment" icon="fa-money" attrs="{'invisible': [('state', 'not in', ['draft'])]}" groups="so_po_advance_payment_app.group_purchase_advance_payment"/>
-				</xpath>
 			</field>
 		</record>
 	</data>
