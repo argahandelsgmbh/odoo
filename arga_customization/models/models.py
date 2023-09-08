@@ -361,7 +361,7 @@ class CalendarEvent(models.Model):
 class PurchaseOrderInh(models.Model):
     _inherit = 'purchase.order'
 
-    sale_order = fields.Many2one('sale.order', compute='_compute_sale_order',store=True)
+    sale_order = fields.Many2one('sale.order', compute='_compute_sale_order')
     sale_repair_id = fields.Many2one('sale.order')
     receipt_status = fields.Selection(selection=[
         ('draft', 'Draft'), ('waiting', 'Waiting for another Operations'),
