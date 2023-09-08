@@ -99,6 +99,7 @@
                 <field name="shipmentDate" />
                 <field name="volum"/>
                 <field name="voleh" />
+                       <field name="is_all_received"/>
                 <field name="company_id" />
                 <field name="create_date" />
             </tree>
