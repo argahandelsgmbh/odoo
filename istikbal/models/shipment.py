@@ -91,14 +91,19 @@ class ShipmentDetails(models.Model):
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True,
                                  default=lambda self: self.env.company)
 
-    qr_image = fields.Binary("QR Code", compute='_generate_qr_code')
-    purchase_id = fields.Many2one('purchase.order', compute="_generate_qr_code")
+    qr_image = fields.Binary("QR Code")
+    purchase_id = fields.Many2one('purchase.order')
     combine_id = fields.Many2one('istikbal.combine.shipments')
     is_received = fields.Boolean('Received')
     # is_processed = fields.Boolean('Received')
     price = fields.Float()
     picking_id = fields.Many2one('stock.picking')
     subtotal = fields.Float(compute='compute_subtotal')
+
+
+    def compute_the_purchase_order(self):
+        for i in self:
+                po = self.env['purchase.order'].search([("name", '=', i.customerItemCode)], limit=1)
 
     @api.depends('price', 'quantity')
     def compute_subtotal(self):
@@ -157,38 +162,6 @@ class ShipmentDetails(models.Model):
                         if stock_picking.state == 'done':
                             self.picking_id = pick_id
                             self.is_received = True
-                    # self.is_received = True
-
-    def _generate_qr_code(self):
-        for i in self:
-            po = self.env['purchase.order'].search([("name", '=', i.customerItemCode)], limit=1)
-            i.purchase_id = po.id
-            qr = qrcode.QRCode(
-                version=1,
-                error_correction=qrcode.constants.ERROR_CORRECT_L,
-                box_size=20,
-                border=4,
-            )
-            qr.add_data(i.productCode)
-            qr.make(fit=True)
-            img = qr.make_image()
-            temp = BytesIO()
-            img.save(temp, format="PNG")
-            qr_img = base64.b64encode(temp.getvalue())
-            i.qr_image = qr_img
-
-    # def confirm_purchase_receipt(self):
-    #     for i in self:
-    #         po = self.env['purchase.order'].search([("name", '=', i.customerItemCode)],limit=1)
-    #         if i.purchase_id and po:
-    #             for k in po.picking_ids:
-    #                 if k.state not in ['cancel','done']:
-    #                     for mv in k.move_ids_without_package or k.move_lines:
-    #                         mv.quantity_done = mv.product_uom_qty
-    #                     k.button_validate()
-    #                     for mv in k.move_ids_without_package or k.move_lines:
-    #                         mv._action_done()
-    #                         i.is_received=True
 
 
 class SalesOrderAnalysis(models.Model):
