@@ -101,10 +101,12 @@ class IstikbalLogNotes(models.Model):
         for rec in recs:
             combine_rec = self.search([('truckPlate', '=', rec.truckPlate), ('shipmentDate', '=', rec.shipmentDate),
                                        ('company_id', '=', rec.company_id.id)], limit=1)
-
+            if combine_rec.id == 935:
+                print('acc')
             if combine_rec:
                 rec.detail_ids.write({'combine_id': combine_rec.id})
                 rec.combine_id = combine_rec
+
             else:
                 combine_rec = combine_obj.create({'disPactDate': rec.disPactDate,
                                                   'containerNumber': rec.containerNumber,
@@ -118,15 +120,17 @@ class IstikbalLogNotes(models.Model):
                                                   'company_id': rec.company_id.id,
                                                   })
 
-                if combine_rec.truckPlate == '38 ABV 698' and combine_rec.shipmentDate == '2021-12-11 00:00:00':
-                    print('hello')
+                # if combine_rec.truckPlate == '38 ADL 646' and combine_rec.shipmentDate == '2023-09-06 00:00:00':
+                #     print('hello')
+                if combine_rec.invoiceNumber == '1000052076':
+                    print('gg')
                 found = False
                 val = combine_rec.id
                 existing_val = False
                 while not found and combine_obj.search([('id', '!=', val), ('company_id', '=', rec.company_id.id)]):
                     val -= 1
                     combine_exist = combine_obj.search([('id', '=', val), ('company_id', '=', rec.company_id.id)])
-                    if combine_exist:
+                    if combine_exist and combine_exist.name:
                         found = True
                         existing_val = combine_exist.id
 
@@ -135,27 +139,17 @@ class IstikbalLogNotes(models.Model):
                         existing_obj = combine_obj.browse([existing_val])
                         if existing_obj.truckPlate == combine_rec.truckPlate:
                             combine_rec.truckPlate = existing_obj.truckPlate
-                            if existing_obj.name:
-                                combine_rec.name = str(combine_rec.create_date.year).split('0')[1] + '-' + str((int(existing_obj.name.split('-')[1]) + 1))
-                            else:
-                                existing_val = 1
-                                print(str(combine_rec.create_date.year))
-                                print(type(str(combine_rec.create_date.year)))
-                                combine_rec.name = str(combine_rec.create_date.year).split('0')[1] + '-' + str(
-                                    existing_val)
+                            combine_rec.name = str(combine_rec.create_date.year).split('0')[1] + '-' + str(
+                                (int(existing_obj.name.split('-')[1]) + 1))
                         else:
-                            if existing_obj.name:
-                                combine_rec.name = str(combine_rec.create_date.year).split('0')[1] + '-' + str((int(existing_obj.name.split('-')[1]) + 1))
-                            else:
-                                existing_val = 1
-                                print(str(combine_rec.create_date.year))
-                                print(type(str(combine_rec.create_date.year)))
-                                combine_rec.name = str(combine_rec.create_date.year).split('0')[1] + '-' + str(
-                                    existing_val)
+                            # if existing_obj.name:
+                            combine_rec.name = str(combine_rec.create_date.year).split('0')[1] + '-' + str((int(existing_obj.name.split('-')[1]) + 1))
+                            # else:
+                            #     # existing_val = 1
+                            #     combine_rec.name = str(combine_rec.create_date.year).split('0')[1] + '-' + str(
+                            #         existing_val)
                 else:
                     existing_val = 1
-                    print(str(combine_rec.create_date.year))
-                    print(type(str(combine_rec.create_date.year)))
                     combine_rec.name = str(combine_rec.create_date.year).split('0')[1] + '-' + str(existing_val)
                 rec.detail_ids.write({'combine_id': combine_rec.id})
                 rec.combine_id = combine_rec
