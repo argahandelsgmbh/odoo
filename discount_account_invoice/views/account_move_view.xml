@@ -9,18 +9,12 @@
             <field name="model">account.move</field>
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
-<!--                 <xpath expr="//group[hasclass('oe_invoice_lines_tab')]" position="after">
-                    <group cols="12">
 
-                    </group>
-                </xpath> -->
                 <xpath expr="//group[hasclass('oe_invoice_lines_tab')]//group[1]" position="replace">
                     <group colspan="4">
-                        <!--                                        <field name="narration" placeholder="Terms and Conditions" class="text-break" nolabel="1"/>-->
                         <field name="global_discount_type"  attrs="{'required': [('global_order_discount', '>', 0.0)], 'readonly' : [('state', 'not in', ['draft'])]}" />
                         <field name="global_order_discount"  attrs="{'readonly' :[('state', 'not in', ['draft'])]}" />
                         <field name="global_order_discount_2" attrs="{'readonly' :[('state', 'not in', ['draft', 'sent'])]}" invisible="1"/>
-                        <!--                        <field name="narration" placeholder="Terms and Conditions" class="text-break" nolabel="1"/>-->
                     </group>
                     <group colspan="4">
                     </group>
