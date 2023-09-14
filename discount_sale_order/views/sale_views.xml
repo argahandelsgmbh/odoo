@@ -30,7 +30,7 @@
                 </xpath>
 
                 <xpath expr="//field[@name='order_line']//form//div[@name='discount']" position="replace">
-                    <div name="discount" ">
+                    <div name="discount">
                         <field name="discount" class="oe_inline"/>
                     </div>
                     <label for="discount_type" />
