@@ -95,6 +95,15 @@ class SaleOrder(models.Model):
         help="If global discount type 'Fixed' has been applied then no partial invoice will be generated for this order.")
     global_order_discount = fields.Float(string='Global Discount', store=True, tracking=True)
 
+    total_before_discount = fields.Float(compute="compute_total_before_discount")
+
+    @api.depends('order_line.price_unit', 'order_line.product_uom_qty')
+    def compute_total_before_discount(self):
+        tot = 0
+        for rec in self.order_line:
+            tot += rec.price_unit * rec.product_uom_qty
+        self.total_before_discount = tot
+
     def _create_invoices(self, grouped=False, final=False):
         moves = super(SaleOrder, self)._create_invoices(grouped=grouped, final=final)
         moves._compute_amount()
@@ -123,6 +132,13 @@ class SaleOrderLine(models.Model):
                                       ('percent', 'Percent')],
                                      string="Discount Type",
                                      default="percent")
+    subtotal_before_discount = fields.Float(compute="compute_subtotal_before_discount")
+
+    @api.depends('price_unit', 'product_uom_qty')
+    def compute_subtotal_before_discount(self):
+        for rec in self:
+            rec.subtotal_before_discount = rec.price_unit * rec.product_uom_qty
+
     @api.depends('price_unit', 'discount','discount_type')
     def _get_price_reduce(self):
         for line in self:
