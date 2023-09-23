@@ -20,6 +20,7 @@ class SaleOrder(models.Model):
 
     is_ready = fields.Boolean(compute='compute_is_ready', store=True)
     is_po_draft = fields.Boolean(compute='compute_is_po_draft', store=True)
+    # is_po_draft = fields.Boolean( store=True)
     is_do_done = fields.Boolean(compute='compute_is_ready', store=True)
 
     def action_open_payment(self):
@@ -28,6 +29,7 @@ class SaleOrder(models.Model):
             'name': 'Create Payment',
             'view_id': self.env.ref('account.view_account_payment_form', False).id,
             'context': {
+                'default_partner_id': self.partner_id.id,
                 'default_payment_type': 'inbound',
                 'default_partner_type': 'customer',
                 'search_default_inbound_filter': 1,
@@ -56,8 +58,6 @@ class SaleOrder(models.Model):
             if r.picking_ids:
                 res = all(rec.state == 'assigned'for rec in r.picking_ids)
                 done = all(rec.state == 'done'for rec in r.picking_ids)
-                print(done)
-                print(res)
                 r.is_do_done = done
                 r.is_ready = res
             else:

@@ -135,8 +135,8 @@ class SaleOrderInh(models.Model):
     _inherit = 'sale.order'
 
     delivery_date = fields.Date(string='Delivery Date', copy=False)
-    total_invoice_paid = fields.Float()
-    total_invoice_amount = fields.Float()
+    total_invoice_paid = fields.Float(compute='get_invoice_amount')
+    total_invoice_amount = fields.Float(compute='get_invoice_amount')
     total_open_amount = fields.Float()
     total_qty = fields.Float('Total Lines')
     istikabl_qty = fields.Float('Istikabal')
@@ -164,6 +164,16 @@ class SaleOrderInh(models.Model):
         ('cancel', 'Cancelled'), ('', '    ')
     ], 'PO Status', readonly=True)
 
+    def get_invoice_amount(self):
+        invoices = self.env['account.move'].search([('invoice_origin', '=', self.name)])
+        print(invoices)
+        inv_amount = sum(invoices.mapped('amount_total'))
+        paid_amount = sum(invoices.mapped('amount_total')) - sum(invoices.mapped('amount_residual'))
+        print(inv_amount)
+        print(paid_amount)
+        self.total_invoice_amount = inv_amount
+        self.total_invoice_paid = paid_amount
+        self.total_open_amount = inv_amount - paid_amount
 
     def _compute_total_qty(self):
         for rec in self:

@@ -25,7 +25,7 @@
      'license': 'OPL-1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale', 'stock'],
+    'depends': ['base', 'sale', 'stock', 'purchase'],
 
     # always loaded
     'data': [
