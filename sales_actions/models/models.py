@@ -30,6 +30,7 @@ class SaleOrder(models.Model):
             'view_id': self.env.ref('account.view_account_payment_form', False).id,
             'context': {
                 'default_partner_id': self.partner_id.id,
+                'default_amount': self.amount_total,
                 'default_payment_type': 'inbound',
                 'default_partner_type': 'customer',
                 'search_default_inbound_filter': 1,
