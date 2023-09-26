@@ -106,6 +106,7 @@ class HelpdeskToRfq(models.TransientModel):
 
 class HelpdeskToRfqLine(models.TransientModel):
     _name = 'helpdesk.rfq.wizard.line'
+    _description = 'Helpdesk Rfq Wizard Line'
 
     ticket_wizard_id = fields.Many2one('helpdesk.rfq.wizard')
     product_id = fields.Many2one('product.product')
