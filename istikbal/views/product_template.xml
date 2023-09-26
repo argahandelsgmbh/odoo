@@ -61,7 +61,7 @@
             <field name="arch" type="xml">
   
                 <xpath expr="//page[@name='other_information']" position="after">
-                    <page name="istikbal_shipments" string="Istikbal Inventory">
+                    <page name="istikbal_shipments" string="Istikbal Inventory" attrs="{'invisible': [('istikbal_shp_details', '!=', False)]}">
                         <field name="istikbal_shipments" mode="tree">
                             <tree create="1" edit="1"  delete="1">
                                 <field name="customerBarCode"/>
@@ -83,7 +83,7 @@
                             </tree>
                         </field>
                     </page>
-                    <page name="istikbal_shp_details" string="Istikbal Shipment Details">
+                    <page name="istikbal_shp_details" string="Istikbal Shipment Details" attrs="{'invisible': [('istikbal_shp_details', '=', False)]}">
                         <field name="istikbal_shp_details" mode="tree">
                             <tree create="1" edit="1"  delete="1">
                                 <field name="shipMentNumber"/>
