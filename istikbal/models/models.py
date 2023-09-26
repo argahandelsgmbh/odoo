@@ -198,13 +198,13 @@ class Materials(models.Model):
 class IstikbalSaleOrderInh(models.Model):
     _inherit = 'sale.order'
 
-    istikbal_shipments = fields.Many2many('istikbal.incoming.shipments', string='Istikbal Inventory',compute="compute_the_po_shipments")
-    istikbal_shp_details = fields.Many2many('istikbal.shipments.details', string='Istikbal Shipment details',compute="compute_the_po_shipments")
+    istikbal_shipments = fields.Many2many('istikbal.incoming.shipments', string='Istikbal Inventory',compute="compute_the_po_shipments",store=True)
+    istikbal_shp_details = fields.Many2many('istikbal.shipments.details', string='Istikbal Shipment details',compute="compute_the_po_shipments",store=True)
     
-
+    @api.depends('purchase_count', 'auto_purchase_order_id')
     def compute_the_po_shipments(self):
         for i in self:
-            purchase_order= self.env['purchase.order'].search(['|',('origin', '=', i.name),('origin', '=', i.name)])
+            purchase_order= self.env['purchase.order'].search([('origin', '=', i.name)])
             i.istikbal_shipments=purchase_order.istikbal_shipments
             i.istikbal_shp_details=purchase_order.istikbal_shp_details
 
