@@ -369,7 +369,7 @@ class CalendarEvent(models.Model):
 class PurchaseOrderInh(models.Model):
     _inherit = 'purchase.order'
 
-    sale_order = fields.Many2one('sale.order', compute='_compute_sale_order')
+    sale_order = fields.Many2one('sale.order')
     sale_repair_id = fields.Many2one('sale.order')
     receipt_status = fields.Selection(selection=[
         ('draft', 'Draft'), ('waiting', 'Waiting for another Operations'),
@@ -394,6 +394,8 @@ class PurchaseOrderInh(models.Model):
 
     def _compute_sale_order(self):
         for rec in self:
+            sale_order = self.env['sale.order'].search([("name", '=', rec.origin)], limit=1).id
+            rec.sale_order = sale_order
             rec.receipt_status = 'draft'
             if rec.picking_ids:
                 if all(line.state == 'waiting' for line in rec.picking_ids):
@@ -406,8 +408,7 @@ class PurchaseOrderInh(models.Model):
                     rec.receipt_status = 'done'
                 if all(line.state == 'cancel' for line in rec.picking_ids):
                     rec.receipt_status = 'cancel'
-            sale_order = self.env['sale.order'].search([("name", '=', rec.origin)], limit=1).id
-            rec.sale_order = sale_order
+            
 
 
 class PurchaseOrderLineInh(models.Model):
