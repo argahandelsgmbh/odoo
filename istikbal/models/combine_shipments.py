@@ -59,9 +59,6 @@ class IstikbalLogNotes(models.Model):
                                     action_data['context'])
                                 backorder_wizard.process()
                         for r in self.detail_ids:
-                            # if r.purchase_id.id == po.id:
-                            #     r.is_received = True
-                            # if r.productCode in products_codes:
                             if not r.is_received and not r.picking_id:
                                 # stml = self.env['stock.move.line'].search([('picking_id.purchase_id.name','=', r.purchase_id.name)],limit=1)
                                 # r.picking_id = stml.picking_id.id
@@ -76,10 +73,6 @@ class IstikbalLogNotes(models.Model):
                                     if stock_picking.state == 'done':
                                         r.picking_id = stock_picking.id
                                         r.is_received = True
-                            # if all(line.state == 'done' for line in r.purchase_id.picking_ids):
-                            #     r.picking_id = r.purchase_id
-                            # lines.move_ids.filtered(
-                            #     lambda h: h.product_id.default_code == r.productCode).picking_id.id
                     self.env.cr.commit()
         except Exception as e:
             raise Warning(str(e))
@@ -119,10 +112,7 @@ class IstikbalLogNotes(models.Model):
                                                   'company_id': rec.company_id.id,
                                                   })
 
-                # if combine_rec.truckPlate == '38 ADL 646' and combine_rec.shipmentDate == '2023-09-06 00:00:00':
-                #     print('hello')
-                if combine_rec.invoiceNumber == '1000052076':
-                    print('gg')
+
                 found = False
                 val = combine_rec.id
                 existing_val = False
