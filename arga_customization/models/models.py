@@ -137,6 +137,7 @@ class SaleOrderInh(models.Model):
     delivery_date = fields.Date(string='Delivery Date', copy=False)
     total_invoice_paid = fields.Float(compute='get_invoice_amount')
     total_invoice_amount = fields.Float(compute='get_invoice_amount')
+    total_payment = fields.Float(compute='get_invoice_amount')
     total_open_amount = fields.Float(readonly=True)
     total_qty = fields.Float('Total Lines',compute="_compute_total_qty")
     istikabl_qty = fields.Float('Istikabal',compute="_compute_total_qty")
@@ -168,7 +169,7 @@ class SaleOrderInh(models.Model):
         for rec in self:
             invoices = self.env['account.move'].search([('invoice_origin', '=', rec.name)]).filtered(lambda i: i.invoice_origin != False)
             payments = self.env['account.payment'].search([('ref', '=', rec.name)]).filtered(lambda i: i.ref != False)
-            inv_payment=sum(payments.mapped('amount'))
+            rec.total_payment=inv_payment=sum(payments.mapped('amount'))
             inv_amount = sum(invoices.mapped('amount_total'))
             paid_amount = sum(invoices.mapped('amount_total')) - sum(invoices.mapped('amount_residual'))
             rec.total_invoice_amount = inv_amount
