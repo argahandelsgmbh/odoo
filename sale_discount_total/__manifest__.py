@@ -37,7 +37,7 @@ Module to manage discount on total amount in Sale.
         as an specific amount or percentage
 """,
     'depends': ['sale',
-                'account', 'delivery'
+                'account', 'delivery','arga_customization'
                 ],
     'data': [
         'views/sale_view.xml',
