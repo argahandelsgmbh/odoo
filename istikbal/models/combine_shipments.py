@@ -75,7 +75,7 @@ class IstikbalLogNotes(models.Model):
                                         r.is_received = True
                     self.env.cr.commit()
         except Exception as e:
-            raise Warning(str(e))
+            raise (str(e))
 
 
     def compute_line(self):
