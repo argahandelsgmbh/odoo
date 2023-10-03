@@ -167,11 +167,13 @@ class SaleOrderInh(models.Model):
     def get_invoice_amount(self):
         for rec in self:
             invoices = self.env['account.move'].search([('invoice_origin', '=', rec.name)]).filtered(lambda i: i.invoice_origin != False)
+            payments = self.env['account.payment'].search([('ref', '=', rec.name)]).filtered(lambda i: i.ref != False)
+            inv_payment=sum(payments.mapped('amount'))
             inv_amount = sum(invoices.mapped('amount_total'))
             paid_amount = sum(invoices.mapped('amount_total')) - sum(invoices.mapped('amount_residual'))
             rec.total_invoice_amount = inv_amount
-            rec.total_invoice_paid = paid_amount
-            rec.total_open_amount = inv_amount - paid_amount if invoices else rec.amount_total
+            rec.total_invoice_paid = paid_amount+inv_payment
+            rec.total_open_amount = (inv_amount - paid_amount) -inv_payment if invoices else rec.amount_total-inv_payment
 
     def _compute_total_qty(self):
         for rec in self:
