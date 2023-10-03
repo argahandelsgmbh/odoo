@@ -113,6 +113,7 @@
                 <xpath expr="//field[@name='tax_totals_json']" position="after">
                     <field name="total_invoice_amount"/>
                     <field name="total_invoice_paid"/>
+                    <field name="total_payment"/>
                     <field name="total_open_amount"/>
                 </xpath>
 
