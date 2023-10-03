@@ -45,6 +45,11 @@
                             <field name="tax_totals_json"
                                    widget="account-tax-totals-field" nolabel="1"
                                    colspan="2" invisible="1"/>
+                 
+                    <field name="total_invoice_amount"/>
+                    <field name="total_invoice_paid"/>
+                    <field name="total_open_amount"/>
+     
                         </group>
                         <group colspan="4">
                             <field name="note" nolabel="1"
