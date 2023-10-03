@@ -22,6 +22,24 @@ class SaleOrder(models.Model):
     is_po_draft = fields.Boolean(compute='compute_is_po_draft', store=True)
     # is_po_draft = fields.Boolean( store=True)
     is_do_done = fields.Boolean(compute='compute_is_ready', store=True)
+    payment_count = fields.Integer(compute='count_payments')
+    date_order = fields.Datetime(string='Order Date', required=True, readonly=False,  index=True, copy=False, default=fields.Datetime.now, help="Creation date of draft/sent orders,\nConfirmation date of confirmed orders.")
+
+
+    def count_payments(self):
+        for rec in self:
+            rec.payment_count = self.env['account.payment'].search_count([('ref', '=', self.name)])
+
+    def action_show_payments(self):
+        self.ensure_one()
+        return {
+            'name': 'Payments',
+            'res_model': 'account.payment',
+            'domain': [('ref', '=', self.name)],
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+            'context': "{'create': False}"
+        }
 
     def action_open_payment(self):
         return {
@@ -31,6 +49,7 @@ class SaleOrder(models.Model):
             'context': {
                 'default_partner_id': self.partner_id.id,
                 'default_amount': self.amount_total,
+                'default_ref': self.name,
                 'default_payment_type': 'inbound',
                 'default_partner_type': 'customer',
                 'search_default_inbound_filter': 1,

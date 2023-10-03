@@ -12,10 +12,19 @@
                     <field name="is_po_draft"/>
                 </xpath>
 
+                <xpath expr="//field[@name='date_order'][2]" position="replace">
+                    <field name="date_order" readonly="0" attrs="{'required': [('state', 'in', ['sale', 'done'])], 'invisible': [('state', 'in', ['draft', 'sent'])]}" nolabel="1"/>
+                </xpath>
+
                 <xpath expr="//header" position="inside">
                     <button string="Create Payment" type="object" name="action_open_payment"/>
-
                 </xpath>
+
+                <div name="button_box" position="inside">
+                    <button type="object" class="oe_stat_button" icon="fa-dollar" name="action_show_payments">
+                        <field string="Payments" name="payment_count" widget="statinfo"/>
+                    </button>
+                </div>
 
             </field>
         </record>

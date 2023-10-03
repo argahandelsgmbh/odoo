@@ -92,7 +92,7 @@ class ShipmentDetails(models.Model):
                                  default=lambda self: self.env.company)
 
     qr_image = fields.Binary("QR Code")
-    purchase_id = fields.Many2one('purchase.order')
+    purchase_id = fields.Many2one('purchase.order', compute='compute_the_purchase_order')
     combine_id = fields.Many2one('istikbal.combine.shipments')
     is_received = fields.Boolean('Received')
     # is_processed = fields.Boolean('Received')
@@ -100,10 +100,14 @@ class ShipmentDetails(models.Model):
     picking_id = fields.Many2one('stock.picking')
     subtotal = fields.Float(compute='compute_subtotal')
 
-
+    @api.depends('customerItemCode')
     def compute_the_purchase_order(self):
         for i in self:
-                po = self.env['purchase.order'].search([("name", '=', i.customerItemCode)], limit=1)
+            po = self.env['purchase.order'].search([("name", '=', i.customerItemCode)], limit=1)
+            if po:
+                i.purchase_id = po.id
+            else:
+                i.purchase_id = False
 
     @api.depends('price', 'quantity')
     def compute_subtotal(self):

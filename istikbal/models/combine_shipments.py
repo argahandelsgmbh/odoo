@@ -31,7 +31,6 @@ class IstikbalLogNotes(models.Model):
     def action_receive_po(self):
         try:
             purchase_order = self.detail_ids.filtered(lambda r: not r.is_received).mapped('purchase_id')
-            print(purchase_order)
             for po in purchase_order:
                 if po.state == 'purchase':
                     products_codes = self.detail_ids.filtered(lambda j: j.purchase_id.id == po.id and not j.is_received).mapped(
