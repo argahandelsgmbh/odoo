@@ -129,8 +129,7 @@ class ShipmentDetails(models.Model):
                 for move in lines.move_ids:
                     if move.state not in ['done', 'cancel']:
                         move.quantity_done = self.quantity
-                # if self.purchase_id.name == 'BNR*85 * 00013':
-                #     print('hhh')
+
                 if len(lines.move_ids) > 1:
                     action_data = lines.move_ids.filtered(
                         lambda h: h.state not in ['done', 'cancel']).picking_id.with_context(
@@ -138,9 +137,7 @@ class ShipmentDetails(models.Model):
                     # print(action_data)
                     backorder_wizard = self.env['stock.backorder.confirmation'].with_context(action_data['context'])
                     backorder_wizard.process()
-                        # if r.purchase_id.id == po.id:
-                        #     r.is_received = True
-                        # if r.productCode in products_codes:
+
                     if not self.picking_id:
                         pick = lines.move_ids.filtered(
                             lambda h: h.product_id.default_code == self.productCode).picking_id.ids
