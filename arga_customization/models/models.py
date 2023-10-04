@@ -139,12 +139,12 @@ class SaleOrderInh(models.Model):
     total_invoice_amount = fields.Float(compute='get_invoice_amount')
     total_payment = fields.Float(compute='get_invoice_amount')
     total_open_amount = fields.Float(readonly=True)
-    total_qty = fields.Float('Total Lines',compute="_compute_total_qty")
-    istikabl_qty = fields.Float('Istikabal',compute="_compute_total_qty")
-    bellona_qty = fields.Float('Bellona',compute="_compute_total_qty")
-    po_qty = fields.Float('PO',compute="_compute_total_qty")
-    do_qty = fields.Float('DO',compute="_compute_total_qty")
-    received_qty = fields.Float('Received', compute='_compute_total_qty')
+    total_qty = fields.Float('Total Lines')
+    istikabl_qty = fields.Float('Istikabal')
+    bellona_qty = fields.Float('Bellona')
+    po_qty = fields.Float('PO')
+    do_qty = fields.Float('DO')
+    received_qty = fields.Float('Received')
     remaining_qty = fields.Float('Not Available Qty')
     receipt_status = fields.Selection(selection=[
         ('draft', 'Draft'), ('waiting', 'Waiting for another Operations'),
