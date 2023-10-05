@@ -174,7 +174,7 @@ class SaleOrderInh(models.Model):
             paid_amount = sum(invoices.mapped('amount_total')) - sum(invoices.mapped('amount_residual'))
             rec.total_invoice_amount = inv_amount
             rec.total_invoice_paid = paid_amount+inv_payment
-            rec.total_open_amount = (rec.amount_total- paid_amount)  if invoices else rec.amount_total-inv_payment
+            rec.total_open_amount = (rec.amount_total- paid_amount) -inv_payment if invoices else rec.amount_total-inv_payment
 
     def _compute_total_qty(self):
         for rec in self:
