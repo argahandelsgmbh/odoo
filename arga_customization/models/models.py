@@ -139,13 +139,13 @@ class SaleOrderInh(models.Model):
     total_invoice_amount = fields.Float(compute='get_invoice_amount')
     total_payment = fields.Float(compute='get_invoice_amount')
     total_open_amount = fields.Float(readonly=True)
-    total_qty = fields.Float('Total Lines')
-    istikabl_qty = fields.Float('Istikabal')
-    bellona_qty = fields.Float('Bellona')
-    po_qty = fields.Float('PO')
-    do_qty = fields.Float('DO')
-    received_qty = fields.Float('Received')
-    remaining_qty = fields.Float('Not Available Qty')
+    total_qty = fields.Float('Total Lines',compute='get_invoice_amount')
+    istikabl_qty = fields.Float('Istikabal',compute='get_invoice_amount')
+    bellona_qty = fields.Float('Bellona',compute='get_invoice_amount')
+    po_qty = fields.Float('PO',compute='get_invoice_amount')
+    do_qty = fields.Float('DO',compute='get_invoice_amount')
+    received_qty = fields.Float('Received',compute='get_invoice_amount')
+    remaining_qty = fields.Float('Not Available Qty',compute='get_invoice_amount')
     receipt_status = fields.Selection(selection=[
         ('draft', 'Draft'), ('waiting', 'Waiting for another Operations'),
         ('confirmed', 'Waiting'), ('assigned', 'Ready'),
@@ -176,8 +176,7 @@ class SaleOrderInh(models.Model):
             rec.total_invoice_paid = paid_amount+inv_payment
             rec.total_open_amount = (rec.amount_total- paid_amount) -inv_payment if invoices else rec.amount_total-inv_payment
 
-    def _compute_total_qty(self):
-        for rec in self:
+
             purchase_order = self.env['purchase.order'].search([("origin", "=", rec.name)])
             receipt = self.env['purchase.order'].search([("origin", "=", rec.name)], limit=1)
             po_qty = 0
@@ -196,25 +195,25 @@ class SaleOrderInh(models.Model):
             rec.total_qty = len(rec.order_line.filtered(lambda i: i.product_id.type == 'product').mapped('id'))
             rec.do_qty = len(self.env['stock.move.line'].search([("origin", "=", rec.name), ("state", "=", 'done')]))
 
-            # if receipt:
-            #     rec.receipt_status = receipt.receipt_status
-            #     rec.po_state = receipt.state
-            # else:
-            #     rec.receipt_status = ''
-            #     rec.po_state = ''
+            if receipt:
+                rec.receipt_status = receipt.receipt_status
+                rec.po_state = receipt.state
+            else:
+                rec.receipt_status = ''
+                rec.po_state = ''
 
-            # rec.do_status = 'draft'
-            # if rec.picking_ids:
-            #     if all(line.state == 'waiting' for line in rec.picking_ids):
-            #         rec.do_status = 'waiting'
-            #     if all(line.state == 'confirmed' for line in rec.picking_ids):
-            #         rec.do_status = 'confirmed'
-            #     if all(line.state == 'assigned' for line in rec.picking_ids):
-            #         rec.do_status = 'assigned'
-            #     if all(line.state == 'done' for line in rec.picking_ids):
-            #         rec.do_status = 'done'
-            #     if all(line.state == 'cancel' for line in rec.picking_ids):
-            #         rec.do_status = 'cancel'
+            rec.do_status = 'draft'
+            if rec.picking_ids:
+                if all(line.state == 'waiting' for line in rec.picking_ids):
+                    rec.do_status = 'waiting'
+                if all(line.state == 'confirmed' for line in rec.picking_ids):
+                    rec.do_status = 'confirmed'
+                if all(line.state == 'assigned' for line in rec.picking_ids):
+                    rec.do_status = 'assigned'
+                if all(line.state == 'done' for line in rec.picking_ids):
+                    rec.do_status = 'done'
+                if all(line.state == 'cancel' for line in rec.picking_ids):
+                    rec.do_status = 'cancel'
 
     def write(self, vals):
         res = super(SaleOrderInh, self).write(vals)
