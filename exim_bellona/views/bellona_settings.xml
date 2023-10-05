@@ -45,6 +45,14 @@
                     </page>
                 </xpath>
 
+                <xpath expr="//group[@name='note_group']" position="after">
+                    <group>
+                        <group>
+                            <field name="bellona_shipments"/>
+                        </group>
+                    </group>
+                </xpath>
+
             </field>
         </record>
 

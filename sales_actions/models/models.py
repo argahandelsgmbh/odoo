@@ -24,7 +24,11 @@ class SaleOrder(models.Model):
     is_do_done = fields.Boolean(compute='compute_is_ready', store=True)
     payment_count = fields.Integer(compute='count_payments')
     date_order = fields.Datetime(string='Order Date', required=True, readonly=False,  index=True, copy=False, default=fields.Datetime.now, help="Creation date of draft/sent orders,\nConfirmation date of confirmed orders.")
+    payment_ids = fields.Many2many('account.payment', compute="compute_payments")
 
+    @api.depends('name')
+    def compute_payments(self):
+        self.payment_ids = self.env['account.payment'].search([('ref', '=', self.name)]).ids
 
     def count_payments(self):
         for rec in self:

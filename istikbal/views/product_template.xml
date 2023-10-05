@@ -59,6 +59,19 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form" />
             <field name="arch" type="xml">
+
+                 <xpath expr="//group[@name='note_group']" position="after">
+                    <group>
+                        <group>
+                            <field name="istikbal_shipments"/>
+                        </group>
+                    </group>
+                     <group>
+                        <group>
+                            <field name="istikbal_shp_details"/>
+                        </group>
+                    </group>
+                </xpath>
   
                 <xpath expr="//page[@name='other_information']" position="after">
                     <page name="istikbal_shipments" string="Istikbal Inventory" attrs="{'invisible': [('istikbal_shp_details', '!=', False)]}">
