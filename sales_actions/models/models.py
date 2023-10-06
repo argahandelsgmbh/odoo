@@ -25,8 +25,12 @@ class SaleOrder(models.Model):
     payment_count = fields.Integer(compute='count_payments')
     date_order = fields.Datetime(string='Order Date', required=True, readonly=False,  index=True, copy=False, default=fields.Datetime.now, help="Creation date of draft/sent orders,\nConfirmation date of confirmed orders.")
     payment_ids = fields.Many2many('account.payment', compute="compute_payments")
+    purchase_order_ids = fields.Many2many('purchase.order', compute="compute_purchases")
 
     @api.depends('name')
+    def compute_purchases(self):
+        self.purchase_order_ids = self.env['purchase.order'].search([('origin', '=', self.name)]).ids
+
     def compute_payments(self):
         self.payment_ids = self.env['account.payment'].search([('ref', '=', self.name)]).ids
 

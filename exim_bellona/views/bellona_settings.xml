@@ -48,7 +48,7 @@
                 <xpath expr="//group[@name='note_group']" position="after">
                     <group>
                         <group>
-                            <field name="bellona_shipments"/>
+                            <field name="bellona_shipments" attrs="{'invisible': [('bellona_shipments', '=', [])]}"/>
                         </group>
                     </group>
                 </xpath>

@@ -63,12 +63,12 @@
                  <xpath expr="//group[@name='note_group']" position="after">
                     <group>
                         <group>
-                            <field name="istikbal_shipments"/>
+                            <field name="istikbal_shipments" attrs="{'invisible': [('istikbal_shipments', '=', [])]}"/>
                         </group>
                     </group>
                      <group>
                         <group>
-                            <field name="istikbal_shp_details"/>
+                            <field name="istikbal_shp_details" attrs="{'invisible': [('istikbal_shp_details', '=', [])]}"/>
                         </group>
                     </group>
                 </xpath>

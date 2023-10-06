@@ -19,7 +19,12 @@
                  <xpath expr="//group[@name='note_group']" position="after">
                     <group>
                         <group>
-                            <field name="payment_ids"/>
+                            <field name="purchase_order_ids" attrs="{'invisible': [('purchase_order_ids', '=', [])]}"/>
+                        </group>
+                    </group>
+                     <group>
+                        <group>
+                            <field name="payment_ids" attrs="{'invisible': [('payment_ids', '=', [])]}"/>
                         </group>
                     </group>
                 </xpath>
