@@ -21,8 +21,6 @@
                                         <field name="product_uom_qty"/>
                                         <field name="product_uom" string="UOM"/>
                                         <field name="qty_available"/>
-<!--                                        <field name="price_unit"/>-->
-<!--                                        <field name="tax_id" widget="many2many_tags"/>-->
                                     </tree>
                                 </field>
                             </page>
