@@ -43,6 +43,5 @@
             <field name="target">new</field>
             <field name="context">{'default_repair_id': active_id}</field>
         </record>
-
     </data>
 </odoo>
