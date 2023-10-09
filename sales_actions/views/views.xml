@@ -1,7 +1,7 @@
 <odoo>
     <data>
 
-<!--         <record id="sale_order_form_inherit" model="ir.ui.view">
+       <record id="sale_order_form_inherit" model="ir.ui.view">
             <field name="name">sale.order.form.inherit</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
@@ -176,7 +176,7 @@
                   name="PO Orders"
                   action="action_orders_po"
                   parent="sale.sale_menu_root"
-                  sequence="4" groups="sales_team.group_sale_salesman"/> -->
+                  sequence="4" groups="sales_team.group_sale_salesman"/>
 
     </data>
 </odoo>
