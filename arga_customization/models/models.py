@@ -145,7 +145,7 @@ class SaleOrderInh(models.Model):
     po_qty = fields.Float('PO',compute='get_invoice_amount')
     do_qty = fields.Float('DO',compute='get_invoice_amount')
     received_qty = fields.Float('Received',compute='get_invoice_amount')
-    remaining_qty = fields.Float('Not Available Qty',compute='get_invoice_amount')
+    remaining_qty = fields.Float('Not Available Qty')
     receipt_status = fields.Selection(selection=[
         ('draft', 'Draft'), ('waiting', 'Waiting for another Operations'),
         ('confirmed', 'Waiting'), ('assigned', 'Ready'),
