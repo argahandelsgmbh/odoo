@@ -7,32 +7,15 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='payment_term_id']" position="after">
-                    <field name="is_ready"/>
-                    <field name="is_po_draft"/>
+                    <field name="is_ready" invisible="1"/>
+                    <field name="is_po_draft" invisible="1"/>
                 </xpath>
             </field>
         </record>
 
-        <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
-            <field name="name">Quotations</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">sale.order</field>
-            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
-            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
-            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
-            <field name="context">{}</field>
-            <field name="domain">[('state', '=', 'draft')]</field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Create a new quotation, the first step of a new sale!
-                </p><p>
-                Once the quotation is confirmed by the customer, it becomes a sales order.<br/> You will be able to create an invoice and collect the payment.
-            </p>
-            </field>
-        </record>
 
         <record id="action_orders_po" model="ir.actions.act_window">
-            <field name="name">PO Orders</field>
+            <field name="name">Purchase Orders</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">sale.order</field>
             <field name="view_mode">tree,form,calendar,graph,pivot,kanban,activity</field>
@@ -62,7 +45,7 @@
         </record>
 
         <record id="action_orders_done" model="ir.actions.act_window">
-            <field name="name">DO Done Orders</field>
+            <field name="name">Delivery Done Orders</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">sale.order</field>
             <field name="view_mode">tree,form,calendar,graph,pivot,kanban,activity</field>
@@ -76,41 +59,8 @@
             </field>
         </record>
 
-        <record id="action_orders_all" model="ir.actions.act_window">
-            <field name="name">All Orders</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">sale.order</field>
-            <field name="view_mode">tree,form,calendar,graph,pivot,kanban,activity</field>
-            <field name="context">{}</field>
-            <field name="domain">[]</field>
-            <field name="search_view_id" ref="sale.view_sales_order_filter"/>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    No orders found
-                </p>
-            </field>
-        </record>
 
 
-
-        <menuitem id="sale.menu_sale_config"
-                  name="Configuration"
-                  parent="sale.sale_menu_root"
-                  sequence="10"
-                  groups="sales_team.group_sale_manager"/>
-
-        <menuitem id="sale.menu_sale_report"
-                  name="Reporting"
-                  parent="sale.sale_menu_root"
-                  sequence="9"
-                  groups="sales_team.group_sale_manager"/>
-
-        <menuitem id="sale.res_partner_menu"
-                  parent="sale.sale_menu_root"
-                  action="account.res_partner_action_customer"
-                  sequence="8" groups="sales_team.group_sale_salesman"/>
-
-        <menuitem id="sale.product_menu_catalog" name="Products" parent="sale.sale_menu_root" sequence="7" groups="sales_team.group_sale_salesman"/>
 
         <menuitem id="menu_sale_order_done"
                   name="Done Orders"
@@ -124,23 +74,6 @@
                   parent="sale.sale_menu_root"
                   sequence="5" groups="sales_team.group_sale_salesman"/>
 
-        <menuitem id="menu_all_sale_order"
-                  name="All Orders"
-                  action="action_orders_all"
-                  parent="sale.sale_menu_root"
-                  sequence="2" groups="sales_team.group_sale_salesman"/>
-
-        <menuitem id="sale.menu_sale_quotations"
-                  action="sale.action_quotations_with_onboarding"
-                  parent="sale.sale_menu_root"
-                  name="Quotations"
-                  sequence="1" groups="sales_team.group_sale_salesman"/>
-
-        <menuitem id="sale.menu_sale_order"
-                  name="Orders"
-                  action="sale.action_orders"
-                  parent="sale.sale_menu_root"
-                  sequence="3" groups="sales_team.group_sale_salesman"/>
 
         <menuitem id="menu_sale_order_po"
                   name="PO Orders"
