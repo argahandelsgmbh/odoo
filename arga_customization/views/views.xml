@@ -108,6 +108,7 @@
 
                 <xpath expr="//field[@name='date_order']" position="after">
                     <field name="delivery_date"/>
+                    <field name="commitment_date"  readonly="0"/>
                 </xpath>
 
                 <xpath expr="//field[@name='tax_totals_json']" position="after">
