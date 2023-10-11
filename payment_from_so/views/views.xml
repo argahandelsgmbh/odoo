@@ -1,33 +1,51 @@
 <odoo>
     <data>
 
+        <record id="purchase_order_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='products']" position="inside">
+                    <group>
+                        <field name="picking_ids" string="Receipts" attrs="{'invisible': [('picking_ids', '=', [])]}"/>
+                    </group>
+                    <group>
+                        <field name="sale_ids" string="Sale Orders" attrs="{'invisible': [('sale_ids', '=', [])]}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
         <record id="sale_order_form_inherit" model="ir.ui.view">
             <field name="name">sale.order.form.inherit</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
 
-
                 <xpath expr="//field[@name='date_order'][2]" position="replace">
                     <field name="date_order" readonly="0" attrs="{'required': [('state', 'in', ['sale', 'done'])], 'invisible': [('state', 'in', ['draft', 'sent'])]}" nolabel="1"/>
                 </xpath>
 
-                 <xpath expr="//group[@name='note_group']" position="after">
+                <xpath expr="//field[@name='commitment_date']" position="replace">
+                    <field name="commitment_date" string="Expected"/>
+                </xpath>
+
+                <xpath expr="//group[@name='note_group']" position="after">
                     <group>
                         <group>
                             <field name="purchase_order_ids" attrs="{'invisible': [('purchase_order_ids', '=', [])]}"/>
                         </group>
                     </group>
-                     <group>
+                    <group>
                         <group>
                             <field name="payment_ids" attrs="{'invisible': [('payment_ids', '=', [])]}"/>
                         </group>
-                         <group>
+                        <group>
                             <field name="invoice_ids" attrs="{'invisible': [('invoice_ids', '=', [])]}"/>
                         </group>
                     </group>
                 </xpath>
-
 
                 <xpath expr="//header" position="inside">
                     <button string="Create Payment" type="object" name="action_open_payment"/>
@@ -41,5 +59,6 @@
 
             </field>
         </record>
+
     </data>
 </odoo>
