@@ -28,7 +28,7 @@
                 </xpath>
 
                 <xpath expr="//field[@name='commitment_date']" position="replace">
-                    <field name="commitment_date" string="Expected"/>
+                    <field name="commitment_date" string="Expected Date" readonly="0"/>
                 </xpath>
 
                 <xpath expr="//group[@name='note_group']" position="after">
