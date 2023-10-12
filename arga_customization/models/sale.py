@@ -72,7 +72,7 @@ class SaleOrderInh(models.Model):
                 r.is_ready = res
 
         for rec in self:
-            rec.purchase_count = self.env['purchase.order'].search_count([('origin', '=', self.name)])
+            rec.purchase_count = self.env['purchase.order'].search_count([('origin', '=', rec.name)])
             invoices = self.env['account.move'].search([('invoice_origin', '=', rec.name)]).filtered(lambda i: i.invoice_origin != False)
             payments = self.env['account.payment'].search([('ref', '=', rec.name)]).filtered(lambda i: i.ref != False)
             rec.total_payment=inv_payment=sum(payments.mapped('amount'))
