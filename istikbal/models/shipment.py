@@ -115,7 +115,7 @@ class ShipmentDetails(models.Model):
             rec.subtotal = rec.price * rec.quantity
 
     def action_receive_po(self):
-        if self.purchase_id.state == 'purchase' and not self.is_received:
+        if self.purchase_id.state in ['purchase', 'done'] and not self.is_received:
             lines = self.purchase_id.order_line.filtered(lambda i: i.product_id.default_code == self.productCode)
             if lines:
                 if not self.picking_id:

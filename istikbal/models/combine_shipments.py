@@ -32,12 +32,11 @@ class IstikbalLogNotes(models.Model):
         try:
             purchase_order = self.detail_ids.filtered(lambda r: not r.is_received).mapped('purchase_id')
             for po in purchase_order:
-                if po.state == 'purchase':
+                if po.state in ['purchase', 'done']:
                     products_codes = self.detail_ids.filtered(lambda j: j.purchase_id.id == po.id and not j.is_received).mapped(
                         'productCode')
                     lines = po.order_line.filtered(lambda i: i.product_id.default_code in products_codes)
                     if lines:
-                        print(po.name)
                         for move in lines.move_ids:
                             if move.state not in ['done', 'cancel']:
                                 qty = self.detail_ids.filtered(lambda k:k.purchase_id.id == po.id and k.productCode == move.product_id.default_code and not k.is_received).quantity
