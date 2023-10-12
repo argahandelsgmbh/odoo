@@ -207,5 +207,6 @@ class IstikbalPurchaseOrderInh(models.Model):
 
     istikbal_shipments = fields.Many2many('istikbal.incoming.shipments', string='Istikbal Shipments')
     istikbal_shp_details = fields.Many2many('istikbal.shipments.details', string='Istikbal Shipment details')
+    code = fields.Char()
 
 
