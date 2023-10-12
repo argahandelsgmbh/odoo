@@ -61,10 +61,6 @@
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form" />
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='partner_ref']" position="after">
-                    <field name="code"/>
-                </xpath>
-
 
                 <xpath expr="//page[@name='purchase_delivery_invoice']" position="after">
                     <page name="bellona_shipments" string="Bellona Shipments">

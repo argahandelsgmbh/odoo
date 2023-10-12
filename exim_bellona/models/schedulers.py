@@ -104,14 +104,17 @@ class Integration(models.TransientModel):
                         'producT_STOCK': shipment['producT_STOCK'],
                     })
 
+
+
+                shipment_obj = self.env['bellona.shipments'].search([('customerbarcode', '=',  shipment['customerbarcode'])])
                 purchase_order = self.env['purchase.order'].search([('name', '=', shipment['customerbarcode'])],
                                                                    limit=1)
                 if shipment_obj:
                     if purchase_order and shipment_obj:
                         sale_order = self.env['sale.order'].search([('name', '=', purchase_order.origin)], limit=1)
-                        purchase_order.bellona_shipments = [(4, shipment_obj.id)]
+                        purchase_order.bellona_shipments =shipment_obj.ids
                         if sale_order and shipment_obj:
-                            sale_order.bellona_shipments = [(4, shipment_obj.id)]
+                            sale_order.bellona_shipments = shipment_obj.ids
 
             except Exception as e:
                 log_notes = self.env["bellona.log.notes"].sudo().create(

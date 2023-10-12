@@ -348,22 +348,14 @@ class BeloonaShiment(models.Model):
     kpein = fields.Char('kpein')
     biriM_FIYAT = fields.Char('biriM_FIYAT')
     konwa = fields.Char('konwa')
-    purchase_id = fields.Many2one('purchase.order',compute="compute_the_code")
-    code = fields.Char(string='Code', compute="compute_the_code")
-
-    def compute_the_code(self):
-        for k in self:
-            code = 0
-            k.code = code
-            po = self.env['purchase.order'].search([("code", '=',code)],limit=1)
-            k.purchase_id = po.id
-
+    purchase_id = fields.Many2one('purchase.order')
+    code = fields.Char(string='Code')
 
 
 
     def confirm_purchase_receipt(self):
         for i in self:
-            po=self.env['purchase.order'].search([("code",'=',i.code)],limit=1)
+            po=self.env['purchase.order'].search([("id",'=',i.purchase_id.id)],limit=1)
             for k in po.picking_ids:
                 if k.state not in ['cancel','done']:
                     k.button_validate()
