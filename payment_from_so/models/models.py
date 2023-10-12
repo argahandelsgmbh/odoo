@@ -7,13 +7,6 @@ from odoo import models, fields, api
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
-    def button_confirm(self):
-        rec = super().button_confirm()
-        if self.origin:
-            order = self.env['sale.order'].search([('name', '=', self.origin)])
-            if order:
-                order.compute_is_po_draft()
-        return rec
 
     sale_ids = fields.Many2many('sale.order', compute="compute_sales")
 
