@@ -10,6 +10,10 @@
                     <field name="is_ready" invisible="1"/>
                     <field name="is_po_draft" invisible="1"/>
                 </xpath>
+                
+                <xpath expr="//form//header//button[@name='action_draft']" position="after">
+                    <button name="action_unlock" type="object" string="Unlock" states="done"/>
+                </xpath>
             </field>
         </record>
 
