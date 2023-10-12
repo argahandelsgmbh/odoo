@@ -174,16 +174,16 @@
                                 <field name="inhalt" />
                                 <field name="customerItemCode" />
                                 <field name="purchase_id" />
-                                    <field name="picking_id" />
+                                <field name="picking_id" />
                                 <field name="inhalt" />
                                 <field name="customerOrderReference" />
+                                <field name="sale_id" />
                                 <field name="productName" />
                                 <field name="productNamePack" />
                                 <field name="productNameEN" />
                                 <field name="volum" />
                                 <field name="vrkme" />
                                 <field name="create_date" />
-<!--                                <field name="is_received" />-->
                             </group>
                         </group>
                     </sheet>
@@ -216,23 +216,6 @@
 
 
 
-
-
-
-<!--        <record id="action_confirm_purchase_order" model="ir.actions.server">-->
-<!--            <field name="name">Confirm Purchase Receipt</field>-->
-<!--            <field name="model_id" ref="model_istikbal_shipments_details"/>-->
-<!--            <field name="binding_model_id" ref="model_istikbal_shipments_details"/>-->
-<!--            <field name="binding_view_types">list</field>-->
-<!--            <field name="state">code</field>-->
-<!--            <field name="code">-->
-<!--                if records:-->
-<!--                records.confirm_purchase_receipt()-->
-<!--            </field>-->
-<!--        </record>-->
-
-
-
     <!-- Istikbal Incoming Shipment  form view -->
     <record model="ir.ui.view" id="istikbal_incoming_shipments_form_view">
         <field name="name">Incoming Shipments</field>
@@ -243,7 +226,9 @@
                     <group string="Incoming shipment details">
                         <group>
                             <field name="customerBarCode"/>
+                            <field name="purchase_id"/>
                             <field name="customerRef" />
+                            <field name="sale_id" />
                             <field name="producCode" />
                             <field name="bdtCode" />
                             <field name="productRef" />
@@ -279,6 +264,8 @@
                 <field name="productRef" />
                 <field name="maktx" />
                 <field name="packageEnum"  optional="hide"/>
+                <field name="purchase_id"  optional="hide"/>
+                <field name="sale_id"  optional="hide"/>
                 <field name="vrkme"  optional="hide"/>
                 <field name="lgort" />
                 <field name="volum" />
@@ -455,6 +442,7 @@
         <field name="arch" type="xml">
             <tree editable="bottom" default_order="create_date desc">
                 <field name="error"/>
+                <field name="company_id"/>
             </tree>
         </field>
     </record>

@@ -24,8 +24,8 @@ class IstikbalLogNotes(models.Model):
     company_id = fields.Many2one('res.company', string='Company')
     shipment_ids = fields.One2many('istikbal.shipments.header', 'combine_id')
 
-    total_lines = fields.Integer(compute='compute_line')
-    total_value = fields.Integer(compute='compute_line')
+    total_lines = fields.Integer()
+    total_value = fields.Integer()
     is_all_received = fields.Boolean()
 
     def action_receive_po(self):
@@ -59,11 +59,6 @@ class IstikbalLogNotes(models.Model):
                                 backorder_wizard.process()
                         for r in self.detail_ids:
                             if not r.is_received and not r.picking_id:
-                                # stml = self.env['stock.move.line'].search([('picking_id.purchase_id.name','=', r.purchase_id.name)],limit=1)
-                                # r.picking_id = stml.picking_id.id
-                                # if r.picking_id.state == 'done':
-                                #     r.is_received = True
-
                                 pick = self.env['stock.move.line'].search([('picking_id.purchase_id.name', '=', r.purchase_id.name)], order='id asc').picking_id.ids
                                 if pick:
                                     pick_id = pick[-2] if len(pick) > 1 else pick[0]
@@ -77,10 +72,6 @@ class IstikbalLogNotes(models.Model):
             raise (str(e))
 
 
-    def compute_line(self):
-        self.total_lines = len(self.detail_ids)
-        self.total_value = sum(self.detail_ids.mapped('subtotal'))
-        self.is_all_received = True if all([x.is_received for x in self.detail_ids]) else False
 
     def cron_merger_of_header(self):
         self.merge_header()
@@ -89,11 +80,14 @@ class IstikbalLogNotes(models.Model):
     def merge_header(self):
         recs = self.env['istikbal.shipments.header'].search([])
         combine_obj = self.env['istikbal.combine.shipments']
+        combine_records = self.env['istikbal.combine.shipments'].search([])
+        for rec in combine_records:
+            rec.total_lines = len(rec.detail_ids)
+            rec.total_value = sum(rec.detail_ids.mapped('subtotal'))
+            rec.is_all_received = True if all([x.is_received for x in rec.detail_ids]) else False
         for rec in recs:
             combine_rec = self.search([('truckPlate', '=', rec.truckPlate), ('shipmentDate', '=', rec.shipmentDate),
                                        ('company_id', '=', rec.company_id.id)], limit=1)
-            if combine_rec.id == 935:
-                print('acc')
             if combine_rec:
                 rec.detail_ids.write({'combine_id': combine_rec.id})
                 rec.combine_id = combine_rec
@@ -105,7 +99,6 @@ class IstikbalLogNotes(models.Model):
                                                   'truckPlate2': rec.truckPlate2,
                                                   'shipmentDate': rec.shipmentDate,
                                                   'invoiceNumber': rec.invoiceNumber,
-                                                  # 'name': rec.name,
                                                   'volum': rec.volum,
                                                   'voleh': rec.voleh,
                                                   'company_id': rec.company_id.id,
@@ -130,12 +123,7 @@ class IstikbalLogNotes(models.Model):
                             combine_rec.name = str(combine_rec.create_date.year).split('0')[1] + '-' + str(
                                 (int(existing_obj.name.split('-')[1]) + 1))
                         else:
-                            # if existing_obj.name:
                             combine_rec.name = str(combine_rec.create_date.year).split('0')[1] + '-' + str((int(existing_obj.name.split('-')[1]) + 1))
-                            # else:
-                            #     # existing_val = 1
-                            #     combine_rec.name = str(combine_rec.create_date.year).split('0')[1] + '-' + str(
-                            #         existing_val)
                 else:
                     existing_val = 1
                     combine_rec.name = str(combine_rec.create_date.year).split('0')[1] + '-' + str(existing_val)

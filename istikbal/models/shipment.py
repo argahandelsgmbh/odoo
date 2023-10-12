@@ -35,6 +35,8 @@ class IncomingShipments(models.Model):
     customerBarCode = fields.Char('customerBarCode')
     text = fields.Char('text')
     quantity = fields.Char('Quantity')
+    purchase_id = fields.Many2one('purchase.order',string="Purchase Order")
+    sale_id = fields.Many2one('sale.order',string="Purchase Order")
 
 
 class Shipments(models.Model):
@@ -92,27 +94,15 @@ class ShipmentDetails(models.Model):
                                  default=lambda self: self.env.company)
 
     qr_image = fields.Binary("QR Code")
-    purchase_id = fields.Many2one('purchase.order', compute='compute_the_purchase_order')
+    purchase_id = fields.Many2one('purchase.order')
+    sale_id = fields.Many2one('sale.order')
     combine_id = fields.Many2one('istikbal.combine.shipments')
     is_received = fields.Boolean('Received')
-    # is_processed = fields.Boolean('Received')
     price = fields.Float()
     picking_id = fields.Many2one('stock.picking')
-    subtotal = fields.Float(compute='compute_subtotal')
+    subtotal = fields.Float()
 
-    @api.depends('customerItemCode')
-    def compute_the_purchase_order(self):
-        for i in self:
-            po = self.env['purchase.order'].search([("name", '=', i.customerItemCode)], limit=1)
-            if po:
-                i.purchase_id = po.id
-            else:
-                i.purchase_id = False
 
-    @api.depends('price', 'quantity')
-    def compute_subtotal(self):
-        for rec in self:
-            rec.subtotal = rec.price * rec.quantity
 
     def action_receive_po(self):
         if self.purchase_id.state in ['purchase', 'done'] and not self.is_received:
