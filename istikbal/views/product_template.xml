@@ -190,16 +190,6 @@
                         </field>
                     </page>
                 </xpath>
-
-                <xpath expr="//page[@name='products']" position="inside">
-                    <group>
-                        <field name="istikbal_shipments" attrs="{'invisible': [('istikbal_shipments', '=', [])]}"/>
-                    </group>
-                    <group>
-                        <field name="istikbal_shp_details" attrs="{'invisible': [('istikbal_shp_details', '=', [])]}"/>
-                    </group>
-                </xpath>
-
             </field>
         </record>
 
