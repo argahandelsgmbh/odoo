@@ -7,6 +7,13 @@ from datetime import timedelta
 from odoo.exceptions import UserError
 
 
+class CalendarEvent(models.Model):
+    _inherit = "calendar.event"
+
+    picking_id = fields.Many2one('stock.picking', "Picking")
+    sale_id = fields.Many2one('sale.order')
+
+
 class RepairOrderLineInh(models.Model):
     _inherit = 'repair.line'
 
