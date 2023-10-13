@@ -132,39 +132,6 @@ class SaleOrderInh(models.Model):
                     k.delivery_date = self.delivery_date
         return res
 
-    @api.model
-    def create(self, vals):
-        rec = super().create(vals)
-        if vals.get('delivery_date'):
-            rec.action_create_appoint()
-        return rec
-
-    def action_update_appoint(self):
-        event_search = self.env['calendar.event'].sudo().search([('sale_id', '=', self.id)])
-        if event_search:
-            event_search.update({
-                'privacy': 'private',
-                'show_as': 'free',
-                'start': self.delivery_date,
-                'stop': self.delivery_date + timedelta(minutes=30),
-                'user_id': self.user_id.id,
-                'partner_ids': [(4, self.partner_id.id)],
-            })
-        else:
-            self.action_create_appoint()
-
-    def action_create_appoint(self):
-        name = self.name + "-" + self.partner_id.name
-        event = self.env['calendar.event'].sudo().create({
-            'name': name,
-            'privacy': 'private',
-            'show_as': 'free',
-            'start': self.delivery_date,
-            'stop': self.delivery_date,
-            'user_id': self.user_id.id,
-            'sale_id': self.id,
-            'partner_ids': [(4, self.partner_id.id)],
-        })
 
 
 class SaleOrderLineInh(models.Model):
