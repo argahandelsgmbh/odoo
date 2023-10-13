@@ -150,9 +150,8 @@ class SaleOrderLineInh(models.Model):
     @api.depends('order_id')
     def _compute_get_number(self):
         for order in self.mapped('order_id'):
-            number = 1
+            line.number = number = 1
             for line in order.order_line:
-                line.total_price = line.product_uom_qty * line.price_unit
                 if line.product_id:
                     line.number = number
                     number += 1
