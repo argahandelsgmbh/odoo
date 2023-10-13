@@ -10,7 +10,7 @@ from odoo.exceptions import UserError
 class PurchaseOrderInh(models.Model):
     _inherit = 'purchase.order'
 
-    sale_order = fields.Many2one('sale.order',compute="_compute_sale_order")
+    sale_order = fields.Many2one('sale.order')
     sale_repair_id = fields.Many2one('sale.order')
     receipt_status = fields.Selection(selection=[
         ('draft', 'Draft'), ('waiting', 'Waiting for another Operations'),
@@ -18,7 +18,7 @@ class PurchaseOrderInh(models.Model):
         ('done', 'Done'), ('cancel', 'Cancelled')
     ], string='Receipt Status', readonly=True, copy=False)
 
-    total_lines = fields.Integer()
+    total_lines = fields.Integer(compute="_compute_sale_order")
     total_istikbal_lines = fields.Integer(string="Istikbal Lines")
     total_bellona_lines = fields.Integer(string="Bellona Lines")
     total_received = fields.Integer(string="Received")
@@ -30,9 +30,6 @@ class PurchaseOrderInh(models.Model):
         sale_order_ids = self._get_sale_orders().ids
         self.sale_ids = sale_order_ids
         for rec in self:
-
-            sale_order = self.env['sale.order'].search([("name", '=', rec.origin)], limit=1).id
-            rec.sale_order = sale_order
             rec.receipt_status = 'draft'
             if rec.picking_ids:
                 if all(line.state == 'waiting' for line in rec.picking_ids):
