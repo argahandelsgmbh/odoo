@@ -8,8 +8,8 @@ class SaleQuoteToRfq(models.TransientModel):
 
     name = fields.Char(string='Name')
     sale_id = fields.Many2one('sale.order', string='Quotation/Sale order')
-    vendor_id = fields.Many2one('res.partner', string='Vendor', domain="[('supplier_rank', '>', 0)]")
-    vendor_ids = fields.Many2many('res.partner', string='Vendors', domain="[('supplier_rank', '>', 0)]")
+    vendor_id = fields.Many2one('res.partner', string='Vendor', required=True)
+    vendor_ids = fields.Many2many('res.partner', string='Vendors',)
     sale_line_ids = fields.Many2many('sale.order.line', string='Products')
     select_po_rfq = fields.Selection([('rfq', 'RFQ'), ('po', 'PO')], string='Create', default='rfq')
 
