@@ -5,8 +5,9 @@
     'description': '',
     'license': 'OPL-1',
     'category': 'Sales',
-    'author': 'abc',
-    'website': 'www.abc.tech',
+    'author': "HAK Technologies",
+    'website': "http://www.haktechnologies.com",
+    'images': ['static/description/icon.png'],
     'depends': ['sale_management', 'purchase'],
     'data': [
         'security/ir.model.access.csv',

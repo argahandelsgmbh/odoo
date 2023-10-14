@@ -8,8 +8,8 @@ class SaleQuoteToRfq(models.TransientModel):
 
     name = fields.Char(string='Name')
     sale_id = fields.Many2one('sale.order', string='Quotation/Sale order')
-    vendor_id = fields.Many2one('res.partner', string='Vendor', required=True)
-    vendor_ids = fields.Many2many('res.partner', string='Vendors',)
+    vendor_id = fields.Many2one('res.partner', string='Vendor', domain="[('supplier_rank', '>', 0)]")
+    vendor_ids = fields.Many2many('res.partner', string='Vendors', domain="[('supplier_rank', '>', 0)]")
     sale_line_ids = fields.Many2many('sale.order.line', string='Products')
     select_po_rfq = fields.Selection([('rfq', 'RFQ'), ('po', 'PO')], string='Create', default='rfq')
 
@@ -20,7 +20,7 @@ class SaleQuoteToRfq(models.TransientModel):
         FiscalPosition = self.env['account.fiscal.position']
         purchase_obj = self.env['purchase.order']
         # po_vals = []
-        for vendor in self.vendor_ids:
+        for vendor in self.vendor_id:
             po_vals = []
             payment_term = vendor.property_supplier_payment_term_id
 
@@ -37,7 +37,7 @@ class SaleQuoteToRfq(models.TransientModel):
             # Create PO lines if necessary
             order_lines = []
             for line in self.sale_line_ids:
-                if vendor.id in line.product_id.seller_ids.mapped('name.id'):
+                # if vendor.id in line.product_id.seller_ids.mapped('name.id'):
 
                     product_lang = line.product_id.with_context(
                         lang=partner.lang,
