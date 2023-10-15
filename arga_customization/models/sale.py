@@ -126,7 +126,6 @@ class SaleOrderInh(models.Model):
             project_task.delivery_date = self.delivery_date
             project_task.planned_date_begin = self.delivery_date
             project_task.date_deadline = self.delivery_date
-            self.action_update_appoint()
             for k in self.picking_ids:
                 if k.state not in ['done', 'cancel']:
                     k.delivery_date = self.delivery_date
