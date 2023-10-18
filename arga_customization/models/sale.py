@@ -99,25 +99,25 @@ class SaleOrderInh(models.Model):
             rec.total_qty = len(rec.order_line.filtered(lambda i: i.product_id.type == 'product').mapped('id'))
             rec.do_qty = len(self.env['stock.move.line'].search([("origin", "=", rec.name), ("state", "=", 'done')]))
 
-            if receipt:
-                rec.receipt_status = receipt.receipt_status
-                rec.po_state = receipt.state
-            else:
-                rec.receipt_status = ''
-                rec.po_state = ''
+            # if receipt:
+            #     rec.receipt_status = receipt.receipt_status
+            #     rec.po_state = receipt.state
+            # else:
+            #     rec.receipt_status = ''
+            #     rec.po_state = ''
 
-            rec.do_status = 'draft'
-            if rec.picking_ids:
-                if all(line.state == 'waiting' for line in rec.picking_ids):
-                    rec.do_status = 'waiting'
-                if all(line.state == 'confirmed' for line in rec.picking_ids):
-                    rec.do_status = 'confirmed'
-                if all(line.state == 'assigned' for line in rec.picking_ids):
-                    rec.do_status = 'assigned'
-                if all(line.state == 'done' for line in rec.picking_ids):
-                    rec.do_status = 'done'
-                if all(line.state == 'cancel' for line in rec.picking_ids):
-                    rec.do_status = 'cancel'
+            # rec.do_status = 'draft'
+            # if rec.picking_ids:
+            #     if all(line.state == 'waiting' for line in rec.picking_ids):
+            #         rec.do_status = 'waiting'
+            #     if all(line.state == 'confirmed' for line in rec.picking_ids):
+            #         rec.do_status = 'confirmed'
+            #     if all(line.state == 'assigned' for line in rec.picking_ids):
+            #         rec.do_status = 'assigned'
+            #     if all(line.state == 'done' for line in rec.picking_ids):
+            #         rec.do_status = 'done'
+            #     if all(line.state == 'cancel' for line in rec.picking_ids):
+            #         rec.do_status = 'cancel'
 
     def write(self, vals):
         res = super(SaleOrderInh, self).write(vals)
