@@ -10,7 +10,7 @@ class SaleOrderInh(models.Model):
     _inherit = 'sale.order'
 
     delivery_date = fields.Date(string='Delivery Date', copy=False)
-    stock_val = fields.Selection([('100', '100 Stock')],string='100% Stock')
+    stock_val = fields.Selection([('stock', '100% Stock')], string='100% Stock')
     total_invoice_paid = fields.Float(compute='get_invoice_amount')
     total_invoice_amount = fields.Float(compute='get_invoice_amount')
     total_payment = fields.Float(compute='get_invoice_amount')
