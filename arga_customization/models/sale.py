@@ -10,6 +10,7 @@ class SaleOrderInh(models.Model):
     _inherit = 'sale.order'
 
     delivery_date = fields.Date(string='Delivery Date', copy=False)
+    stock_val = fields.Selection([('100', '100 Stock')],string='100% Stock')
     total_invoice_paid = fields.Float(compute='get_invoice_amount')
     total_invoice_amount = fields.Float(compute='get_invoice_amount')
     total_payment = fields.Float(compute='get_invoice_amount')
@@ -83,21 +84,21 @@ class SaleOrderInh(models.Model):
             rec.total_open_amount = (rec.amount_total- paid_amount) -inv_payment if invoices else rec.amount_total-inv_payment
             purchase_order = self.env['purchase.order'].search([("origin", "=", rec.name)])
             receipt = self.env['purchase.order'].search([("origin", "=", rec.name)], limit=1)
-            po_qty = 0
-            istikabl_qty = 0
-            bellona_qty = 0
-            received_qty = 0
-            for po in purchase_order:
-                po_qty = po_qty + po.total_lines
-                istikabl_qty = istikabl_qty + po.total_istikbal_lines
-                bellona_qty = bellona_qty + po.total_bellona_lines
-                received_qty = received_qty + po.total_received
-            rec.po_qty = po_qty
-            rec.istikabl_qty = istikabl_qty
-            rec.bellona_qty = bellona_qty
-            rec.received_qty = received_qty
-            rec.total_qty = len(rec.order_line.filtered(lambda i: i.product_id.type == 'product').mapped('id'))
-            rec.do_qty = len(self.env['stock.move.line'].search([("origin", "=", rec.name), ("state", "=", 'done')]))
+            # po_qty = 0
+            # istikabl_qty = 0
+            # bellona_qty = 0
+            # received_qty = 0
+            # for po in purchase_order:
+            #     po_qty = po_qty + po.total_lines
+            #     istikabl_qty = istikabl_qty + po.total_istikbal_lines
+            #     bellona_qty = bellona_qty + po.total_bellona_lines
+            #     received_qty = received_qty + po.total_received
+            # rec.po_qty = po_qty
+            # rec.istikabl_qty = istikabl_qty
+            # rec.bellona_qty = bellona_qty
+            # rec.received_qty = received_qty
+            # rec.total_qty = len(rec.order_line.filtered(lambda i: i.product_id.type == 'product').mapped('id'))
+            # rec.do_qty = len(self.env['stock.move.line'].search([("origin", "=", rec.name), ("state", "=", 'done')]))
 
             # if receipt:
             #     rec.receipt_status = receipt.receipt_status
