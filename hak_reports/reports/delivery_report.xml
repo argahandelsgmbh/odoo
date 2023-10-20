@@ -1,0 +1,124 @@
+<odoo>
+
+    <template id="report_delivery_document_inh" inherit_id="stock.report_delivery_document">
+        <xpath expr="//t[@t-set='address']" position="replace">
+            <span>&#160;</span>
+        </xpath>
+        <xpath expr="//div[@class='page']" position="replace">
+
+            <div class="page">
+                <div class="text-center" style="font-weight:bold;font-size:25px;">Delivery Note</div>
+                <table class="table table-sm table-borderless">
+                    <tr>
+                        <td colspan="3">
+                            <strong>Deliver To:</strong><br/>
+                            <div t-field="partner.commercial_partner_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
+                        </td>
+                        <td colspan="3">
+                            <strong>Deliver By:</strong><br/>
+                            <span t-field="o.company_id.name"/><br/>
+                            <span t-field="o.company_id.city"/>, <span t-field="o.company_id.street"/><br/>
+                            CR#<span t-field="o.company_id.vat"/><br/>
+                            <span t-field="o.company_id.vat"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Order Reference:</strong></td>
+                        <td><span t-field="o.origin"/></td>
+                        <td colspan="3"><strong>Delivery No:</strong> <span t-field="o.name"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Order Date:</strong></td>
+                        <td><span t-field="o.scheduled_date"/></td>
+                        <td colspan="3"><strong>Delivery Date:</strong> <span t-field="o.date_deadline"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Delivery Method:</strong></td>
+                        <td>Shipped By Customer</td>
+                        <td colspan="3"></td>
+                    </tr>
+                    <tr style="border:1px solid black;">
+                        <th style="border:1px solid black;" class="text-center">#</th>
+                        <th style="border:1px solid black;" class="text-center">Serial Number</th>
+                        <th style="border:1px solid black;" class="text-center">Module Number</th>
+                        <th style="border:1px solid black;" colspan="2">Description</th>
+                        <th style="border:1px solid black;" class="text-center">Qty</th>
+                    </tr>
+                    <t t-set="sr" t-value="0"/>
+                    <t t-foreach="o.move_ids_without_package" t-as="line">
+                        <t t-set="sr" t-value="sr+1"/>
+                        <tr style="border:1px solid black;">
+                            <td style="border:1px solid black;" class="text-center"><span t-esc="sr"/></td>
+                            <td style="border:1px solid black;" class="text-center"><span t-esc="line.lot_ids.name"/></td>
+                            <td style="border:1px solid black;" class="text-center"><span t-esc="line.lot_ids.name"/></td>
+                            <td style="border:1px solid black;" colspan="2"><span t-esc="line.product_id.name"/></td>
+                            <td style="border:1px solid black;" class="text-center"><span t-esc="line.product_uom_qty"/></td>
+
+                        </tr>
+                    </t>
+                    <tr>
+                        <td colspan="6">
+                            <span>&#160;</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <span>HAVELOCK ONE INTERIORS SAUDI LTD</span>
+                        </td>
+                        <td colspan="3">
+                            <span>Maktabi Smart Offices Co</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <span>Name</span>
+                        </td>
+
+                        <td colspan="3">
+                            <span>Name</span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <span>Position</span>
+                        </td>
+
+                        <td colspan="3">
+                            <span>Position</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <span>Date</span>
+                        </td>
+
+                        <td colspan="3">
+                            <span>Date</span>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td colspan="3">
+                            <span>Signature</span>
+                        </td>
+                        <td colspan="3">
+                            <span>Signature</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <strong>Note</strong><br/>
+                            <span t-field="o.note"/>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+        </xpath>
+    </template>
+
+</odoo>

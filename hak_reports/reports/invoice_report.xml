@@ -1,0 +1,239 @@
+<odoo>
+
+    <template id="report_inv_proforma_document">
+        <!--        <t t-call="web.external_layout">-->
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
+            <t t-call="hak_reports.custom_inv_header_footer"/>
+            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+            <style>
+                @font-face {
+                font-family: 'Amiri-Regular';
+                src:url(/hak_reports/static/fonts/Amiri/Amiri-Regular.ttf) format('truetype');
+                }
+            </style>
+            <div class="page">
+                <table class="table table-sm table-borderless" style="font-size:13px;">
+                    <tr >
+                        <td rowspan="3" class="text-nowrap"><strong>Customer Name &amp; Address</strong></td>
+                        <td rowspan="3" class="text-center" colspan="3"><div t-field="o.partner_id"
+                                                                             t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/></td>
+                        <td style="border-right:2px solid #4fc5f0;font-weight:bold;text-align:right;font-family: 'Amiri-Regular'" class="text-right text-nowrap" colspan="2" rowspan="3">: وعنوانه العميل اسم </td>
+                        <td style="font-weight:bold;">Invoice No:</td>
+                        <td colspan="3" class="text-center">
+                            <t t-if="o.state != 'draft'">
+                                <span t-field="o.name"/>
+                            </t>
+                            <t t-else="">
+                                <span t-field="o.proforma_seq"/>
+                            </t>
+                        </td>
+                        <td class="text-right text-nowrap" colspan="2" style="font-weight:bold;text-align:right;font-family: 'Amiri-Regular'" >:رقم الفاتورة</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold;" class="text-nowrap">Invoice Date &amp; Time:</td>
+                        <td colspan="3" class="text-center"><span t-field="o.invoice_date"/></td>
+                        <td class="text-right text-nowrap" style="font-weight:bold;text-align:right;font-family: 'Amiri-Regular'">:تاريخ ووقت الفاتورة</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold;">Supply Date:</td>
+                        <td colspan="3" class="text-center"><span t-field="o.invoice_date"/></td>
+                        <td class="text-nowrap" style="font-weight:bold;text-align:right;font-family: 'Amiri-Regular'"><span class="text-right text-nowrap">:تاريخ التوريد</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold;">Customer Code:</td>
+                        <td colspan="3" class="text-center"><span t-field="o.partner_id.ref"/></td>
+                        <td style="border-right:2px solid #4fc5f0;font-weight:bold;text-align:right;font-family: 'Amiri-Regular'" class="text-right" colspan="2" >كود العميل</td>
+                        <td style="font-weight:bold;" >Reference No:</td>
+                        <td colspan="3" class="text-center"><span t-field="o.ref"/></td>
+                        <td style="font-weight:bold;text-align:right;font-family: 'Amiri-Regular';">:رقم المرجع</td>
+                    </tr>
+                    <tr >
+                        <td style="font-weight:bold;">Vat No:</td>
+                        <td colspan="3" class="text-center"><span t-field="o.partner_id.vat"/></td>
+                        <td style="border-right:2px solid #4fc5f0;font-weight:bold;text-align:right;font-family: 'Amiri-Regular'" colspan="2" >: الرقم الضريبي</td>
+                        <td style="font-weight:bold;">Vat No:</td>
+                        <td colspan="3" class="text-center"><span t-field="o.company_id.vat"/></td>
+                        <td style="font-weight:bold;text-align:right;font-family: 'Amiri-Regular'">:الرقم الضريبي</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold;">PO/Contract No:</td>
+                        <td colspan="3" class="text-center"><span t-field="o.ref"/></td>
+                        <td style="border-right:2px solid #4fc5f0;font-weight:bold;text-align:right;font-family: 'Amiri-Regular'" colspan="2" >:رقم طلب الشراء</td>
+                        <td style="font-weight:bold;">CR No:</td>
+                        <td colspan="3" class="text-center"><span t-field="o.company_id.company_registry"/></td>
+                        <td style="font-weight:bold;text-align:right;font-family: 'Amiri-Regular'">:رقم السجل التجاري</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold;">CR/Momra No/ID:</td>
+                        <td colspan="3" class="text-center"><span t-field="o.partner_id.company_registry"/></td>
+                        <td style="border-right:2px solid #4fc5f0;font-weight:bold;text-align:right;font-family: 'Amiri-Regular'" colspan="2" >رقم السجل التجاري</td>
+                        <td style="font-weight:bold;">Contact:</td>
+                        <td colspan="3" class="text-center"><span t-field="o.invoice_user_id.partner_id.mobile"/></td>
+                        <td style="font-weight:bold;text-align:right;font-family: 'Amiri-Regular'">:جهة الاتصال</td>
+                    </tr>
+                    <tr style="border-bottom:2px solid #4fc5f0;">
+                        <td style="font-weight:bold;">Type of Supply:</td>
+                        <td colspan="3" class="text-center"><span t-field="o.source_id.name"/></td>
+                        <td style="border-right:2px solid #4fc5f0;font-weight:bold;text-align:right;font-family: 'Amiri-Regular'" class="text-right" colspan="2" >:نوع التوريد</td>
+                        <td style="font-weight:bold;"><span>&#160;</span></td>
+                        <td colspan="3"><span>&#160;</span></td>
+                        <td><span>&#160;</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="11">
+                            <span>&#160;</span>
+                        </td>
+                    </tr>
+                    <tr style="padding:3px;background-color:#dbdbd9;border:1px solid #4fc5f0;">
+                        <th class="text-center" ><span style="font-family: 'Amiri-Regular'">الاجمالى شامل الضريبة <br/> </span>Total With VAT</th>
+                        <td class="text-left"><strong><span class="text-nowrap" style="font-family: 'Amiri-Regular'">قيمة الضريبة</span><br/><span class="text-nowrap">VAT Amount</span></strong></td>
+                        <th class="text-center"><strong><span class="text-nowrap" style="font-family: 'Amiri-Regular'">الضريبة</span><br/>VAT</strong></th>
+                        <th class="text-center"><strong><span class="text-nowrap" style="font-family: 'Amiri-Regular'"> الاجمالي</span><br/>Line Total</strong></th>
+                        <th class="text-center"><strong><span class="text-nowrap" style="font-family: 'Amiri-Regular'">الخصم</span><br/>Discount</strong></th>
+                        <th class="text-center"><strong><span class="text-nowrap" style="font-family: 'Amiri-Regular'">السعر</span><br/>Price</strong></th>
+                        <th class="text-center" ><strong><span class="text-nowrap" style="font-family: 'Amiri-Regular'">الكمية</span><br/>QTY</strong></th>
+                        <th class="text-right" style="text-align:right;" colspan="4"><span class="text-nowrap" style="font-family: 'Amiri-Regular'">الوصف</span><br/>Description</th>
+                    </tr>
+                    <t t-foreach="o.invoice_line_ids" t-as="line">
+                        <tr style="border-bottom:1px solid #4fc5f0;">
+                            <t t-set="tax_amount" t-value="line.get_tax_amount()"/>
+                            <td class="text-center"><span t-esc="tax_amount+line.price_subtotal" t-options='{"widget": "float", "precision": 2}'/></td>
+                            <td class="text-left" ><span t-esc="tax_amount" t-options='{"widget": "float", "precision": 2}'/></td>
+                            <td class="text-left text-nowrap" ><span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_ids))" id="line_tax_ids"/></td>
+                            <td class="text-center" ><span t-field="line.price_subtotal"/></td>
+                            <td class="text-center" ><span t-field="line.discount"/></td>
+                            <td class="text-center" ><span t-field="line.price_unit"/></td>
+                            <td class="text-center" ><span t-field="line.quantity"/></td>
+                            <td class="text-right" style="text-align:right;" colspan="4"><span t-field="line.name"/></td>
+                        </tr>
+                    </t>
+                    <tr>
+                        <td colspan="11">
+                            <span>&#160;</span>
+                        </td>
+                    </tr>
+
+                    <tr style="font-size:12px;">
+                        <td style="border-bottom:1px solid #4fc5f0;"></td>
+                        <td style="border-bottom:1px solid #4fc5f0;"><span t-field="o.amount_untaxed"/></td>
+                        <td style="border-bottom:1px solid #4fc5f0;" class="text-nowrap" colspan="2">Gross Value</td>
+                        <td colspan="2" class="text-nowrap" style="border-bottom:1px solid #4fc5f0;text-align:right;font-family: 'Amiri-Regular'">:القيمة الاجمالية</td>
+                        <td></td>
+                        <td class="text-nowrap"  style="font-weight:bold;border-bottom:none;">Payment Terms:</td>
+                        <td class="text-nowrap" colspan="2"><span t-field="o.invoice_payment_term_id.name"/></td>
+                        <td class="text-nowrap" style="font-weight:bold;text-align:right;font-family: 'Amiri-Regular'">  شروط الدفع </td>
+                    </tr>
+                    <tr style="font-size:12px;">
+                        <td style="border-bottom:1px solid #4fc5f0;"></td>
+                        <td style="border-bottom:1px solid #4fc5f0;"></td>
+                        <td style="border-bottom:1px solid #4fc5f0;" class="text-nowrap" colspan="2">Discount Amount</td>
+                        <td colspan="2" style="border-bottom:1px solid #4fc5f0;text-align:right;font-family: 'Amiri-Regular'">: مقدار الخصم</td>
+                        <td></td>
+                        <td class="text-nowrap"  style="font-weight:bold;border-bottom:none;">Payment Method:</td>
+                        <td class="text-nowrap" colspan="2"><span t-field="o.medium_id.name"/></td>
+                        <td class="text-nowrap" style="font-weight:bold;text-align:right;font-family: 'Amiri-Regular'">نوع الدفع </td>
+                    </tr>
+                    <tr style="font-size:12px;">
+                        <td style="border-bottom:1px solid #4fc5f0;"></td>
+                        <td style="border-bottom:1px solid #4fc5f0;"><span t-field="o.amount_untaxed"/></td>
+                        <td style="border-bottom:1px solid #4fc5f0;" class="text-nowrap" colspan="2">Amount After Discount</td>
+                        <td colspan="2" class="text-nowrap" style="border-bottom:1px solid #4fc5f0;text-align:right;font-family: 'Amiri-Regular'">: المبلغ بعد الخصم</td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr style="font-size:12px;">
+                        <td style="border-bottom:1px solid #4fc5f0;"></td>
+                        <td style="border-bottom:1px solid #4fc5f0;"><span t-esc="o.amount_total-o.amount_untaxed" t-options='{"widget": "float", "precision": 2}'/></td>
+                        <td style="border-bottom:1px solid #4fc5f0;" class="text-nowrap" colspan="2">Total VAT</td>
+                        <td colspan="2" class="text-nowrap" style="border-bottom:1px solid #4fc5f0;text-align:right;font-family: 'Amiri-Regular'">: اجمالي الضريبة</td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr style="font-weight:bold;font-size:12px;">
+                        <td style="border-bottom:1px solid #4fc5f0;font-weight:bold;" class="text-left"></td>
+                        <td style="border-bottom:1px solid #4fc5f0;font-weight:bold;"><span t-field="o.amount_total"/></td>
+                        <td style="border-bottom:1px solid #4fc5f0;font-weight:bold;" colspan="2" class="text-left text-nowrap"><div class="text-left">Total After VAT</div></td>
+                        <td colspan="2" class="text-nowrap" style="border-bottom:1px solid #4fc5f0;font-weight:bold;text-align:right;font-family: 'Amiri-Regular'">: الضريبة بعد الاجمالي</td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <!--                     <tr style="font-size:12px;">
+                                            <td style="border-bottom:1px solid #4fc5f0;"></td>
+                                            <td style="border-bottom:1px solid #4fc5f0;"><span t-field="o.amount_untaxed"/></td>
+                                            <td style="border-bottom:1px solid #4fc5f0;" class="text-nowrap" colspan="2">Down Payment</td>
+                                            <td colspan="2" class="text-nowrap" style="border-bottom:1px solid #4fc5f0;text-align:right;font-family: 'Amiri-Regular'">: دفعات مقدمة</td>
+                                            <td colspan="5"></td>
+                                        </tr> -->
+                    <!--                     <tr style="font-size:12px;">
+                                            <td style="border-bottom:1px solid #4fc5f0;"></td>
+                                            <td style="border-bottom:1px solid #4fc5f0;"><span t-field="o.amount_untaxed"/></td>
+                                            <td style="border-bottom:1px solid #4fc5f0;" class="text-nowrap" colspan="2">Down Payment VAT</td>
+                                            <td colspan="2" class="text-nowrap" style="border-bottom:1px solid #4fc5f0;text-align:right;font-family: 'Amiri-Regular'">: ضريبة الدفعة المقدمة</td>
+                                            <td colspan="5"></td>
+                                        </tr> -->
+                    <!--                     <tr style="font-size:12px;">
+                                            <td style="border-bottom:1px solid #4fc5f0;"></td>
+                                            <td style="border-bottom:1px solid #4fc5f0;"><span t-field="o.amount_untaxed"/></td>
+                                            <td style="border-bottom:1px solid #4fc5f0;" colspan="2">Net VAT</td>
+                                            <td colspan="2" style="border-bottom:1px solid #4fc5f0;text-align:right;font-family: 'Amiri-Regular'">: صافي الضريبة</td>
+                                            <td colspan="5"></td>
+                                        </tr> -->
+                    <!--                     <tr style="font-size:12px;">
+                                            <td style="border-bottom:1px solid #4fc5f0;"></td>
+                                            <td style="border-bottom:1px solid #4fc5f0;"><span t-field="o.amount_untaxed"/></td>
+                                            <td style="border-bottom:1px solid #4fc5f0;" colspan="2">Retention</td>
+                                            <td colspan="2" class="text-nowrap" style="border-bottom:1px solid #4fc5f0;text-align:right;font-family: 'Amiri-Regular'">: حجوزات حسن التنفيذ</td>
+                                            <td colspan="5"></td>
+                                        </tr> -->
+                    <tr style="font-weight:bold;font-size:12px;font-weight:bold;">
+                        <td style="border-bottom:1px solid #4fc5f0;"></td>
+                        <td style="border-bottom:1px solid #4fc5f0;"><span t-field="o.amount_total"/></td>
+                        <td style="border-bottom:1px solid #4fc5f0;" class="text-nowrap" colspan="2">Net Invoice Amount</td>
+                        <td colspan="2"  style="border-bottom:1px solid #4fc5f0;font-weight:bold;text-align:right;font-family: 'Amiri-Regular'">صافي المبلغ</td>
+                        <td colspan="6"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="11">
+                            <span>&#160;</span>
+                        </td>
+                    </tr>
+                    <tr style="font-size:13px;"  class="text-left">
+                        <td colspan="5" class="text-left">
+                            <div style="text-align:left;">
+                                All payments to be made to:<br/>
+                                Account No: 225137484450008<br/>
+                                IBAN No: SA201500445137484450008<br/>
+                                Bank Albilad<br/>
+                                Swift Code: ALBISARIXXX<br/></div>
+                        </td>
+                        <td style="border:none;" colspan="6" class="text-right">
+                            <div style="text-align:right;text-align:right;font-family: 'Noto Sans Arabic', sans-serif'">
+                                جميع المدفوعات التى يتعين دفعها لشركة مكتبي الذكي  <br/>
+                                رقم الحساب :68204464096000  <br/>
+                                SA3705000068204464096000:  ايبان   <br/>
+                                مصرف الانماء <br/>
+                                اسم الحساب : شركة مكتبي الذكي المحدودة
+
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <t t-if="o.state != 'draft'">
+                    <div class="col-4" style="text-align:left;">
+                        <img t-if="o.einv_sa_qr_code_str"  t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.einv_sa_qr_code_str, 130, 130)"/><!--					<img t-attf-src="data:image/*;base64,{{doc.qr_code}}" style="width:150px; height:150px;"/>-->
+                        <!--                    <img t-attf-src="data:image/*;base64,{{doc.company_id.logo}}"-->
+                        <!--                 style="width:190px; height:100px;"/>-->
+                    </div>
+                </t>
+
+            </div>
+        </div>
+        <!--        </t>-->
+    </template>
+
+    <template id="report_invoice_proforma">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="hak_reports.report_inv_proforma_document" t-lang="o.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>
