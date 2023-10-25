@@ -41,7 +41,7 @@ class SaleOrder(models.Model):
                     pay_list += [vals['account_payment_id'] for vals in reconciled_payments_widget_vals['content']]
     
             payment = self.env['account.payment'].search([('ref', '=', rec.name)]).ids
-           rec.payment_ids = payment + pay_list
+            rec.payment_ids = payment + pay_list
 
 
 
