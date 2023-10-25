@@ -33,15 +33,15 @@ class SaleOrder(models.Model):
             rec.payment_count = self.env['account.payment'].search_count([('ref', '=', rec.name)]) + len(pay_list)
 
 
-        pay_list = []
-        for inv in self.invoice_ids:
-            reconciled_payments_widget_vals = json.loads(inv.invoice_payments_widget)
-
-            if inv.invoice_payments_widget != 'false':
-                pay_list += [vals['account_payment_id'] for vals in reconciled_payments_widget_vals['content']]
-
-        payment = self.env['account.payment'].search([('ref', '=', self.name)]).ids
-        self.payment_ids = payment + pay_list
+            pay_list = []
+            for inv in self.invoice_ids:
+                reconciled_payments_widget_vals = json.loads(inv.invoice_payments_widget)
+    
+                if inv.invoice_payments_widget != 'false':
+                    pay_list += [vals['account_payment_id'] for vals in reconciled_payments_widget_vals['content']]
+    
+            payment = self.env['account.payment'].search([('ref', '=', rec.name)]).ids
+           rec.payment_ids = payment + pay_list
 
 
 
