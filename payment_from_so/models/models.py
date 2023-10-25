@@ -21,8 +21,9 @@ class SaleOrder(models.Model):
 
 
     def compute_payments(self):
-        self.purchase_order_ids = self.env['purchase.order'].search([('origin', '=', self.name)]).ids
+        
         for rec in self:
+            rec.purchase_order_ids = self.env['purchase.order'].search([('origin', '=', rec.name)]).ids
             pay_list = []
             for inv in rec.invoice_ids:
                 reconciled_payments_widget_vals = json.loads(inv.invoice_payments_widget)
