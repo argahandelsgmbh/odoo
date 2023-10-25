@@ -74,14 +74,10 @@ class SaleOrderInh(models.Model):
 
         for rec in self:
             rec.purchase_count = self.env['purchase.order'].search_count([('origin', '=', rec.name)])
-            invoices = self.env['account.move'].search([('invoice_origin', '=', rec.name)]).filtered(lambda i: i.invoice_origin != False)
-            payments = self.env['account.payment'].search([('ref', '=', rec.name)]).filtered(lambda i: i.ref != False)
-            rec.total_payment=inv_payment=sum(payments.mapped('amount'))
-            inv_amount = sum(invoices.mapped('amount_total'))
-            paid_amount = sum(invoices.mapped('amount_total')) - sum(invoices.mapped('amount_residual'))
-            rec.total_invoice_amount = inv_amount
-            rec.total_invoice_paid = paid_amount+inv_payment
-            rec.total_open_amount = (rec.amount_total- paid_amount) -inv_payment if invoices else rec.amount_total-inv_payment
+            rec.total_payment=sum(rec.payment_ids.mapped('amount')
+            rec.total_invoice_amount = sum(rec.invoice_ids.mapped('amount_total')
+            rec.total_invoice_paid = sum(rec.payment_ids.mapped('amount')
+            rec.total_open_amount = rec.amount_total-sum(rec.payment_ids.mapped('amount')
             purchase_order = self.env['purchase.order'].search([("origin", "=", rec.name)])
             receipt = self.env['purchase.order'].search([("origin", "=", rec.name)], limit=1)
             # po_qty = 0
