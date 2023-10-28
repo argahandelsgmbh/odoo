@@ -14,7 +14,7 @@ class SaleOrderInh(models.Model):
     total_invoice_paid = fields.Float(compute='get_invoice_amount')
     total_invoice_amount = fields.Float(compute='get_invoice_amount')
     total_payment = fields.Float(compute='get_invoice_amount')
-    total_open_amount = fields.Float(readonly=True)
+    total_open_amount = fields.Float(compute='get_invoice_amount')
     total_qty = fields.Float('Total Lines')
     istikabl_qty = fields.Float('Istikabal')
     bellona_qty = fields.Float('Bellona')
