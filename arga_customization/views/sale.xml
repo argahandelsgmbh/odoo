@@ -9,15 +9,15 @@
                 <xpath expr="//field[@name='user_id']" position="after">
                     <field name="delivery_date" optional="show"/>
                     <field name="stock_val" optional="show"/>
-                    <field name="total_qty" optional="hide" />
-                    <field name="do_qty" optional="hide" />
-                    <field name="po_qty" optional="hide" />
-                    <field name="received_qty" optional="hide" />
-                    <field name="istikabl_qty" optional="hide" />
-                    <field name="bellona_qty" optional="hide" />
-                    <field name="do_status" optional="hide" widget="badge" decoration-success="do_status == 'done'" decoration-info="do_status not in ('done', 'cancel', 'draft')" decoration-muted="do_status == 'draft'"/>
-                    <field name="po_state" optional="hide" widget="badge" decoration-success="po_state == 'done'" decoration-info="po_state not in ('done', 'cancel', 'draft')" decoration-muted="po_state == 'draft'"/>
-                    <field name="receipt_status" optional="hide" widget="badge" decoration-success="receipt_status == 'done'" decoration-info="receipt_status not in ('done', 'cancel', 'draft')" decoration-muted="receipt_status == 'draft'"/>
+                    <field name="total_qty" invisible="1" optional="hide" />
+                    <field name="do_qty" optional="hide" invisible="1" />
+                    <field name="po_qty" optional="hide" invisible="1" />
+                    <field name="received_qty" optional="hide" invisible="1" />
+                    <field name="istikabl_qty" optional="hide" invisible="1" />
+                    <field name="bellona_qty" optional="hide" invisible="1" />
+                    <field name="do_status" optional="hide" widget="badge" invisible="1"  decoration-success="do_status == 'done'" decoration-info="do_status not in ('done', 'cancel', 'draft')" decoration-muted="do_status == 'draft'"/>
+                    <field name="po_state" optional="hide" widget="badge" invisible="1"  decoration-success="po_state == 'done'" decoration-info="po_state not in ('done', 'cancel', 'draft')" decoration-muted="po_state == 'draft'"/>
+                    <field name="receipt_status" optional="hide" invisible="1"  widget="badge" decoration-success="receipt_status == 'done'" decoration-info="receipt_status not in ('done', 'cancel', 'draft')" decoration-muted="receipt_status == 'draft'"/>
                 </xpath>
 
             </field>
@@ -31,15 +31,15 @@
                 <xpath expr="//field[@name='state']" position="after">
                     <field name="delivery_date"  />
                      <field name="stock_val" optional="show"/>
-                    <field name="total_qty" optional="hide" />
-                    <field name="do_qty" optional="hide" />
-                    <field name="po_qty" optional="hide" />
-                    <field name="received_qty" optional="hide" />
-                    <field name="istikabl_qty" optional="hide" />
-                    <field name="bellona_qty" optional="hide" />
-                    <field name="do_status" optional="hide" widget="badge" decoration-success="do_status == 'done'" decoration-info="do_status not in ('done', 'cancel', 'draft')" decoration-muted="do_status == 'draft'"/>
-                    <field name="po_state" optional="hide" widget="badge" decoration-success="po_state == 'done'" decoration-info="po_state not in ('done', 'cancel', 'draft')" decoration-muted="po_state == 'draft'"/>
-                    <field name="receipt_status" optional="hide" widget="badge" decoration-success="receipt_status == 'done'" decoration-info="receipt_status not in ('done', 'cancel', 'draft')" decoration-muted="receipt_status == 'draft'"/>
+                    <field name="total_qty" optional="hide" invisible="1" />
+                    <field name="do_qty" optional="hide" invisible="1" />
+                    <field name="po_qty" optional="hide" invisible="1" />
+                    <field name="received_qty" optional="hide" invisible="1" />
+                    <field name="istikabl_qty" optional="hide" invisible="1" />
+                    <field name="bellona_qty" optional="hide" invisible="1" />
+                    <field name="do_status" optional="hide" widget="badge" invisible="1" decoration-success="do_status == 'done'" decoration-info="do_status not in ('done', 'cancel', 'draft')" decoration-muted="do_status == 'draft'"/>
+                    <field name="po_state" optional="hide" widget="badge" invisible="1" decoration-success="po_state == 'done'" decoration-info="po_state not in ('done', 'cancel', 'draft')" decoration-muted="po_state == 'draft'"/>
+                    <field name="receipt_status" optional="hide" widget="badge" invisible="1" decoration-success="receipt_status == 'done'" decoration-info="receipt_status not in ('done', 'cancel', 'draft')" decoration-muted="receipt_status == 'draft'"/>
                 </xpath>
             </field>
         </record>
@@ -60,10 +60,6 @@
                     <field name="number" width=".3" class="text-end"/>
                 </xpath>
 
-<!--                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
-                    <field name="total_price" optional="hide"/>
-                </xpath>
- -->
                 <xpath expr="//field[@name='date_order']" position="after">
                     <field name="is_ready" invisible="1"/>
                     <field name="is_po_draft" invisible="1"/>
