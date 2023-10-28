@@ -73,9 +73,9 @@ class SaleOrderInh(models.Model):
                 rec.is_ready = res
 
             rec.purchase_count = self.env['purchase.order'].search_count([('origin', '=', rec.name)])
-            total_payment=sum(rec.payment_ids.mapped('amount'))
+            total_payment=rec.payment_count
             total_invoice_amount = sum(rec.invoice_ids.mapped('amount_total'))
-            total_invoice_paid = 0
+            total_invoice_paid = rec.payment_count
             total_open_amount = rec.amount_total-rec.total_payment
             purchase_order = self.env['purchase.order'].search([("origin", "=", rec.name)])
             receipt = self.env['purchase.order'].search([("origin", "=", rec.name)], limit=1)
