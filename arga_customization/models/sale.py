@@ -12,9 +12,9 @@ class SaleOrderInh(models.Model):
     delivery_date = fields.Date(string='Delivery Date', copy=False)
     stock_val = fields.Selection([('stock', '100% Stock')], string='100% Stock')
     total_invoice_paid = fields.Float(compute='get_invoice_amount')
-    total_invoice_amount = fields.Float(compute='compute_the_total_invoices')
-    total_payment = fields.Float(compute='compute_the_total_payment')
-    total_open_amount = fields.Float(compute='compute_the_total_open')
+    total_invoice_amount = fields.Float(compute='get_invoice_amount')
+    total_payment = fields.Float(compute='get_invoice_amount')
+    total_open_amount = fields.Float(compute='get_invoice_amount')
     total_qty = fields.Float('Total Lines')
     istikabl_qty = fields.Float('Istikabal')
     bellona_qty = fields.Float('Bellona')
@@ -40,31 +40,21 @@ class SaleOrderInh(models.Model):
         ('done', 'Done'),
         ('cancel', 'Cancelled'), ('', '    ')
     ], 'PO Status', readonly=True)
+
     purchase_count = fields.Integer(string='Purchase Order Count', compute='get_invoice_amount')
+
     is_ready = fields.Boolean()
     is_po_draft = fields.Boolean()
     is_do_done = fields.Boolean()
+
+
+
 
     def open_related_po(self):
         po_id = self.env['purchase.order'].search([('origin', '=', self.name)])
         action = self.env.ref('purchase.purchase_rfq').read()[0]
         action['domain'] = [('id', 'in', po_id.ids)]
         return action
-
-    @api.depends('payment_ids')
-    def compute_the_total_payment(self):
-        for rec in self:
-            rec.total_payment = sum(rec.payment_ids.mapped('amount'))
-
-    @api.depends('invoice_ids')
-    def compute_the_total_invoices(self):
-        for rec in self:
-            rec.total_invoice_amount = sum(rec.invoice_ids.mapped('invoice_ids'))
-
-    @api.depends('amount_total','total_payment')
-    def compute_the_total_open(self):
-        for rec in self:
-            rec.total_open_amount = rec.amount_total - rec.total_payment
 
     def get_invoice_amount(self):
         for rec in self:
@@ -83,12 +73,12 @@ class SaleOrderInh(models.Model):
                 rec.is_ready = res
 
             rec.purchase_count = self.env['purchase.order'].search_count([('origin', '=', rec.name)])
-            # rec.total_payment=sum(rec.payment_ids.mapped('amount'))
-            # rec.total_invoice_amount = sum(rec.invoice_ids.mapped('amount_total'))
+            rec.total_payment=sum(rec.payment_ids.mapped('amount'))
+            rec.total_invoice_amount = sum(rec.invoice_ids.mapped('amount_total'))
             rec.total_invoice_paid = sum(rec.payment_ids.mapped('amount'))
-            # rec.total_open_amount = rec.amount_total-rec.total_payment
-            # purchase_order = self.env['purchase.order'].search([("origin", "=", rec.name)])
-            # receipt = self.env['purchase.order'].search([("origin", "=", rec.name)], limit=1)
+            rec.total_open_amount = rec.amount_total-rec.total_payment
+            purchase_order = self.env['purchase.order'].search([("origin", "=", rec.name)])
+            receipt = self.env['purchase.order'].search([("origin", "=", rec.name)], limit=1)
             # po_qty = 0
             # istikabl_qty = 0
             # bellona_qty = 0
@@ -102,7 +92,7 @@ class SaleOrderInh(models.Model):
             # rec.istikabl_qty = istikabl_qty
             # rec.bellona_qty = bellona_qty
             # rec.received_qty = received_qty
-            # rec.total_qty = len(rec.order_line.filtered(lambda i: i.product_id.type == 'product').mapped('id'))
+            rec.total_qty = len(rec.order_line.filtered(lambda i: i.product_id.type == 'product').mapped('id'))
             # rec.do_qty = len(self.env['stock.move.line'].search([("origin", "=", rec.name), ("state", "=", 'done')]))
 
             # if receipt:
