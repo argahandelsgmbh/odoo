@@ -8,6 +8,8 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     payment_count = fields.Integer(compute='compute_payments')
+    total_open_amount = fields.Float(compute='compute_payments')
+    total_invoice_paid = fields.Float(compute='compute_payments')
     date_order = fields.Datetime(string='Order Date', required=True, readonly=False,  index=True, copy=False, default=fields.Datetime.now, help="Creation date of draft/sent orders,\nConfirmation date of confirmed orders.")
     payment_ids = fields.Many2many('account.payment', compute="compute_payments")
     purchase_order_ids = fields.Many2many('purchase.order', compute="compute_payments")
@@ -21,7 +23,6 @@ class SaleOrder(models.Model):
 
 
     def compute_payments(self):
-        
         for rec in self:
             rec.purchase_order_ids = self.env['purchase.order'].search([('origin', '=', rec.name)]).ids
             pay_list = []
@@ -35,6 +36,7 @@ class SaleOrder(models.Model):
             rec.payment_ids = payment + pay_list
 
             rec.payment_count=sum(rec.payment_ids.mapped('amount'))
+            rec.total_open_amount = rec.amount_total-rec.payment_count
 
 
 
