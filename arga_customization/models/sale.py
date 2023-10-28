@@ -76,7 +76,7 @@ class SaleOrderInh(models.Model):
             total_payment=rec.payment_count
             total_invoice_amount = sum(rec.invoice_ids.mapped('amount_total'))
             total_invoice_paid = rec.payment_count
-            total_open_amount = rec.amount_total-rec.total_payment
+            total_open_amount = rec.amount_total-rec.payment_count
             purchase_order = self.env['purchase.order'].search([("origin", "=", rec.name)])
             receipt = self.env['purchase.order'].search([("origin", "=", rec.name)], limit=1)
             rec.update({'total_payment':total_payment,'total_invoice_amount':total_invoice_amount,'total_invoice_paid':total_invoice_paid,'total_open_amount':total_open_amount})
