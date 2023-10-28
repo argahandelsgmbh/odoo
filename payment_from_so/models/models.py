@@ -27,7 +27,7 @@ class SaleOrder(models.Model):
         for rec in self:
             rec.purchase_order_ids = self.env['purchase.order'].search([('origin', '=', rec.name)]).ids
             pay_list = []
-            for inv in self.invoice_ids:
+            for inv in rec.invoice_ids:
                 reconciled_payments_widget_vals = json.loads(inv.invoice_payments_widget)
     
                 if inv.invoice_payments_widget != 'false':
