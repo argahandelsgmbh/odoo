@@ -36,7 +36,7 @@ class SaleOrder(models.Model):
             payment = self.env['account.payment'].search([('ref', '=', rec.name)]).ids
             rec.payment_ids = payment + pay_list
 
-            rec.payment_count=sum(rec.payment_ids.mapped('amount'))
+            rec.payment_count=rec.total_payment=sum(rec.payment_ids.mapped('amount'))
             rec.total_open_amount = rec.amount_total-rec.payment_count
 
 
