@@ -9,6 +9,7 @@
                 <xpath expr="//field[@name='user_id']" position="after">
                     <field name="delivery_date" optional="show"/>
                     <field name="total_invoice_amount" optional="show"/>
+                    <field name="total_invoice_paid" optional="show"/>
                     <field name="total_open_amount" optional="show"/>
                     <field name="stock_val" optional="show"/>
                     <field name="total_qty" invisible="1" optional="hide" />
