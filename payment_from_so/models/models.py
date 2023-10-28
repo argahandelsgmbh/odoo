@@ -9,6 +9,7 @@ class SaleOrder(models.Model):
 
     payment_count = fields.Integer(compute='compute_payments')
     total_open_amount = fields.Float(compute='compute_payments')
+    total_payment = fields.Float(compute='compute_payments')
     total_invoice_paid = fields.Float(compute='compute_payments')
     date_order = fields.Datetime(string='Order Date', required=True, readonly=False,  index=True, copy=False, default=fields.Datetime.now, help="Creation date of draft/sent orders,\nConfirmation date of confirmed orders.")
     payment_ids = fields.Many2many('account.payment', compute="compute_payments")
