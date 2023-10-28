@@ -57,22 +57,21 @@ class SaleOrderInh(models.Model):
         return action
 
     def get_invoice_amount(self):
-        for r in self:
-            r.is_po_draft = False
-            r.is_do_done = False
-            r.is_ready = False
-            po = self.env['purchase.order'].search(['|', ('sale_order', '=', r.id), ('origin', '=', r.name)])
+        for rec in self:
+            rec.is_po_draft = False
+            rec.is_do_done = False
+            rec.is_ready = False
+            po = self.env['purchase.order'].search(['|', ('sale_order', '=', rec.id), ('origin', '=', rec.name)])
             if po:
                 res = all(rec.state != 'done' for rec in po)
-                r.is_po_draft = res
+                rec.is_po_draft = res
 
-            if r.picking_ids:
-                res = all(rec.state == 'assigned' for rec in r.picking_ids)
-                done = all(rec.state == 'done' for rec in r.picking_ids)
-                r.is_do_done = done
-                r.is_ready = res
+            if rec.picking_ids:
+                res = all(rec.state == 'assigned' for rec in rec.picking_ids)
+                done = all(rec.state == 'done' for rec in rec.picking_ids)
+                rec.is_do_done = done
+                rec.is_ready = res
 
-        for rec in self:
             rec.purchase_count = self.env['purchase.order'].search_count([('origin', '=', rec.name)])
             rec.total_payment=sum(rec.payment_ids.mapped('amount'))
             rec.total_invoice_amount = sum(rec.invoice_ids.mapped('amount_total'))
