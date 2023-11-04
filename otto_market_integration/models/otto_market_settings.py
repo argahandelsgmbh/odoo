@@ -16,9 +16,8 @@ class Credentials(models.Model):
     otto_credentials_type = fields.Selection([('https://sandbox.api.otto.market', 'Sandbox'),
                                               ('https://api.otto.market', 'Production')],
                                              string="Credentials Type", default='https://sandbox.api.otto.market')
-    company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True,
-                                 default=lambda self: self.env.company)
-    active = fields.Boolean('Active')
+    company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
+    active = fields.Boolean('Active',default=True)
 
     def auto_otto_generate_token(self):
         self.otto_generate_token(True)
@@ -50,13 +49,19 @@ class Credentials(models.Model):
                 IrConfigParameter.set_param('otto_market_integration.otto_refresh_token', token_response['refresh_token'])
                 IrConfigParameter.set_param('otto_market_integration.otto_expires_in', int(round(time.time() * 1000)))
                 if not auto:
-                    return self.action_of_button('Successful', 'Successfully Connected to Otto Market')
+                    # return self.action_of_button('Successful', 'Successfully Connected to Otto Market')
+                    otto_log = self.env['otto.log.notes'].sudo().create({'error': "Successfully Connected to Otto Market"})
             else:
                 token_response = json.loads(response.text)
                 if not auto:
-                    return self.action_of_button('Failed', token_response['error_description'])
+                    # return self.action_of_button('Failed', token_response['error_description'])
+                    otto_log = self.env['otto.log.notes'].sudo().create({
+                        'error': "Generating token Error " + str(token_response['error_description']),
+                    })
         except Exception as e:
-            raise ValidationError(e)
+            otto_log = self.env['otto.log.notes'].create({
+                'error': "Generating token Error " + str(e),
+            })
 
     def action_of_button(self, name, message):
         message_id = self.env['message.wizard'].create({
