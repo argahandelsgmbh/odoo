@@ -15,6 +15,7 @@
                     <field name="otto_username" />
                     <field name="otto_password" password="1"/>
                     <field name="otto_credentials_type" />
+                     <field name="company_id" />
                     <button string="Generate Token" name="otto_generate_token" type="object" />
                     <field name="active" widget="boolean_toggle"/>
                 </tree>
