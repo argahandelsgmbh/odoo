@@ -19,13 +19,11 @@ class InheritRCSOtto(models.TransientModel):
     otto_shipment_date_from = fields.Datetime("From Date", default=fields.Date.today(), config_parameter='otto_market_integration.otto_shipment_date_from')
 
     def otto_get_credentials_type(self):
-        currentCompany = self.env.company
-        ottoCredentials = self.env['otto.credentials'].search([('company_id', '=', currentCompany.id),
-                                                                       ('active', '=', True)])
+        ottoCredentials = self.env['otto.credentials'].search([],limit=1)
         if len(ottoCredentials.ids) > 1:
             raise ValidationError("Multiple Credentials are active for current company. Please select/active only one at a time.")
         elif len(ottoCredentials.ids) == 0:
-            raise ValidationError("No credential is assign to current company. Please go to Istikbal/Credentials.")
+            raise ValidationError("No credential is assign to current company. Please go to Otto/Credentials.")
         else:
             return ottoCredentials.otto_credentials_type
 
@@ -35,6 +33,20 @@ class InheritRCSOtto(models.TransientModel):
         otto_token = IrConfigParameter.get_param('otto_market_integration.otto_token')
         otto_credentials_type = self.otto_get_credentials_type()
         return otto_token, otto_credentials_type
+
+    def otto_token_expiry_check(self):
+        try:
+            IrConfigParameter = self.env['ir.config_parameter'].sudo()
+            otto_expires_in = IrConfigParameter.get_param('otto_market_integration.otto_expires_in')
+            expires_in = datetime.fromtimestamp(int(otto_expires_in) / 1e3)
+            expires_in = expires_in + timedelta(seconds=1800)
+            now = datetime.now()
+            if now > expires_in:
+                self.otto_generate_refresh_token()
+        except Exception as e:
+            otto_log = self.env['otto.log.notes'].sudo().create({
+                'error': "Error in Generating token Error"})
+
 
     def otto_import_brands(self):
         try:
@@ -265,55 +277,64 @@ class InheritRCSOtto(models.TransientModel):
             })
 
     def otto_create_orders(self, orders):
-        count=0
-        for order in orders:
-            if order.get('deliveryAddress'):
-                odooOrder = self.env['sale.order'].search([('otto_order_id', '=', order['salesOrderId'])])
-                orderCustomer = self.otto_get_customer(order['deliveryAddress'], order['invoiceAddress'])
-                orderDate = datetime.strptime(order['orderDate'], '%Y-%m-%dT%H:%M:%S.%f%z').date()
-
-                if not odooOrder:
-                    count=count+1
-                    odooOrder = self.env['sale.order'].create({
-                        'otto_order_id': order['salesOrderId'],
-                        "name": order["orderNumber"],
-                        "partner_id": orderCustomer.id,
-                        "state": 'sale',
-                        "date_order": orderDate,
-                    })
-                    self.otto_create_order_line(order['positionItems'], odooOrder)
-                else:
-                    odooOrder.write({
-                        'otto_order_id': order['salesOrderId'],
-                        "name": order["orderNumber"],
-                        "partner_id": orderCustomer.id,
-                        "state": 'sale',
-                        "date_order": orderDate,
-                    })
-        otto_log = self.env['otto.log.notes'].create({
-            'error': "Successfully created new orders "+ str(count),
-        })
+        try:
+            count=0
+            for order in orders:
+                if order.get('deliveryAddress'):
+                    odooOrder = self.env['sale.order'].search([('otto_order_id', '=', order['salesOrderId'])])
+                    orderCustomer = self.otto_get_customer(order['deliveryAddress'], order['invoiceAddress'])
+                    orderDate = datetime.strptime(order['orderDate'], '%Y-%m-%dT%H:%M:%S.%f%z').date()
+    
+                    if not odooOrder:
+                        count=count+1
+                        odooOrder = self.env['sale.order'].create({
+                            'otto_order_id': order['salesOrderId'],
+                            "name": order["orderNumber"],
+                            "partner_id": orderCustomer.id,
+                            "state": 'sale',
+                            "date_order": orderDate,
+                        })
+                        self.otto_create_order_line(order['positionItems'], odooOrder)
+                    else:
+                        odooOrder.write({
+                            'otto_order_id': order['salesOrderId'],
+                            "name": order["orderNumber"],
+                            "partner_id": orderCustomer.id,
+                            "state": 'sale',
+                            "date_order": orderDate,
+                        })
+            otto_log = self.env['otto.log.notes'].create({
+                'error': "Successfully created new orders "+ str(count),
+            })
+        except Exception as e:
+            otto_log = self.env['otto.log.notes'].create({
+                'error': "Creating Order Error: "+str(e),
+            })
     def otto_create_order_line(self, lines, odooOrder):
-        for line in lines:
-            if line.get('product'):
-                orderProduct = self.env['product.template'].search([('default_code', '=', line['product']['sku'])], limit=1)
-                if not orderProduct:
-                    orderProduct = self.otto_get_order_line_product(line['product']['sku'])
-                odoo_product = self.env['product.product'].search([('product_tmpl_id', '=', orderProduct.id)])[0]
-                totalDiscount = 0
-
-                totalAmount = line['itemValueGrossPrice']['amount']
-                if line.get('itemValueDiscount'):
-                    discountAmount = line['itemValueDiscount']['amount']
-                    totalDiscount = (discountAmount / totalAmount) * 100
-                self.env['sale.order.line'].create({
-                    'product_id': odoo_product.id,
-                    "order_id": odooOrder.id,
-                    "product_uom_qty": 1,
-                    'price_unit': totalAmount,
-                    'discount': totalDiscount
-                })
-
+        try:
+            for line in lines:
+                if line.get('product'):
+                    orderProduct = self.env['product.template'].search([('default_code', '=', line['product']['sku'])], limit=1)
+                    if not orderProduct:
+                        orderProduct = self.otto_get_order_line_product(line['product']['sku'])
+                    odoo_product = self.env['product.product'].search([('product_tmpl_id', '=', orderProduct.id)])[0]
+                    totalDiscount = 0
+    
+                    totalAmount = line['itemValueGrossPrice']['amount']
+                    if line.get('itemValueDiscount'):
+                        discountAmount = line['itemValueDiscount']['amount']
+                        totalDiscount = (discountAmount / totalAmount) * 100
+                    self.env['sale.order.line'].create({
+                        'product_id': odoo_product.id,
+                        "order_id": odooOrder.id,
+                        "product_uom_qty": 1,
+                        'price_unit': totalAmount,
+                        'discount': totalDiscount
+                    })
+        except Exception as e:
+            otto_log = self.env['otto.log.notes'].create({
+                'error': "Creating Order Line error: "+str(e),
+            })
     def otto_get_order_line_product(self, sku):
         try:
             otto_token, otto_credentials_type = self.otto_request_essentials()
@@ -435,18 +456,6 @@ class InheritRCSOtto(models.TransientModel):
                 return None
         except Exception as e:
             raise ValidationError(e)
-
-    def otto_token_expiry_check(self):
-        try:
-            IrConfigParameter = self.env['ir.config_parameter'].sudo()
-            otto_expires_in = IrConfigParameter.get_param('otto_market_integration.otto_expires_in')
-            expires_in = datetime.fromtimestamp(int(otto_expires_in) / 1e3)
-            expires_in = expires_in + timedelta(seconds=1800)
-            now = datetime.now()
-            if now > expires_in:
-                self.otto_generate_refresh_token()
-        except Exception as e:
-            raise ValidationError(str(e))
 
     def otto_generate_refresh_token(self):
         """
