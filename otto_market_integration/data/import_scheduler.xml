@@ -5,7 +5,7 @@
         <field name="name">Import Otto Orders</field>
         <field name="model_id" ref="model_res_config_settings" />
         <field name="state">code</field>
-        <field name="active">0</field>
+        <field name="active">1</field>
         <field name="code">model.otto_import_orders()</field>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
@@ -16,7 +16,7 @@
         <field name="name">Token Generation</field>
         <field name="model_id" ref="model_otto_credentials" />
         <field name="state">code</field>
-        <field name="active">0</field>
+        <field name="active">1</field>
         <field name="code">model.auto_otto_generate_token()</field>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
