@@ -3,7 +3,7 @@ from io import BytesIO
 from odoo.exceptions import UserError
 import qrcode
 
-from odoo import fields, models
+from odoo import fields, models,api,_
 
 
 class IstikbalLogNotes(models.Model):
