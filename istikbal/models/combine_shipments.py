@@ -1,6 +1,6 @@
 import base64
 from io import BytesIO
-
+from odoo.exceptions import UserError
 import qrcode
 
 from odoo import fields, models
@@ -69,7 +69,7 @@ class IstikbalLogNotes(models.Model):
                                         r.is_received = True
                     self.env.cr.commit()
         except Exception as e:
-            raise (str(e))
+             raise UserError(_( str(e)))
 
 
 
