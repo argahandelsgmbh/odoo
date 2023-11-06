@@ -59,7 +59,7 @@ class IstikbalLogNotes(models.Model):
                                 backorder_wizard.process()
                         for r in self.detail_ids:
                             if not r.is_received and not r.picking_id:
-                                pick = self.env['stock.move.line'].search([('picking_id.purchase_id.name', '=', r.purchase_id.name)], order='id asc').picking_id.ids
+                                pick = self.env['stock.move.line'].sudo().search([('picking_id.purchase_id.name', '=', r.purchase_id.name)], order='id asc').picking_id.ids
                                 if pick:
                                     pick_id = pick[-2] if len(pick) > 1 else pick[0]
                                     stock_picking = self.env['stock.picking'].browse([pick_id])
@@ -133,7 +133,7 @@ class IstikbalLogNotes(models.Model):
 
     def confirm_purchase_receipt(self):
         for i in self.detail_ids:
-            po = self.env['purchase.order'].search([("name", '=', i.customerItemCode)], limit=1)
+            po = self.env['purchase.order'].sudo().search([("name", '=', i.customerItemCode)], limit=1)
             if i.purchase_id and po:
                 for k in po.picking_ids:
                     if k.state not in ['cancel', 'done']:
