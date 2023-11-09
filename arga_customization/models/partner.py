@@ -9,6 +9,8 @@ from odoo.exceptions import UserError
 class ResPartner(models.Model):
     _inherit = 'res.partner'
     _name = _inherit
+    
+    partner_invoice_id = fields.Many2one('res.partner', 'Invoicing Address', check_company=True)
 
     @api.model
     def create(self, vals):
