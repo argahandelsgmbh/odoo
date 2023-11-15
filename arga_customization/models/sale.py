@@ -9,6 +9,7 @@ from odoo.exceptions import UserError
 class SaleOrderInh(models.Model):
     _inherit = 'sale.order'
 
+    taxes_ids = fields.Many2many('account.tax',string="Taxes")
     delivery_date = fields.Date(string='Delivery Date', copy=False)
     stock_val = fields.Selection([('stock', '100% Stock')], string='100% Stock')
     total_invoice_amount = fields.Float(compute='get_invoice_amount')
@@ -138,6 +139,8 @@ class SaleOrderLineInh(models.Model):
     free_qty = fields.Float()
     total_price = fields.Float("B.Disc")
 
+    
+
 
 
     @api.depends('order_id')
@@ -151,3 +154,14 @@ class SaleOrderLineInh(models.Model):
                     number += 1
                 else:
                     line.number = number
+
+    
+    def _compute_tax_id(self):
+        for line in self:
+            line = line.with_company(line.company_id)
+            fpos = line.order_id.fiscal_position_id or line.order_id.fiscal_position_id.get_fiscal_position(
+                line.order_partner_id.id)
+            # If company_id is set, always filter taxes by the company
+            # taxes = line.product_id.taxes_id.filtered(lambda t: t.company_id == line.env.company)
+            # line.tax_id = fpos.map_tax(taxes)
+            line.tax_id = line.order_id.taxes_ids.ids
