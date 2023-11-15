@@ -22,7 +22,6 @@
                     <field name="po_state" optional="hide" widget="badge" invisible="1"  decoration-success="po_state == 'done'" decoration-info="po_state not in ('done', 'cancel', 'draft')" decoration-muted="po_state == 'draft'"/>
                     <field name="receipt_status" optional="hide" invisible="1"  widget="badge" decoration-success="receipt_status == 'done'" decoration-info="receipt_status not in ('done', 'cancel', 'draft')" decoration-muted="receipt_status == 'draft'"/>
                 </xpath>
-
             </field>
         </record>
 
@@ -55,6 +54,9 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
+                  <xpath expr="//field[@name='payment_term_id']" position="after">
+                  <field name="taxes_ids" widget="many2many_tags"/>
+                    </xpath>
 
                 <xpath expr="//div[@name='button_box']" position="inside">
                     <button name="open_related_po" type="object" class="oe_stat_button" icon="fa-shopping-cart" attrs="{'invisible': [('purchase_count', '=', 0)]}">
