@@ -143,7 +143,7 @@ class SaleOrderLineInh(models.Model):
 
 
 
-    @api.depends('order_id')
+    @api.depends('order_id.product_id')
     def _compute_get_number(self):
         for order in self.mapped('order_id'):
             number = 1
