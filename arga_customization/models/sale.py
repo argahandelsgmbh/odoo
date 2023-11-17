@@ -131,7 +131,7 @@ class SaleOrderInh(models.Model):
 class SaleOrderLineInh(models.Model):
     _inherit = 'sale.order.line'
 
-    number = fields.Integer(string="Sr#", compute='_compute_get_number', default=1)
+    number = fields.Integer(string="Sr#")
     available = fields.Float('Available Qty', related="product_id.qty_available")
     remaining_qty = fields.Float('Not Available')
     qty_in = fields.Float()
@@ -139,22 +139,7 @@ class SaleOrderLineInh(models.Model):
     free_qty = fields.Float()
     total_price = fields.Float("B.Disc")
 
-    
-
-
-
-
-    def _compute_get_number(self):
-        for order in self.mapped('order_id'):
-            number = 1
-            for line in order.order_line:
-                line.number = number
-                if line.product_id:
-                    line.number = number
-                    number += 1
-                else:
-                    line.number = number
-
+   
     
     def _compute_tax_id(self):
         for line in self:
