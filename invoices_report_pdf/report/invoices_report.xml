@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-<!--    <record id="paperformat_stock_report" model="report.paperformat">-->
-<!--        <field name="name">Stock Report</field>-->
-<!--        <field name="default" eval="True"/>-->
-<!--        <field name="format">custom</field>-->
-<!--        <field name="page_height">297</field>-->
-<!--        <field name="page_width">210</field>-->
-<!--        <field name="orientation">Landscape</field>-->
-<!--        <field name="margin_top">25</field>-->
-<!--        <field name="margin_bottom">23</field>-->
-<!--        <field name="margin_left">20</field>-->
-<!--        <field name="margin_right">20</field>-->
-<!--        <field name="header_line" eval="False"/>-->
-<!--        <field name="header_spacing">20</field>-->
-<!--        <field name="dpi">90</field>-->
-<!--    </record>-->
+    <!--    <record id="paperformat_stock_report" model="report.paperformat">-->
+    <!--        <field name="name">Stock Report</field>-->
+    <!--        <field name="default" eval="True"/>-->
+    <!--        <field name="format">custom</field>-->
+    <!--        <field name="page_height">297</field>-->
+    <!--        <field name="page_width">210</field>-->
+    <!--        <field name="orientation">Landscape</field>-->
+    <!--        <field name="margin_top">25</field>-->
+    <!--        <field name="margin_bottom">23</field>-->
+    <!--        <field name="margin_left">20</field>-->
+    <!--        <field name="margin_right">20</field>-->
+    <!--        <field name="header_line" eval="False"/>-->
+    <!--        <field name="header_spacing">20</field>-->
+    <!--        <field name="dpi">90</field>-->
+    <!--    </record>-->
+
+    <template id="custom_header_footer_invoice">
+
+        <t t-set="company" t-value="res_company"/>
+
+        <div>
+
+
+
+        </div>
+    </template>
 
     <record id="action_invoice_pdf_report" model="ir.actions.report">
         <field name="name">Invoices Report</field>
@@ -27,7 +38,10 @@
     <template id="report_invoice_document">
         <t t-foreach="docs" t-as="o">
             <t t-call="web.html_container">
-                <t t-call="web.external_layout">
+                <!--                <t t-call="web.external_layout">-->
+                <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name"
+                     t-att-data-oe-id="o and o.id">
+                    <t t-call="invoices_report_pdf.custom_header_footer_invoice"/>
                     <div class="page">
                         <div class="oe_structure"/>
                         <div class="text-center"><h2>Invoices</h2></div>
@@ -53,8 +67,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <t t-set="grand_total_value" t-value="0" />
+                                <t t-set="total_untax" t-value="0"/>
+                                <t t-set="total_tax" t-value="0"/>
+                                <t t-set="total_amount" t-value="0"/>
+
                                 <t t-foreach="invoices" t-as="invoice">
+
                                     <tr>
                                         <td class="text-left text-nowrap">
                                             <span t-field="invoice.partner_id.name"/>
@@ -77,9 +95,19 @@
                                         <td class="text-center text-nowrap">
                                             <span t-field="invoice.company_id.name"/>
                                         </td>
-
+                                        <t t-set="total_untax" t-value="total_untax + invoice.amount_untaxed"/>
+                                        <t t-set="total_tax" t-value="total_tax + invoice.amount_tax"/>
+                                        <t t-set="total_amount" t-value="total_amount + invoice.amount_total"/>
                                     </tr>
                                 </t>
+                                <tr style="font-weight:bold;">
+                                    <td colspan="2" class="text-center"><strong>Total</strong></td>
+                                    <td class="text-center"><span t-esc="total_untax" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
+                                    <td class="text-center"><span t-esc="total_tax" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
+                                    <td class="text-center"><span t-esc="total_amount" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </table>
 
@@ -105,9 +133,10 @@
 
                         <div class="oe_structure"/>
                     </div>
-                </t>
+                </div>
             </t>
         </t>
+        <!--        </t>-->
     </template>
 
 </odoo>

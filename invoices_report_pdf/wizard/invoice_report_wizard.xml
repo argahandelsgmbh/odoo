@@ -9,7 +9,7 @@
 				<group col="4">
 					<field name="date_from" required="1"/>
 					<field name="date_to" required="1"/>
-					<field name="company_id" required="1"/>
+					<field name="company_ids" required="1" widget="many2many_tags"/>
 				</group>
 				<footer>
 					<button name="print_report" string="Apply" type="object" class="btn-primary"/>

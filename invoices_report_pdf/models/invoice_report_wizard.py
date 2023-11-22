@@ -7,9 +7,9 @@ class InvoiceReportWizard(models.TransientModel):
 
     date_from = fields.Date('Date From')
     date_to = fields.Date('Date To')
-    company_id = fields.Many2one('res.company')
+    company_ids = fields.Many2many('res.company')
 
     def print_report(self):
         data = {}
-        data['form'] = self.read(['date_from', 'date_to', 'company_id'])[0]
+        data['form'] = self.read(['date_from', 'date_to', 'company_ids'])[0]
         return self.env.ref('invoices_report_pdf.action_invoice_pdf_report').report_action(self, data=data, config=False)
