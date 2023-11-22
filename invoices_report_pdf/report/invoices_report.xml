@@ -63,7 +63,7 @@
                                     <th name="th_value" class="text-center text-nowrap"><strong>Tax Amount</strong></th>
                                     <th name="th_value" class="text-center"><strong>Total</strong></th>
                                     <th name="th_value" class="text-center text-nowrap"><strong>Payment Status</strong></th>
-                                    <th name="th_value" class="text-center"><strong>Company</strong></th>
+<!--                                     <th name="th_value" class="text-center"><strong>Company</strong></th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -92,9 +92,9 @@
                                         <td class="text-center">
                                             <span t-field="invoice.payment_state"/>
                                         </td>
-                                        <td class="text-center text-nowrap">
+<!--                                         <td class="text-center text-nowrap">
                                             <span t-field="invoice.company_id.name"/>
-                                        </td>
+                                        </td> -->
                                         <t t-set="total_untax" t-value="total_untax + invoice.amount_untaxed"/>
                                         <t t-set="total_tax" t-value="total_tax + invoice.amount_tax"/>
                                         <t t-set="total_amount" t-value="total_amount + invoice.amount_total"/>
