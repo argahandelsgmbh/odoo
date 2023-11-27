@@ -11,9 +11,9 @@ class SaleReportCustom(models.AbstractModel):
         rec_model = self.env[model].browse(self.env.context.get('active_id'))
 
         payments = self.env['account.payment'].sudo().search([('date', '>=', rec_model.date_from),
-                                                    ('date', '<=', rec_model.date_to), ('partner_type', '=', 'customer'), ('payment_type', '=', 'inbound'),
+                                                    ('date', '<=', rec_model.date_to),
                                                     ('company_id', 'in', rec_model.company_ids.ids),
-                                                    ('state', '=', 'posted')])
+                                                    ('state', '=', 'posted')]).filtered(lambda l: l.partner_type=='customer' and l.payment_type=='inbound')
         return {
             'docs': rec_model,
             'doc_model': 'payments_report_pdf.payment.report.wizard',
