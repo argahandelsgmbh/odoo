@@ -72,8 +72,8 @@
                                         </td>
 
                                         <td class="text-center">
-                                            <span t-field="invoice.amount"/>
-                                              <t t-set="total_amount" t-value="total_amount + invoice.amount"/>
+                                            <span t-field="invoice.amount_signed"/>
+                                              <t t-set="total_amount" t-value="total_amount + invoice.amount_signed"/>
                                         </td>
 
                         
