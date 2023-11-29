@@ -4,6 +4,7 @@ from odoo import api, models
 
 class SaleReportCustom(models.AbstractModel):
     _name = 'report.payments_report_pdf.report_payment_document'
+    _description='report payment document'
 
     @api.model
     def _get_report_values(self, docids, data=None):
