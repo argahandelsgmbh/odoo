@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <!--    <record id="paperformat_stock_report" model="report.paperformat">-->
+    <!--        <field name="name">Stock Report</field>-->
+    <!--        <field name="default" eval="True"/>-->
+    <!--        <field name="format">custom</field>-->
+    <!--        <field name="page_height">297</field>-->
+    <!--        <field name="page_width">210</field>-->
+    <!--        <field name="orientation">Landscape</field>-->
+    <!--        <field name="margin_top">25</field>-->
+    <!--        <field name="margin_bottom">23</field>-->
+    <!--        <field name="margin_left">20</field>-->
+    <!--        <field name="margin_right">20</field>-->
+    <!--        <field name="header_line" eval="False"/>-->
+    <!--        <field name="header_spacing">20</field>-->
+    <!--        <field name="dpi">90</field>-->
+    <!--    </record>-->
+
     <template id="custom_header_footer_payment">
         <t t-set="company" t-value="res_company"/>
         <div>
@@ -39,7 +55,7 @@
                                     <th name="th_name" class="text-left"><strong>Partner</strong></th>
                                     <th name="th_qty" class="text-center"><strong>Payment No</strong></th>
                                     <th name="th_value" class="text-center text-nowrap"><strong>Amount</strong></th>
-                       
+                                    <th name="th_value" class="text-center"><strong>Company</strong></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -53,14 +69,16 @@
                                             <span t-field="invoice.partner_id.name"/>
                                         </td>
                                         <td class="text-center">
-                                            <span t-field="invoice.ref"/>
+                                            <span t-field="invoice.name"/>
                                         </td>
 
                                         <td class="text-center">
                                             <span t-field="invoice.amount"/>
                                         </td>
 
-                        
+                                        <td class="text-center text-nowrap">
+                                            <span t-field="invoice.company_id.name"/>
+                                        </td>
 
                                         <t t-set="total_amount" t-value="total_amount + invoice.amount"/>
                                     </tr>
@@ -73,12 +91,32 @@
                             </tbody>
                         </table>
 
+                        <!--                     <div class="container" style="margin-top:20px;">-->
+                        <!--                                <table width="100%">-->
+                        <!--                                    <tbody>-->
+                        <!--                                        <tr class="all_border">-->
+                        <!--                                            <td width="50%"/>-->
+                        <!--                                            <td width="5%" >-->
+                        <!--                                            </td>-->
+                        <!--                                            <td width="20%" style="padding-left:15px; text-align: center; font-weight:bold;">-->
+                        <!--                                                <span>Grand Total Value :</span><t t-esc="total_quantity"/>-->
+                        <!--                                            </td>-->
+                        <!--                                            <td width="15%" style=" padding-left:15px; text-align: center; font-weight:bold;">-->
+                        <!--                                                <t t-esc="grand_total_value" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 0}"/>-->
+                        <!--                                            </td>-->
+                        <!--                                        </tr>-->
+                        <!--                                    </tbody>-->
+                        <!--                                </table>-->
+
+                        <!--                            </div>-->
+
 
                         <div class="oe_structure"/>
                     </div>
                 </div>
             </t>
         </t>
+        <!--        </t>-->
     </template>
 
 </odoo>
