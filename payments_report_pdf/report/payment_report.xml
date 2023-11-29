@@ -53,9 +53,8 @@
                             <thead>
                                 <tr>
                                     <th name="th_name" class="text-left"><strong>Partner</strong></th>
-                                    <th name="th_qty" class="text-center"><strong>Payment No</strong></th>
+                                    <th name="th_qty" class="text-center"><strong>reference</strong></th>
                                     <th name="th_value" class="text-center text-nowrap"><strong>Amount</strong></th>
-                                    <th name="th_value" class="text-center"><strong>Company</strong></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,18 +68,16 @@
                                             <span t-field="invoice.partner_id.name"/>
                                         </td>
                                         <td class="text-center">
-                                            <span t-field="invoice.name"/>
+                                            <span t-field="invoice.ref"/>
                                         </td>
 
                                         <td class="text-center">
                                             <span t-field="invoice.amount"/>
+                                              <t t-set="total_amount" t-value="total_amount + invoice.amount"/>
                                         </td>
 
-                                        <td class="text-center text-nowrap">
-                                            <span t-field="invoice.company_id.name"/>
-                                        </td>
-
-                                        <t t-set="total_amount" t-value="total_amount + invoice.amount"/>
+                        
+                                      
                                     </tr>
                                 </t>
                                 <tr style="font-weight:bold;">
