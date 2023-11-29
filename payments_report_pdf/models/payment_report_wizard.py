@@ -4,6 +4,7 @@ from odoo.exceptions import UserError
 
 class PaymentReportWizard(models.TransientModel):
     _name = 'payment.report.wizard'
+    _description = "Payment report wizard"
 
     date_from = fields.Date('Date From')
     date_to = fields.Date('Date To')
