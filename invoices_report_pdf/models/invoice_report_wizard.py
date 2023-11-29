@@ -4,6 +4,7 @@ from odoo.exceptions import UserError
 
 class InvoiceReportWizard(models.TransientModel):
     _name = 'invoice.report.wizard'
+    _description = 'Invoice report wizard'
 
     date_from = fields.Date('Date From')
     date_to = fields.Date('Date To')
