@@ -64,7 +64,7 @@
                                     <th name="th_value" class="text-center text-nowrap"><strong>Untaxed Amount</strong></th>
                                     <th name="th_value" class="text-center text-nowrap"><strong>Tax Amount</strong></th>
                                     <th name="th_value" class="text-center"><strong>Total</strong></th>
-                                    <th name="th_value" class="text-center"><strong>Open amount</strong></th>
+                                    <th name="th_value" class="text-center"><strong>Due amount</strong></th>
                                
                                 </tr>
                             </thead>
