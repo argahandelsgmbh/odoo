@@ -12,7 +12,7 @@ class SaleReportCustom(models.AbstractModel):
         rec_model = self.env[model].browse(self.env.context.get('active_id'))
 
         invoices = self.env['account.move'].sudo().search([('invoice_date', '>=', rec_model.date_from),
-                                                    ('invoice_date', '<=', rec_model.date_to), ('move_type', '=', 'out_invoice'),
+                                                    ('invoice_date', '<=', rec_model.date_to), ('move_type', 'in', ['out_refund','out_invoice'),
                                                     ('company_id', 'in', rec_model.company_ids.ids),
                                                     ('state', '=', 'posted')])
         print(invoices)
