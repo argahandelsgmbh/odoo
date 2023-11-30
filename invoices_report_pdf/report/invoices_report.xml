@@ -59,10 +59,12 @@
                                 <tr>
                                     <th name="th_name" class="text-left"><strong>Sr#</strong></th>
                                     <th name="th_name" class="text-left"><strong>Partner</strong></th>
+                                    <th name="th_name" class="text-left"><strong>Invoice Date</strong></th>
                                     <th name="th_qty" class="text-center"><strong>Invoice No</strong></th>
                                     <th name="th_value" class="text-center text-nowrap"><strong>Untaxed Amount</strong></th>
                                     <th name="th_value" class="text-center text-nowrap"><strong>Tax Amount</strong></th>
                                     <th name="th_value" class="text-center"><strong>Total</strong></th>
+                                    <th name="th_value" class="text-center"><strong>Open amount</strong></th>
                                
                                 </tr>
                             </thead>
@@ -71,6 +73,7 @@
                                 <t t-set="total_untax" t-value="0"/>
                                 <t t-set="total_tax" t-value="0"/>
                                 <t t-set="total_amount" t-value="0"/>
+                                <t t-set="total_due" t-value="0"/>
                                 <t t-foreach="invoices" t-as="invoice">
                                     <tr>
                                         <td class="text-left text-nowrap">
@@ -83,6 +86,9 @@
                                         <td class="text-center">
                                             <span t-field="invoice.name"/>
                                         </td>
+                                           <td class="text-center">
+                                            <span t-field="invoice.invoice_date"/>
+                                        </td>
                                         <td class="text-center">
                                             <span t-field="invoice.amount_untaxed"/>
                                         </td>
@@ -92,10 +98,14 @@
                                         <td class="text-center">
                                             <span t-field="invoice.amount_total_signed"/>
                                         </td>
+                                             <td class="text-center">
+                                            <span t-field="invoice.amount_residual"/>
+                                        </td>
                                   
                                         <t t-set="total_untax" t-value="total_untax + invoice.amount_untaxed"/>
                                         <t t-set="total_tax" t-value="total_tax + invoice.amount_tax"/>
                                         <t t-set="total_amount" t-value="total_amount + invoice.amount_total_signed"/>
+                                        <t t-set="total_due" t-value="total_due + invoice.amount_residual"/>
                                     </tr>
                                 </t>
                                 <tr style="font-weight:bold;">
@@ -103,7 +113,7 @@
                                     <td class="text-center"><span t-esc="total_untax" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
                                     <td class="text-center"><span t-esc="total_tax" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
                                     <td class="text-center"><span t-esc="total_amount" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
-                                    <td></td>
+                                    <td class="text-center"><span t-esc="total_due" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
                                     <td></td>
                                 </tr>
                             </tbody>
