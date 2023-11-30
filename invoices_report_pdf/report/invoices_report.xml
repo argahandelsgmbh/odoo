@@ -76,7 +76,7 @@
                                 <t t-set="total_due" t-value="0"/>
                                 <t t-foreach="invoices" t-as="invoice">
                                     <tr>
-                                        <td class="text-left text-nowrap">
+                                        <td class="text-left">
                                             <span t-esc="sr"/>
                                              <t t-set="sr" t-value="sr + 1"/>
                                         </td>
@@ -84,10 +84,10 @@
                                             <span t-field="invoice.partner_id.name"/>
                                         </td>
                                         <td class="text-center">
-                                            <span t-field="invoice.name"/>
+                                            <span t-field="invoice.invoice_date"/>
                                         </td>
                                            <td class="text-center">
-                                            <span t-field="invoice.invoice_date"/>
+                                            <span t-field="invoice.name"/>
                                         </td>
                                         <td class="text-center">
                                             <span t-field="invoice.amount_untaxed"/>
@@ -113,6 +113,8 @@
                                     <td class="text-center"><span t-esc="total_untax" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
                                     <td class="text-center"><span t-esc="total_tax" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
                                     <td class="text-center"><span t-esc="total_amount" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
+                                    <td></td>
+                                    <td></td>
                                     <td class="text-center"><span t-esc="total_due" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
                                     <td></td>
                                 </tr>
