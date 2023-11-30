@@ -57,6 +57,7 @@
                         <table class="table table-sm" >
                             <thead>
                                 <tr>
+                                    <th name="th_name" class="text-left"><strong>Sr#</strong></th>
                                     <th name="th_name" class="text-left"><strong>Partner</strong></th>
                                     <th name="th_qty" class="text-center"><strong>Invoice No</strong></th>
                                     <th name="th_value" class="text-center text-nowrap"><strong>Untaxed Amount</strong></th>
@@ -66,11 +67,16 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <t t-set="sr" t-value="0"/>
                                 <t t-set="total_untax" t-value="0"/>
                                 <t t-set="total_tax" t-value="0"/>
                                 <t t-set="total_amount" t-value="0"/>
                                 <t t-foreach="invoices" t-as="invoice">
                                     <tr>
+                                        <td class="text-left text-nowrap">
+                                            <span t-esc="sr"/>
+                                             <t t-set="sr" t-value="sr + 1"/>
+                                        </td>
                                         <td class="text-left text-nowrap">
                                             <span t-field="invoice.partner_id.name"/>
                                         </td>
