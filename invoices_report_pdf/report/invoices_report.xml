@@ -84,14 +84,14 @@
                                             <span t-field="invoice.amount_tax"/>
                                         </td>
                                         <td class="text-center">
-                                            <span t-field="invoice.amount_total"/>
+                                            <span t-field="invoice.amount_total_signed"/>
                                         </td>
                                         <td class="text-center">
                                             <span t-field="invoice.payment_state"/>
                                         </td>
                                         <t t-set="total_untax" t-value="total_untax + invoice.amount_untaxed"/>
                                         <t t-set="total_tax" t-value="total_tax + invoice.amount_tax"/>
-                                        <t t-set="total_amount" t-value="total_amount + invoice.amount_total"/>
+                                        <t t-set="total_amount" t-value="total_amount + invoice.amount_total_signed"/>
                                     </tr>
                                 </t>
                                 <tr style="font-weight:bold;">
