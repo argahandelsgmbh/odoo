@@ -109,12 +109,12 @@
                                     </tr>
                                 </t>
                                 <tr style="font-weight:bold;">
+                                          <td></td>
+                                    <td></td>
                                     <td colspan="2" class="text-center"><strong>Total</strong></td>
                                     <td class="text-center"><span t-esc="total_untax" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
                                     <td class="text-center"><span t-esc="total_tax" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
                                     <td class="text-center"><span t-esc="total_amount" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
-                                    <td></td>
-                                    <td></td>
                                     <td class="text-center"><span t-esc="total_due" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></td>
                                     <td></td>
                                 </tr>
