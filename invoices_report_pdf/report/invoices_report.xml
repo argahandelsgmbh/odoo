@@ -63,11 +63,11 @@
                                     <th name="th_value" class="text-center text-nowrap"><strong>Untaxed Amount</strong></th>
                                     <th name="th_value" class="text-center text-nowrap"><strong>Tax Amount</strong></th>
                                     <th name="th_value" class="text-center"><strong>Total</strong></th>
-                                    <th name="th_value" class="text-center text-nowrap"><strong>Payment Status</strong></th>
+                               
                                 </tr>
                             </thead>
                             <tbody>
-                                <t t-set="sr" t-value="0"/>
+                                <t t-set="sr" t-value="1"/>
                                 <t t-set="total_untax" t-value="0"/>
                                 <t t-set="total_tax" t-value="0"/>
                                 <t t-set="total_amount" t-value="0"/>
@@ -92,9 +92,7 @@
                                         <td class="text-center">
                                             <span t-field="invoice.amount_total_signed"/>
                                         </td>
-                                        <td class="text-center">
-                                            <span t-field="invoice.payment_state"/>
-                                        </td>
+                                  
                                         <t t-set="total_untax" t-value="total_untax + invoice.amount_untaxed"/>
                                         <t t-set="total_tax" t-value="total_tax + invoice.amount_tax"/>
                                         <t t-set="total_amount" t-value="total_amount + invoice.amount_total_signed"/>
