@@ -78,7 +78,7 @@ class IstikbalLogNotes(models.Model):
         return
 
     def merge_header(self):
-        recs = self.env['istikbal.shipments.header'].search([])
+        recs = self.env['istikbal.shipments.header'].search([], limit=500, order='id desc')
         combine_obj = self.env['istikbal.combine.shipments']
         combine_records = self.env['istikbal.combine.shipments'].search([])
         for rec in combine_records:
