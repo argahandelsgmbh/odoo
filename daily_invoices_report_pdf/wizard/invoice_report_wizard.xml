@@ -1,0 +1,32 @@
+<odoo>
+
+	<record id="view_invoice_sale_report_wizard_form" model="ir.ui.view">
+		<field name="name">Sale Report wizards</field>
+		<field name="model">invoice.sale.report.wizard</field>
+		<field name="arch" type="xml">
+			<form>
+				<group col="4">
+					<field name="date_from" required="1"/>
+					<field name="date_to" required="1"/>
+					<field name="company_id" required="1"/>
+				</group>
+				<footer>
+					<button name="print_report" string="Apply" type="object" class="btn-primary"/>
+					<button  string="Cancel" type="object" class="btn-secondary" special="cancel"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_invoice_sale_report_wizard_form" model="ir.actions.act_window">
+		<field name="name">Invoices Report</field>
+		<field name="res_model">invoice.sale.report.wizard</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="view_invoice_sale_report_wizard_form"/>
+		<field name="target">new</field>
+	</record>
+
+	<menuitem id="invoice_sale_report_menu_new" action="daily_invoices_report_pdf.action_invoice_sale_report_wizard_form" name="Invoices Sales Report" parent="account.menu_finance_reports"/>
+
+</odoo>
