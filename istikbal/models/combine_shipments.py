@@ -80,7 +80,7 @@ class IstikbalLogNotes(models.Model):
     def merge_header(self):
         recs = self.env['istikbal.shipments.header'].search([], limit=500, order='id desc')
         combine_obj = self.env['istikbal.combine.shipments']
-        combine_records = self.env['istikbal.combine.shipments'].search([])
+        combine_records = self.env['istikbal.combine.shipments'].search([], limit=100, order='id desc')
         for rec in combine_records:
             rec.total_lines = len(rec.detail_ids)
             rec.total_value = sum(rec.detail_ids.mapped('subtotal'))
