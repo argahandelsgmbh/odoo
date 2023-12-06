@@ -71,6 +71,10 @@
                                         <t t-set="grand_total_invoice" t-value="grand_total_invoice + invoice.amount_total" />
                                     </tr>
                                 </t>
+                                <tr style="font-weight:bold;">
+                                    <td class="text-center" colspan="3">Grand Total</td>
+                                    <td class="text-center"><span t-esc="grand_total_invoice"/></td>
+                                </tr>
                             </tbody>
                         </table>
 
@@ -95,12 +99,17 @@
                                         <t t-set="grand_total_paid" t-value="grand_total_paid + payment.amount" />
                                     </tr>
                                 </t>
+                                <tr style="font-weight:bold;">
+                                    <td class="text-center" colspan="2">Grand Total</td>
+                                    <td class="text-center"><span t-esc="grand_total_paid"/></td>
+                                </tr>
                             </tbody>
                         </table>
 
                         <br/>
                         <div class="text-center"><h2>Sale Orders</h2></div>
                         <t t-set="grand_total_advance" t-value="0" />
+                        <t t-set="grand_total_sale" t-value="0" />
                         <table class="table table-sm" >
                             <thead>
                                 <tr>
@@ -122,8 +131,14 @@
                                         <t t-set="advance_amount" t-value="get_order_payment(order)" />
                                         <td class="text-center"><span t-esc="advance_amount"/></td>
                                         <t t-set="grand_total_advance" t-value="grand_total_advance + advance_amount" />
+                                        <t t-set="grand_total_sale" t-value="grand_total_sale + order.amount_total" />
                                     </tr>
                                 </t>
+                                <tr style="font-weight:bold;">
+                                    <td class="text-center" colspan="3"> Grand Total</td>
+                                    <td class="text-center"><span t-esc="grand_total_sale"/></td>
+                                    <td class="text-center"><span t-esc="grand_total_advance"/></td>
+                                </tr>
                             </tbody>
                         </table>
 
