@@ -10,7 +10,7 @@ class SaleQuoteToTicket(models.TransientModel):
 
     name = fields.Char(string='Name')
     sale_id = fields.Many2one('sale.order', string='Sale order')
-    partner_id = fields.Many2one('res.partner', string='Customer',related='sale_id.partner_id')
+    partner_id = fields.Many2one('res.partner', string='Customer', related='sale_id.partner_id')
     sale_line_ids = fields.Many2many('sale.order.line', string='Products')
 
     def create_ticket(self):
@@ -25,7 +25,11 @@ class SaleQuoteToTicket(models.TransientModel):
             'sale_line_id': self.sale_line_ids[0].id,
             'product_id': self.sale_line_ids[0].product_id.id,
             'name': self.sale_id.name,
+            'company_id': self.sale_id.company_id.id,
         }
-        ticket = self.env['helpdesk.ticket'].create(vals)
-        tickets = self.env['helpdesk.ticket'].search([('sale_line_id.order_id', '=',self.sale_id.id )]).ids
-        self.sale_id.ticket_ids=tickets
+        print(self.sale_id.company_id.name)
+        ticket = self.env['helpdesk.ticket'].with_context(default_company_id=self.sale_id.company_id.id).with_company(self.sale_id.company_id.id
+).sudo().create(vals)
+        ticket.company_id = self.sale_id.company_id.id
+        tickets = self.env['helpdesk.ticket'].search([('sale_line_id.order_id', '=', self.sale_id.id)]).ids
+        self.sale_id.ticket_ids = tickets
