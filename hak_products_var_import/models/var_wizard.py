@@ -29,9 +29,9 @@ class ProductVarImport(models.TransientModel):
                 for col in range(s.ncols):
                     elm[first_row[col]] = s.cell_value(row, col)
                 data.append(elm)
+            count=0
+            pcount=0
             for rec in data:
-                count=0
-                pcount=0
                 if rec.get('pricecode'):
                     products = self.env['product.template'].search([("default_code", 'ilike', rec.get('pricecode'))])
                     for p in products:
