@@ -29,6 +29,7 @@ class ProductVarImport(models.TransientModel):
                 for col in range(s.ncols):
                     elm[first_row[col]] = s.cell_value(row, col)
                 data.append(elm)
+            _logger.info('Length %s', len(data))
             count=0
             pcount=0
             for rec in data:
