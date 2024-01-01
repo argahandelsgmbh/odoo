@@ -40,7 +40,7 @@ class ProductVarImport(models.TransientModel):
                         if p.default_code[:l]==rec.get('pricecode'):
                            factor = self.env['product.category'].search([("name", '=', rec.get('category'))],
                                                                         limit=1).factor
-                           _logger.info('Assigned %s price code to %s product', count, p.default_code)
+                           _logger.info('Assigned %s price code to %s product', count, rec.get('pricecode'))
                            p.price_code = rec.get('pricecode')
                            p.standard_price = rec.get('cost')
                            p.list_price=rec.get('cost')*(factor or 1)
