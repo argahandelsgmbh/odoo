@@ -65,6 +65,6 @@
         <field name="target">new</field>
     </record>
 
-    <menuitem id="product_var_import_wizard_root" name="Import Products" parent="stock.menu_stock_inventory_control" action="product_var_import_wizard_action" sequence="21"/>
+<!--    <menuitem id="product_var_import_wizard_root" name="Import Products" parent="stock.menu_stock_inventory_control" action="product_var_import_wizard_action" sequence="21"/>-->
 
 </odoo>

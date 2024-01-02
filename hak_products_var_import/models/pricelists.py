@@ -1,0 +1,37 @@
+import base64
+import xlrd
+import logging
+from odoo import models, fields, api
+_logger = logging.getLogger(__name__)
+
+class ProductVarImport(models.Model):
+    _name = 'pricelist.pricelist'
+    _description = 'Import product pricelists'
+
+    pricecode = fields.Char(string='Pricecode')
+    cost = fields.Char(string='Cost')
+    category = fields.Char(string='Category')
+    imp = fields.Boolean(string='Imported')
+
+    def action_import_products(self):
+            count=0
+            pcount=0
+            for rec in self.filtered(lambda rec: rec.imp==False):
+                pcount = pcount + 1
+                if rec.pricecode:
+                    products = self.env['product.template'].search([("default_code", 'ilike', rec.pricecode), ("standard_price", '=', False)])
+                    for p in products:
+                        count = count + 1
+                        l = len(rec.pricecode)
+                        if p.default_code[:l] == rec.pricecode:
+                            factor = self.env['product.category'].search([("name", '=',rec.category)],limit=1).factor
+                            p.price_code = rec.pricecode
+                            p.standard_price = rec.cost
+                            p.list_price = rec.cost * (factor or 1)
+                            rec.imp=True
+
+                            if count == 250:
+                                _logger.info('Assigned %s price code to %s product', pcount, rec.pricecode)
+                                self._cr.commit()
+                                count = 0
+            _logger.info('All done %s ', pcount)

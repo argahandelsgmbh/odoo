@@ -27,6 +27,7 @@
     'data': [
         'security/ir.model.access.csv',
         'wizard/var_wizard.xml',
+        'wizard/pricelists.xml',
     ],
 
 }
