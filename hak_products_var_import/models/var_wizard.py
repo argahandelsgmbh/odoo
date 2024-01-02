@@ -50,6 +50,7 @@ class ProductVarImport(models.TransientModel):
                            if count==250: 
                                self._cr.commit()
                                count=0
+        _logger.info('All done %s ',pcount)
         return {'type': 'ir.actions.client', 'tag': 'reload'}
 
 
