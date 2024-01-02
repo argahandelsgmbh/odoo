@@ -12,7 +12,7 @@ class ProductTemplateInh(models.Model):
     _inherit = 'product.template'
 
     price_code = fields.Char()
-    factor = fields.Char("categ_id.factor")
+    factor = fields.Float("categ_id.factor")
 
 
 class ProductVarImport(models.TransientModel):
