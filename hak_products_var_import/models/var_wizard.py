@@ -35,6 +35,7 @@ class ProductVarImport(models.TransientModel):
            
             for rec in data:
                 if rec.get('pricecode'):
+                    _logger.info('Assigned %s price code to %s product',  pcount, rec.get('pricecode'))
                     products = self.env['product.template'].search([("default_code", 'ilike', rec.get('pricecode')),("standard_price", '=',False)])
                     for p in products:
                         l=len(rec.get('pricecode'))
