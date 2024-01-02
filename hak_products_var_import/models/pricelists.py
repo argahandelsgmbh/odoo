@@ -30,7 +30,7 @@ class ProductVarImport(models.Model):
                         _logger.info('Assigned %s price code to %s product', pcount, rec.pricecode)
 
     def cron_import_products(self):
-        for rec in self.env['pricelist.pricelist'].search(["imp", '=', False):
+        for rec in self.env['pricelist.pricelist'].search([("imp", '=', False)], order='id DESC'):
             if rec.pricecode and rec.imp == False:
                 l = len(rec.pricecode)
                 products = self.env['product.template'].search(['|',("default_code", 'ilike', rec.pricecode),("pricecode", '=', rec.pricecode)]).filtered(lambda o:o.default_code[:l] == rec.pricecode)
