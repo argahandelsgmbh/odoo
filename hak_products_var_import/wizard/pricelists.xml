@@ -4,7 +4,7 @@
             <field name="name">pricelist.pricelist.tree</field>
             <field name="model">pricelist.pricelist</field>
             <field name="arch" type="xml">
-                <tree default_order="id desc" create="0" edit="0" >
+                <tree>
                     <header>
                         <button name="action_import_products" type="object" string="Import Pricelists"/>
                     </header>
