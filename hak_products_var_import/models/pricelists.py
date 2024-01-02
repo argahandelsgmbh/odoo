@@ -15,7 +15,7 @@ class ProductVarImport(models.Model):
 
     def action_import_products(self):
         pcount = 0
-        for rec in self.env['pricelist.pricelist'].search([("imp", '=', False)]):
+        for rec in self.env['pricelist.pricelist'].search([("imp", '=', False)],limit=10):
             pcount = pcount + 1
             if rec.pricecode and rec.imp == False:
                 l = len(rec.pricecode)
