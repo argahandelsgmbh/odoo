@@ -1,5 +1,16 @@
 <odoo>
 
+            <record id="cron_import_pricelist_scheduler" model="ir.cron">
+            <field name="name">Import pricelist</field>
+            <field name="model_id" ref="model_pricelist_pricelist" />
+            <field name="state">code</field>
+            <field name="active">1</field>
+            <field name="code">model.cron_import_products()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+        </record>
+
            <record id="pricelists_tree" model="ir.ui.view">
             <field name="name">pricelist.pricelist.tree</field>
             <field name="model">pricelist.pricelist</field>
