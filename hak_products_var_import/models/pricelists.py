@@ -19,7 +19,7 @@ class ProductVarImport(models.Model):
             pcount = pcount + 1
             if rec.pricecode and rec.imp == False:
                 l = len(rec.pricecode)
-                products = self.env['product.template'].search(['|',("price_code", '=', rec.pricecode),("default_code", 'ilike', rec.pricecode)]).filtered(lambda o:o.default_code[:l] == rec.pricecode)
+                products = self.env['product.template'].search([("price_code", '=', rec.pricecode)])
                 for p in products:
                     if p.default_code[:l] == rec.pricecode or p.pricecode == rec.pricecode:
                         factor = self.env['product.category'].search([("name", '=', rec.category)], limit=1).factor
