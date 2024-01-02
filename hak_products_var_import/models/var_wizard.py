@@ -17,6 +17,7 @@ class ProductTemplateInh(models.Model):
 
 class ProductVarImport(models.TransientModel):
     _name = 'product.var.import'
+    _description = 'Import products'
 
     file_upload = fields.Binary(string='Upload File')
 
