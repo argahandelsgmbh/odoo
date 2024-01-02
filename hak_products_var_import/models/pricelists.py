@@ -19,7 +19,7 @@ class ProductVarImport(models.Model):
             for rec in self.filtered(lambda rec: rec.imp==False):
                 pcount = pcount + 1
                 if rec.pricecode:
-                    products = self.env['product.template'].search([("default_code", 'ilike', rec.pricecode), ("standard_price", '=', False)])
+                    products = self.env['product.template'].search([("default_code", 'ilike', rec.pricecode)])
                     for p in products:
                         count = count + 1
                         l = len(rec.pricecode)
@@ -27,7 +27,7 @@ class ProductVarImport(models.Model):
                             factor = self.env['product.category'].search([("name", '=',rec.category)],limit=1).factor
                             p.price_code = rec.pricecode
                             p.standard_price = rec.cost
-                            p.list_price = rec.cost * (factor or 1)
+                            p.list_price = rec.cost * factor if factor else 0
                             rec.imp=True
 
                             if count % 250==0:
