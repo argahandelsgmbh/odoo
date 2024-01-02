@@ -19,6 +19,7 @@ class ProductVarImport(models.TransientModel):
 
     def action_import_products(self):
         wb = xlrd.open_workbook(file_contents=base64.decodebytes(self.file_upload))
+        pcount=0
         for s in wb.sheets():
             first_row = []  # Header
             for col in range(s.ncols):
@@ -31,7 +32,7 @@ class ProductVarImport(models.TransientModel):
                 data.append(elm)
             _logger.info('Length %s', len(data))
             count=0
-            pcount=0
+           
             for rec in data:
                 if rec.get('pricecode'):
                     products = self.env['product.template'].search([("default_code", 'ilike', rec.get('pricecode'),("standard_price", '=',False)])
@@ -40,7 +41,7 @@ class ProductVarImport(models.TransientModel):
                         if p.default_code[:l]==rec.get('pricecode'):
                            factor = self.env['product.category'].search([("name", '=', rec.get('category'))],
                                                                         limit=1).factor
-                           _logger.info('Assigned %s price code to %s product', count, rec.get('pricecode'))
+                           _logger.info('Assigned %s price code to %s product',  pcount, rec.get('pricecode'))
                            p.price_code = rec.get('pricecode')
                            p.standard_price = rec.get('cost')
                            p.list_price=rec.get('cost')*(factor or 1)
