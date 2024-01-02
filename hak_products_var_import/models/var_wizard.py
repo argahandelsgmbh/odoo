@@ -35,7 +35,7 @@ class ProductVarImport(models.TransientModel):
            
             for rec in data:
                 if rec.get('pricecode'):
-                    products = self.env['product.template'].search([("default_code", 'ilike', rec.get('pricecode'),("standard_price", '=',False)])
+                    products = self.env['product.template'].search([("default_code", 'ilike', rec.get('pricecode')),("standard_price", '=',False)])
                     for p in products:
                         l=len(rec.get('pricecode'))
                         if p.default_code[:l]==rec.get('pricecode'):
