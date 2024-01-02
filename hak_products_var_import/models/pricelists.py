@@ -23,7 +23,7 @@ class ProductVarImport(models.Model):
                     for p in products:
                         count = count + 1
                         l = len(rec.pricecode)
-                        if p.default_code[:l] == rec.pricecode:
+                        if p.default_code[:l] == rec.pricecode or p.pricecode == rec.pricecode:
                             factor = self.env['product.category'].search([("name", '=',rec.category)],limit=1).factor
                             p.price_code = rec.pricecode
                             p.standard_price = rec.cost
