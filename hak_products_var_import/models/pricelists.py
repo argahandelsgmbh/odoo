@@ -44,3 +44,4 @@ class ProductVarImport(models.Model):
                         p.list_price = rec.cost * factor if factor else 0
                         rec.imp = True
                         _logger.info('Assigned %s price code', rec.pricecode)
+                        self._cr.commit()
