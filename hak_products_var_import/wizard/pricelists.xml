@@ -16,6 +16,20 @@
             </field>
         </record>
 
+
+            <record id="pricelist_details_search" model="ir.ui.view">
+              <field name="name">pricelist.pricelist.search</field>
+            <field name="model">pricelist.pricelist</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="pricecode"/>
+                    <field name="cost"/>
+                    <field name="category"/>
+                    <field name="imp"/>
+                </search>
+            </field>
+        </record>
+
         <record id="action_pricelist_pricelist" model="ir.actions.act_window">
             <field name="name">Import Pricelists</field>
             <field name="res_model">pricelist.pricelist</field>
