@@ -9,7 +9,7 @@ class ProductVarImport(models.Model):
     _description = 'Import product pricelists'
 
     pricecode = fields.Char(string='Pricecode')
-    cost = fields.Char(string='Cost')
+    cost = fields.Float(string='Cost')
     category = fields.Char(string='Category')
     imp = fields.Boolean(string='Imported')
 
