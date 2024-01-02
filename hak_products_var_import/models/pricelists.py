@@ -14,14 +14,12 @@ class ProductVarImport(models.Model):
     imp = fields.Boolean(string='Imported')
 
     def action_import_products(self):
-            count=0
             pcount=0
-            for rec in self:
+            for rec in self.env['pricelist.pricelist'].search([("imp", '=', False)]):
                 pcount = pcount + 1
                 if rec.pricecode and rec.imp==False:
                     products = self.env['product.template'].search([("default_code", 'ilike', rec.pricecode)])
                     for p in products:
-                        count = count + 1
                         l = len(rec.pricecode)
                         if p.default_code[:l] == rec.pricecode or p.pricecode == rec.pricecode:
                             factor = self.env['product.category'].search([("name", '=',rec.category)],limit=1).factor
@@ -29,9 +27,6 @@ class ProductVarImport(models.Model):
                             p.standard_price = rec.cost
                             p.list_price = rec.cost * factor if factor else 0
                             rec.imp=True
-
-                            if count % 250==0:
-                                _logger.info('Assigned %s price code to %s product', pcount, rec.pricecode)
-                                self._cr.commit()
-                                count = 0
+                            _logger.info('Assigned %s price code to %s product', pcount, rec.pricecode)
+                            self._cr.commit()
             _logger.info('All done %s ', pcount)
