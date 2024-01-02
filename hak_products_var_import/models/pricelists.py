@@ -18,7 +18,7 @@ class ProductVarImport(models.Model):
             pcount=0
             for rec in self:
                 pcount = pcount + 1
-                if rec.pricecode:
+                if rec.pricecode and rec.imp==False:
                     products = self.env['product.template'].search([("default_code", 'ilike', rec.pricecode)])
                     for p in products:
                         count = count + 1
