@@ -16,7 +16,7 @@ class ProductVarImport(models.Model):
     def action_import_products(self):
             count=0
             pcount=0
-            for rec in self.filtered(lambda rec: rec.imp==False):
+            for rec in self:
                 pcount = pcount + 1
                 if rec.pricecode:
                     products = self.env['product.template'].search([("default_code", 'ilike', rec.pricecode)])
