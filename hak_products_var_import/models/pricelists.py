@@ -30,7 +30,7 @@ class ProductVarImport(models.Model):
                             p.list_price = rec.cost * (factor or 1)
                             rec.imp=True
 
-                            if count == 250:
+                            if count % 250==0:
                                 _logger.info('Assigned %s price code to %s product', pcount, rec.pricecode)
                                 self._cr.commit()
                                 count = 0
