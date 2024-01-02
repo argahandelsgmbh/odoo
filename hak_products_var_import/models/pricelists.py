@@ -14,19 +14,37 @@ class ProductVarImport(models.Model):
     imp = fields.Boolean(string='Imported')
 
     def action_import_products(self):
-            pcount=0
-            for rec in self.env['pricelist.pricelist'].search([("imp", '=', False)]):
-                pcount = pcount + 1
-                if rec.pricecode and rec.imp==False:
-                    products = self.env['product.template'].search([("default_code", 'ilike', rec.pricecode)])
-                    for p in products:
-                        l = len(rec.pricecode)
-                        if p.default_code[:l] == rec.pricecode or p.pricecode == rec.pricecode:
-                            factor = self.env['product.category'].search([("name", '=',rec.category)],limit=1).factor
-                            p.price_code = rec.pricecode
-                            p.standard_price = rec.cost
-                            p.list_price = rec.cost * factor if factor else 0
-                            rec.imp=True
-                            _logger.info('Assigned %s price code to %s product', pcount, rec.pricecode)
-                            self._cr.commit()
-            _logger.info('All done %s ', pcount)
+        pcount = 0
+        for rec in self.env['pricelist.pricelist'].search([("imp", '=', False)]):
+            pcount = pcount + 1
+            if rec.pricecode and rec.imp == False:
+                products = self.env['product.template'].search([("default_code", 'ilike', rec.pricecode)])
+                for p in products:
+                    l = len(rec.pricecode)
+                    if p.default_code[:l] == rec.pricecode or p.pricecode == rec.pricecode:
+                        factor = self.env['product.category'].search([("name", '=', rec.category)], limit=1).factor
+                        p.price_code = rec.pricecode
+                        p.standard_price = rec.cost
+                        p.list_price = rec.cost * factor if factor else 0
+                        rec.imp = True
+                        _logger.info('Assigned %s price code to %s product', pcount, rec.pricecode)
+                        self._cr.commit()
+        _logger.info('All done %s ', pcount)
+
+    def cron_import_products(self):
+        pcount = 0
+        for rec in self.env['pricelist.pricelist'].search([("imp", '=', False)],limit=500):
+            pcount = pcount + 1
+            if rec.pricecode and rec.imp == False:
+                products = self.env['product.template'].search([("default_code", 'ilike', rec.pricecode)])
+                for p in products:
+                    l = len(rec.pricecode)
+                    if p.default_code[:l] == rec.pricecode or p.pricecode == rec.pricecode:
+                        factor = self.env['product.category'].search([("name", '=', rec.category)], limit=1).factor
+                        p.price_code = rec.pricecode
+                        p.standard_price = rec.cost
+                        p.list_price = rec.cost * factor if factor else 0
+                        rec.imp = True
+                        _logger.info('Assigned %s price code to %s product', pcount, rec.pricecode)
+                        self._cr.commit()
+        _logger.info('All done %s ', pcount)
