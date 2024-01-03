@@ -32,7 +32,7 @@ class ProductVarImport(models.Model):
                         _logger.info('No product found %s', rec.pricecode)
 
     def cron_import_products(self):
-        for rec in self.env['pricelist.pricelist'].search([("imp", '=', False)],order='id desc', limit=500):
+        for rec in self.env['pricelist.pricelist'].search([("imp", '=', False)]):
             if rec.pricecode and rec.imp == False:
                 l = len(rec.pricecode)
                 products = self.env['product.template'].search(['|',('price_code','=',rec.pricecode),('default_code','!=',False)]).filtered(lambda o:o.default_code[:l] == rec.pricecode)
@@ -43,5 +43,5 @@ class ProductVarImport(models.Model):
                         p.standard_price = rec.cost
                         p.list_price = rec.cost * factor if factor else 0
                         rec.imp = True
-                        _logger.info('Assigned %s price code', rec.pricecode)
+                        _logger.info('Cron Assigned %s price code', rec.pricecode)
                         self._cr.commit()
