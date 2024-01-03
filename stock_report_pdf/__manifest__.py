@@ -20,7 +20,7 @@
     'version': '15.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'stock'],
+    'depends': ['base', 'stock','l10n_de'],
 
     # always loaded
     'data': [
