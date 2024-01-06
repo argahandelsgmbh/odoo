@@ -12,7 +12,13 @@ class ProductTemplateInh(models.Model):
     _inherit = 'product.template'
 
     price_code = fields.Char()
-    factor = fields.Float("categ_id.factor")
+    factor = fields.Float(related="categ_id.factor",string="Factor")
+
+    @api.onchange('factor','categ_id','standard_price')
+    def _onchange_categ_factor(self):
+        for rec in self:
+            factor = self.env['product.category'].search([("name", '=', rec.categ_id.name)],limit=1).factor
+            rec.list_price=rec.standard_price*factor
 
 
 class ProductVarImport(models.TransientModel):
@@ -39,13 +45,14 @@ class ProductVarImport(models.TransientModel):
             for rec in data:
                 if rec.get('pricecode'):
                     _logger.info('Pricecode %s ', rec.get('pricecode'))
-                    products = self.env['product.template'].search([("default_code", 'ilike', rec.get('pricecode')), ("standard_price", '=', False)])
+                    products = self.env['product.template'].search(
+                        [("default_code", 'ilike', rec.get('pricecode')), ("standard_price", '=', False)])
                     for p in products:
                         l = len(rec.get('pricecode'))
                         if p.default_code[:l] == rec.get('pricecode'):
                             factor = self.env['product.category'].search([("name", '=', rec.get('category'))],
                                                                          limit=1).factor
-                            
+
                             p.price_code = rec.get('pricecode')
                             p.standard_price = rec.get('cost')
                             p.list_price = rec.get('cost') * (factor or 1)
