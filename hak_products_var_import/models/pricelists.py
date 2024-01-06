@@ -25,8 +25,8 @@ class ProductVarImport(models.Model):
                         categ_id = self.env['product.category'].search([("name", '=', rec.category)], limit=1)
                         p.price_code = rec.pricecode
                         p.standard_price = rec.cost
-                        p.categ_id = rec.categ_id.id
-                        p.list_price = rec.cost * rec.categ_id.factor
+                        p.categ_id = categ_id.id
+                        p.list_price = rec.cost * categ_id.factor
                         rec.imp = True
                         _logger.info('Assigned %s price code to %s product', pcount, rec.pricecode)
                     else:
@@ -42,8 +42,8 @@ class ProductVarImport(models.Model):
                         categ_id = self.env['product.category'].search([("name", '=', rec.category)], limit=1)
                         p.price_code = rec.pricecode
                         p.standard_price = rec.cost
-                        p.categ_id = rec.categ_id.id
-                        p.list_price = rec.cost * rec.categ_id.factor
+                        p.categ_id = categ_id.id
+                        p.list_price = rec.cost * categ_id.factor
                         rec.imp = True
                         _logger.info('Cron Assigned %s price code', rec.pricecode)
                         self._cr.commit()
