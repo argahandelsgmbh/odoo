@@ -22,10 +22,11 @@ class ProductVarImport(models.Model):
                 products = self.env['product.template'].search(['|',('price_code','=',rec.pricecode),('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code[:l] == rec.pricecode)
                 for p in products:
                     if p.default_code[:l] == rec.pricecode or p.pricecode == rec.pricecode:
-                        factor = self.env['product.category'].search([("name", '=', rec.category)], limit=1).factor
+                        categ_id = self.env['product.category'].search([("name", '=', rec.category)], limit=1)
                         p.price_code = rec.pricecode
                         p.standard_price = rec.cost
-                        p.list_price = rec.cost * factor if factor else 0
+                        p.categ_id = rec.categ_id.id
+                        p.list_price = rec.cost * rec.categ_id.factor
                         rec.imp = True
                         _logger.info('Assigned %s price code to %s product', pcount, rec.pricecode)
                     else:
@@ -38,10 +39,11 @@ class ProductVarImport(models.Model):
                 products = self.env['product.template'].search([('default_code','!=',False)]).filtered(lambda o:o.default_code[:l] == rec.pricecode)
                 for p in products:
                     if p.default_code[:l] == rec.pricecode or p.pricecode == rec.pricecode:
-                        factor = self.env['product.category'].search([("name", '=', rec.category)], limit=1).factor
+                        categ_id = self.env['product.category'].search([("name", '=', rec.category)], limit=1)
                         p.price_code = rec.pricecode
                         p.standard_price = rec.cost
-                        p.list_price = rec.cost * factor if factor else 0
+                        p.categ_id = rec.categ_id.id
+                        p.list_price = rec.cost * rec.categ_id.factor
                         rec.imp = True
                         _logger.info('Cron Assigned %s price code', rec.pricecode)
                         self._cr.commit()
