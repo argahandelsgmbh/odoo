@@ -9,7 +9,7 @@ from odoo import models, fields
 
 class StockReportWizard(models.TransientModel):
     _name = 'stock.report.wizard'
-    _description = 'Advance Payment'
+    _description = 'Report wizard'
 
     company_ids = fields.Many2many('res.company')
 
