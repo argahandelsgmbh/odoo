@@ -73,7 +73,7 @@ class StockReportWizard(models.TransientModel):
         total_value = 0
         i = 7
         for line in lines:
-
+            quantity=line.inventory_quantity_auto_apply if line.inventory_quantity_auto_apply >0 else 0
             worksheet[work].write(i, 3, line.product_id.default_code, text_center)
             worksheet[work].write(i, 4,  line.product_id.name, text_center)
             worksheet[work].write(i, 5,  line.inventory_quantity_auto_apply, text_center)
