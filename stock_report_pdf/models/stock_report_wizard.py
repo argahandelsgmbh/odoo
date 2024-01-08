@@ -74,15 +74,16 @@ class StockReportWizard(models.TransientModel):
         i = 7
         for line in lines:
             quantity=line.inventory_quantity_auto_apply if line.inventory_quantity_auto_apply >0 else 0
-            worksheet[work].write(i, 3, line.product_id.default_code, text_center)
-            worksheet[work].write(i, 4,  line.product_id.name, text_center)
-            worksheet[work].write(i, 5,  quantity, text_center)
-            worksheet[work].write(i, 6,  line.product_id.standard_price, text_center)
-            worksheet[work].write(i, 7,  line.product_id.standard_price * quantity, text_center)
-            total_qty += line.inventory_quantity_auto_apply
-            total_cost += line.product_id.standard_price
-            total_value += line.product_id.standard_price * line.inventory_quantity_auto_apply
-            i = i + 1
+            if line.inventory_quantity_auto_apply >0:
+                worksheet[work].write(i, 3, line.product_id.default_code, text_left)
+                worksheet[work].write(i, 4,  line.product_id.name, text_left)
+                worksheet[work].write(i, 5,  quantity, text_center)
+                worksheet[work].write(i, 6,  line.product_id.standard_price, text_center)
+                worksheet[work].write(i, 7,  line.product_id.standard_price * quantity, text_center)
+                total_qty += line.inventory_quantity_auto_apply
+                total_cost += line.product_id.standard_price
+                total_value += line.product_id.standard_price * line.inventory_quantity_auto_apply
+                i = i + 1
 
         worksheet[work].write(i, 4, "Total", header_style)
         worksheet[work].write(i, 5,  "{:.3f}".format(total_qty), header_style)
