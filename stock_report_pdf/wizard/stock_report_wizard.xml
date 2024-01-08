@@ -10,7 +10,7 @@
 					<field name="company_ids" widget="many2many_tags"/>
 				</group>
 				<footer>
-					<button name="print_report" string="PDF" type="object" class="btn-primary"/>
+<!-- 					<button name="print_report" string="PDF" type="object" class="btn-primary"/> -->
 					<button name="export_excel" string="Excel" type="object" class="btn-primary"/>
 					<button  string="Cancel" type="object" class="btn-secondary" special="cancel"/>
 				</footer>
