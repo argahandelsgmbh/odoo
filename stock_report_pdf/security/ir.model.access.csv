@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_stock_report_wizard,access.stock.report.wizard,model_stock_report_wizard,,1,1,1,1
+access_stock_excel,access.stock.excel,model_stock_excel,,1,1,1,1

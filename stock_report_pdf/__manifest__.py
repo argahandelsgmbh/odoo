@@ -9,18 +9,17 @@
         Stock Report
     """,
 
-    'author': "HAKTechnologies",
-    'website': "http://www.HAKTechnologies.com",
-    'license': 'OPL-1',
+    'author': "Atif Ali",
+    'website': "http://www.yourcompany.com",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '15.1',
+    'version': '1.0.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'stock','l10n_de'],
+    'depends': ['base', 'stock'],
 
     # always loaded
     'data': [

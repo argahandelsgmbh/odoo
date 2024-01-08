@@ -92,7 +92,7 @@
                                     <td style="font-weight:bold;" class="text-right" colspan="2">Total</td>
                                     <td style="font-weight:bold;"><span t-esc="total_qty"/></td>
                                     <td style="font-weight:bold;"><span t-esc="total_cost"/></td>
-                                    <td style="font-weight:bold;"><span t-esc="total_qty"/></td>
+                                    <td style="font-weight:bold;"><span t-esc="total_value"/></td>
                                 </tr>
                             </tbody>
                         </table>

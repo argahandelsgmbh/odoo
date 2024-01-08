@@ -4,7 +4,6 @@ from odoo import api, models
 
 class StockReportCustom(models.AbstractModel):
     _name = 'report.stock_report_pdf.report_stock_document'
-    _description = 'report_stock_document'
 
     @api.model
     def _get_report_values(self, docids, data=None):
