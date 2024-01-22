@@ -8,6 +8,12 @@ class SaleOrderLineInh(models.Model):
 
     product_status = fields.Selection([('stock', 'Stock'), ('po', 'PO')], string='Product Status', default='stock')
 
+    def _get_protected_fields(self):
+        return [
+            # 'product_id', 'name', 'price_unit', 'product_uom', 'product_uom_qty',
+            # 'tax_id', 'analytic_tag_ids'
+        ]
+
 
 class SaleOrderRFQ(models.Model):
     _inherit = 'sale.order'

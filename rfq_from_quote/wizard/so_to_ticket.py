@@ -27,9 +27,8 @@ class SaleQuoteToTicket(models.TransientModel):
             'name': self.sale_id.name,
             'company_id': self.sale_id.company_id.id,
         }
-        print(self.sale_id.company_id.name)
         ticket = self.env['helpdesk.ticket'].with_context(default_company_id=self.sale_id.company_id.id).with_company(self.sale_id.company_id.id
-).sudo().create(vals)
+        ).sudo().create(vals)
         ticket.company_id = self.sale_id.company_id.id
         tickets = self.env['helpdesk.ticket'].search([('sale_line_id.order_id', '=', self.sale_id.id)]).ids
         self.sale_id.ticket_ids = tickets

@@ -50,7 +50,7 @@ class HelpdeskTicket(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Create RFQ/PO',
             'view_id': self.env.ref('helpdesk_to_po.helpdesk_to_rfq_wizard_form', False).id,
-            'context': {'default_ticket_id': self.id, 'default_vendor_id': self.partner_id.id, 'default_helpdesk_lines': lines},
+            'context': {'default_ticket_id': self.id,  'default_helpdesk_lines': lines},
             'target': 'new',
             'res_model': 'helpdesk.rfq.wizard',
             'view_mode': 'form'}
