@@ -10,6 +10,7 @@ class ProductVarImport(models.Model):
 
     pricecode = fields.Char(string='Pricecode')
     cost = fields.Float(string='Cost')
+    sales_price = fields.Float(string='Sales Price')
     category = fields.Char(string='Category')
     imp = fields.Boolean(string='Imported')
 
@@ -30,7 +31,10 @@ class ProductVarImport(models.Model):
                             p.list_price = rec.cost * categ_id.factor
                         else:
                             if not p.list_price:
-                                p.list_price = rec.cost
+                                if rec.sales_price:
+                                    p.list_price = rec.sales_price
+                                else:
+                                    p.list_price = rec.cost
                             
                         rec.imp = True
                         _logger.info('Assigned %s price code to %s product', pcount, rec.pricecode)
@@ -52,7 +56,10 @@ class ProductVarImport(models.Model):
                             p.list_price = rec.cost * categ_id.factor
                         else:
                             if not p.list_price:
-                                p.list_price = rec.cost
+                                if rec.sales_price:
+                                    p.list_price = rec.sales_price
+                                else:
+                                    p.list_price = rec.cost
                         rec.imp = True
                         _logger.info('Cron Assigned %s price code', rec.pricecode)
                         self._cr.commit()
