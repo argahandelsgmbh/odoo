@@ -13,6 +13,8 @@ class ProductVarImport(models.Model):
     sales_price = fields.Float(string='Sales Price')
     category = fields.Char(string='Category')
     imp = fields.Boolean(string='Imported')
+    product_tmpl_id = fields.Many2one('product.template',string='Product Template')
+    
 
     def action_import_products(self):
         pcount = 0
@@ -26,6 +28,7 @@ class ProductVarImport(models.Model):
                         categ_id = self.env['product.category'].search([("name", '=', rec.category)], limit=1)
                         p.price_code = rec.pricecode
                         p.standard_price = rec.cost
+                        rec.product_tmpl_id=p.id
                         if categ_id:
                             p.categ_id = categ_id.id
                             p.list_price = rec.cost * categ_id.factor
@@ -51,6 +54,7 @@ class ProductVarImport(models.Model):
                         categ_id = self.env['product.category'].search([("name", '=', rec.category)], limit=1)
                         p.price_code = rec.pricecode
                         p.standard_price = rec.cost
+                        rec.product_tmpl_id=p.id
                         if categ_id:
                             p.categ_id = categ_id.id
                             p.list_price = rec.cost * categ_id.factor
