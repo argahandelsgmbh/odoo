@@ -26,7 +26,7 @@ class ProductVarImport(models.Model):
                         p.price_code = rec.pricecode
                         p.standard_price = rec.cost
                         p.categ_id = categ_id.id
-                        p.list_price = rec.cost * categ_id.factor
+                        p.list_price = rec.cost * categ_id.factor or 1
                         rec.imp = True
                         _logger.info('Assigned %s price code to %s product', pcount, rec.pricecode)
                     else:
@@ -43,7 +43,7 @@ class ProductVarImport(models.Model):
                         p.price_code = rec.pricecode
                         p.standard_price = rec.cost
                         p.categ_id = categ_id.id
-                        p.list_price = rec.cost * categ_id.factor
+                        p.list_price = rec.cost * categ_id.factor or 1
                         rec.imp = True
                         _logger.info('Cron Assigned %s price code', rec.pricecode)
                         self._cr.commit()
