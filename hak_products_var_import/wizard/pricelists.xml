@@ -21,6 +21,8 @@
                     </header>
                     <field name="pricecode"/>
                     <field name="cost"/>
+                    <field name="sales_price"/>
+                    <field name="product_tmpl_id"/>
                     <field name="category"/>
                     <field name="imp"/>
                 </tree>
