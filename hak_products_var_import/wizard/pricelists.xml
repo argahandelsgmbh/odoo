@@ -25,6 +25,7 @@
                     <field name="product_tmpl_id"/>
                     <field name="category"/>
                     <field name="imp"/>
+                        <field name="not_imp"/>
                 </tree>
             </field>
         </record>
