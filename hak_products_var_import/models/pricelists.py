@@ -13,7 +13,7 @@ class ProductVarImport(models.Model):
     sales_price = fields.Float(string='Sales Price')
     category = fields.Char(string='Category')
     imp = fields.Boolean(string='Imported')
-    not_imp = fields.Boolean(string='Not Imported')
+    not_imp = fields.Boolean(string='No Odoo Product')
     product_tmpl_id = fields.Many2one('product.template',string='Product Template')
     
 
