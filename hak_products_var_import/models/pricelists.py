@@ -49,7 +49,7 @@ class ProductVarImport(models.Model):
             if rec.pricecode and rec.imp == False:
                 l = len(rec.pricecode)
                 products = self.env['product.template'].search([('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code[:l] == rec.pricecode)
-                
+                count=0
                 for p in products:
                     _logger.info('Products %s ', p.default_code[:l])
                     if p.default_code[:l] == rec.pricecode or p.pricecode == rec.pricecode:
@@ -67,5 +67,9 @@ class ProductVarImport(models.Model):
                                 else:
                                     p.list_price = rec.cost
                         rec.imp = True
+                        count=count+1
                         _logger.info('Cron Assigned %s price code', rec.pricecode)
-                        self._cr.commit()
+                        _logger.info('Count', count)
+                        if count%300==0:
+                            self._cr.commit()
+                            break
