@@ -73,6 +73,4 @@ class ProductVarImport(models.Model):
                         count=count+1
                         # _logger.info('Cron Assigned %s price code', rec.pricecode)
                         _logger.info('Count %s ', count)
-                        if count%300==0:
-                            self._cr.commit()
-                            break
+                        self._cr.commit()
