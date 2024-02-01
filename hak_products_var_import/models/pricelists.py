@@ -47,7 +47,7 @@ class ProductVarImport(models.Model):
                         _logger.info('No product found %s', rec.pricecode)
 
     def cron_import_products(self):
-        for rec in self.env['pricelist.pricelist'].search([("imp", '=', False),("not_imp",'=',False)],limit=30):
+        for rec in self.env['pricelist.pricelist'].search([("imp", '=', False),("not_imp",'=',False)],limit=500):
             if rec.pricecode and rec.imp == False:
                 l = len(rec.pricecode)
                 products = self.env['product.template'].search([('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code[:l] == rec.pricecode)
