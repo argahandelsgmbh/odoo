@@ -51,7 +51,6 @@ class ProductVarImport(models.Model):
                 products = self.env['product.template'].search([('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code[:l] == rec.pricecode)
                 count=0
                 for p in products:
-                    _logger.info('Products %s ', p.default_code[:l])
                     if p.default_code[:l] == rec.pricecode or p.pricecode == rec.pricecode:
                         categ_id = self.env['product.category'].search([("name", '=', rec.category)], limit=1)
                         p.price_code = rec.pricecode
