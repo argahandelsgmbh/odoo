@@ -47,13 +47,14 @@ class ProductVarImport(models.Model):
                         _logger.info('No product found %s', rec.pricecode)
 
     def cron_import_products(self):
+        count=0
         for rec in self.env['pricelist.pricelist'].search([("imp", '=', False),("not_imp",'=',False)],limit=500):
             if rec.pricecode and rec.imp == False:
                 l = len(rec.pricecode)
                 products = self.env['product.template'].search(['|',('price_code','=',rec.pricecode),('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code[:l] == rec.pricecode)
                 if not products:
                     rec.not_imp=True
-                count=0
+                
                 for p in products:
                     if p.default_code[:l] == rec.pricecode or p.pricecode == rec.pricecode:
                         categ_id = self.env['product.category'].search([("name", '=', rec.category)], limit=1)
