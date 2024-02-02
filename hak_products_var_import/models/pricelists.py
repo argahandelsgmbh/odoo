@@ -62,7 +62,7 @@ class ProductVarImport(models.Model):
                         rec.product_tmpl_id=p.id
                         if categ_id:
                             p.categ_id = categ_id.id
-                            p.list_price = rec.cost * categ_id.factor
+                            p.list_price = (rec.cost * categ_id.factor) if categ_id.factor else rec.cost
                         else:
                             if not p.list_price:
                                 if rec.sales_price:
