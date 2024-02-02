@@ -13,12 +13,13 @@ class ProductTemplateInh(models.Model):
 
     price_code = fields.Char()
     factor = fields.Float(related="categ_id.factor",string="Factor")
+    price_update = fields.Boolean(string="Updated by Pricelist",readonly=True)
 
     @api.onchange('factor','categ_id','standard_price')
     def _onchange_categ_factor(self):
         for rec in self:
-            factor = self.env['product.category'].search([("name", '=', rec.categ_id.name)],limit=1).factor
-            rec.list_price=rec.standard_price*factor
+            if rec.factor:
+                rec.list_price=rec.standard_price*rec.factor
 
 
 class ProductVarImport(models.TransientModel):
