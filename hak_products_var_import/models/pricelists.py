@@ -48,7 +48,7 @@ class ProductVarImport(models.Model):
 
     def cron_import_products(self):
         count=0
-        for rec in self.env['pricelist.pricelist'].search([("imp", '=', False),("not_imp",'=',False)],limit=500):
+        for rec in self.env['pricelist.pricelist'].search([("imp", '=', False),("not_imp",'=',False)],limit=200):
             if rec.pricecode and rec.imp == False:
                 l = len(rec.pricecode)
                 products = self.env['product.template'].search(['|',('price_code','=',rec.pricecode),('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code[:l] == rec.pricecode)
