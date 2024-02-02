@@ -71,7 +71,7 @@ class ProductVarImport(models.Model):
                                 else:
                                     p.list_price = rec.cost
                         rec.imp = True
-                        rec.price_update = True
+                        p.price_update = True
                         count=count+1
                         # _logger.info('Cron Assigned %s price code', rec.pricecode)
                         _logger.info('Count %s ', count)
