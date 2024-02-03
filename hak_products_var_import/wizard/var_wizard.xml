@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='barcode']" position="before">
                 <field name="price_code"/>
+                <field name="pricelist_price"/>
                 <field name="factor"/>
                 <field name="price_update"/>
             </xpath>
