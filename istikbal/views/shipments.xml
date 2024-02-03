@@ -156,9 +156,11 @@
                                 <field name="shipMentNumber" />
                                 <field name="bdtCode" />
                                 <field name="productCode" />
+                                <field name="product_id" />
                                 <field name="productPackage" />
                                 <field name="quantity" />
                                 <field name="price" />
+                                <field name="pricelist_price" />
                                 <field name="subtotal" />
                                 <field name="orderReference" />
                                 <field name="bdtOrderNumber" />
