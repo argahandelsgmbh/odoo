@@ -53,7 +53,7 @@
                                         <field name="productCode" />
                                         <field name="productPackage" optional="hide"/>
                                         <field name="quantity" />
-                                        <field name="price" />
+                                        <field name="pricelist_price" />
                                         <field name="subtotal" />
                                         <field name="picking_id" />
                                         <field name="orderReference" />
