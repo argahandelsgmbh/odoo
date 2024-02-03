@@ -329,6 +329,7 @@ class Integration(models.TransientModel):
             odooDetails = self.env['istikbal.shipments.details'].search([('shipMentNumber', '=', detail['shipmentNumber']), ('pakageEnum', '=', detail['packageNum'])],limit=1)
             purchase_order = self.env['purchase.order'].search(['|', ('name', '=', detail['customerItemCode']), ('origin', '=',detail['customerOrderReference'])], limit=1)
             sale_order = self.env['sale.order'].search([('name', '=', detail['customerOrderReference'])], limit=1)
+            product = self.env['sale.order'].search([('default_code', '=', detail['productCode'])], limit=1)
             if odooDetails:
 
                 odooDetails=self.env['istikbal.shipments.details'].write({
@@ -358,6 +359,9 @@ class Integration(models.TransientModel):
                     'company_id': company_id,
                     'purchase_id': purchase_order.id,
                     'sale_id': sale_order.id,
+                    'product_id': product.id,
+                    
+                    
                 })
 
             else:
@@ -389,6 +393,7 @@ class Integration(models.TransientModel):
                     'company_id': company_id,
                     'purchase_id': purchase_order.id,
                     'sale_id': sale_order.id,
+                    'product_id': product.id,
                 })
 
             istikbal_details = self.env['istikbal.shipments.details'].search([('customerItemCode', '=', detail['customerItemCode'])])
