@@ -12,6 +12,7 @@ class ProductTemplateInh(models.Model):
     _inherit = 'product.template'
 
     price_code = fields.Char()
+    pricelist_price = fields.Char("Pricelist Price")
     factor = fields.Float(related="categ_id.factor",string="Factor")
     price_update = fields.Boolean(string="Updated by Pricelist",readonly=True)
 
