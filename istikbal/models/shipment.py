@@ -107,6 +107,7 @@ class ShipmentDetails(models.Model):
     
     def _generate_qr_code(self):
         for i in self:
+            i.product_id=self.env['product.template'].search([("default_code",'=',i.productCode)],limit=1).id
             qr = qrcode.QRCode(
                 version=1,
                 error_correction=qrcode.constants.ERROR_CORRECT_L,
