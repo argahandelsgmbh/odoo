@@ -101,11 +101,13 @@ class ShipmentDetails(models.Model):
     price = fields.Float()
     picking_id = fields.Many2one('stock.picking')
     subtotal = fields.Float()
-    pricelist_price = fields.Float("Pricelist Price")
+    pricelist_price = fields.Float("Pricelist Price",related="product_id.pricelist_price")
+    product_id = fields.Many2one("product.template","Product")
 
     
     def _generate_qr_code(self):
         for i in self:
+            i.
             qr = qrcode.QRCode(
                 version=1,
                 error_correction=qrcode.constants.ERROR_CORRECT_L,
