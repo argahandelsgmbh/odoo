@@ -47,6 +47,7 @@
                             <page name="istikbal_shipment_details" string="Details">
                                 <field name="detail_ids" mode="tree" >
                                     <tree delete="1" default_order="is_received">
+                                        <field name="product_id" optional="hide"/>
                                         <field name="shipment_id" optional="hide"/>
                                         <field name="pakageEnum" optional="hide"/>
                                         <field name="bdtCode" optional="hide"/>
