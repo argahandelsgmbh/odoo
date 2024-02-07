@@ -56,6 +56,7 @@ class ProductVarImport(models.Model):
                     rec.not_imp=True
                 
                 for p in products:
+                    p.price_update = False
                     if p.default_code[:l] == rec.pricecode or p.pricecode == rec.pricecode:
                         categ_id = self.env['product.category'].search([("name", '=', rec.category)], limit=1)
                         p.price_code = rec.pricecode
