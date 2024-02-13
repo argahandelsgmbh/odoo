@@ -129,6 +129,6 @@
     'price': 195.00,
     'currency': 'EUR',
     'images': ['static/description/alan_description.png','static/description/alan_screenshot.gif'],
-    'application': False,
-    'auto_install': False,
+    'application':True,
+    'auto_install':True,
 }
