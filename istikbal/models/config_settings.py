@@ -273,7 +273,7 @@ class Integration(models.TransientModel):
         for detail in details:
             odooHeader = self.env['istikbal.shipments.header'].search([('shipmentNumber', '=', detail['shipmentNumber'])],limit=1)
             odooDetails = self.env['istikbal.shipments.details'].search([('shipMentNumber', '=', detail['shipmentNumber']), ('pakageEnum', '=', detail['packageNum'])],limit=1)
-            product = self.env['sale.order'].search([('default_code', '=', detail['productCode'])], limit=1)
+            product = self.env['product.product'].search([('default_code', '=', detail['productCode'])], limit=1)
 
             if odooDetails:
                 odooDetails=self.env['istikbal.shipments.details'].write({
