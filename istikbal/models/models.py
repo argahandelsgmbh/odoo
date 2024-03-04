@@ -20,8 +20,6 @@ class InheritPT(models.Model):
     syncedIstikbal = fields.Boolean('Synced Istikbal', default=False)
     material_ids = fields.Many2many('istikbal.materials', string='Istikbal Materials')
 
-
-
     def get_material(self):
         try:
             username, password = self.env['res.config.settings'].search([],limit = 1).getCredentials()
