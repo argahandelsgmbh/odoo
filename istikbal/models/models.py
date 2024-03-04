@@ -41,7 +41,7 @@ class InheritPT(models.Model):
             else:
                 raise UserError(_("Please add product info code."))
         except Exception as e:
-           raise UserError str(e)
+           raise UserError(_(str(e)))
 
 
 
