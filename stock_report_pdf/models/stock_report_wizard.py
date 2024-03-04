@@ -1,4 +1,5 @@
 import base64
+from datetime import datetime, timedelta
 from io import BytesIO
 
 import xlwt
@@ -12,6 +13,7 @@ class StockReportWizard(models.TransientModel):
     _description = 'Report wizard'
 
     company_ids = fields.Many2many('res.company')
+    date = fields.Datetime('Inventory at Date')
 
     def print_report(self):
         data = {}
@@ -50,18 +52,28 @@ class StockReportWizard(models.TransientModel):
         # date_to = self.date_from.strftime("%d-%m-%Y")
         worksheet[work] = workbook.add_sheet('Stock Report')
 
+        # if self.company_ids:
+        #     lines = self.env['stock.quant'].sudo().search([('company_id', 'in', self.company_ids.ids)])
+        # else:
+        #     lines = self.env['stock.quant'].sudo().search([])
+            
         if self.company_ids:
-            lines = self.env['stock.quant'].sudo().search([('company_id', 'in', self.company_ids.ids)])
+            products = self.env['product.product'].search([('company_id', 'in', self.company_ids.ids)])
         else:
-            lines = self.env['stock.quant'].sudo().search([])
-        # worksheet[work].write_merge(0, 1, 3, 6, ','.join(lines.mapped('company_id.name')), main_header_style)
-        worksheet[work].write_merge(3, 4, 3, 7, ','.join(lines.mapped('company_id.name')), main_date_style)
+            products = self.env['product.product'].search([])
 
-        worksheet[work].write(6, 3, 'Default Code', header_style)
-        worksheet[work].write(6, 4, 'Product', header_style)
-        worksheet[work].write(6, 5, 'Quantity on Hand', header_style)
-        worksheet[work].write(6, 6, 'Cost Price', header_style)
-        worksheet[work].write(6, 7, 'Total Value', header_style)
+        inventory_date = self.date
+        if not self.date:
+            inventory_date = datetime.today()
+        
+        worksheet[work].write_merge(3, 4, 3, 7, ','.join(self.company_ids.mapped('name')), main_date_style)
+        worksheet[work].write_merge(5, 6, 4, 6, (inventory_date+timedelta(hours=5)).strftime("%d-%m-%Y %H:%M:%S"), main_date_style)
+
+        worksheet[work].write(8, 3, 'Default Code', header_style)
+        worksheet[work].write(8, 4, 'Product', header_style)
+        worksheet[work].write(8, 5, 'Quantity on Hand', header_style)
+        worksheet[work].write(8, 6, 'Cost Price', header_style)
+        worksheet[work].write(8, 7, 'Total Value', header_style)
 
         worksheet[work].col(3).width = 256 * 20
         worksheet[work].col(4).width = 256 * 30
@@ -71,19 +83,33 @@ class StockReportWizard(models.TransientModel):
         total_qty = 0
         total_cost = 0
         total_value = 0
-        i = 7
-        for line in lines:
-            quantity=line.inventory_quantity_auto_apply if line.inventory_quantity_auto_apply >0 else 0
-            if line.inventory_quantity_auto_apply >0:
-                worksheet[work].write(i, 3, line.product_id.default_code, text_left)
-                worksheet[work].write(i, 4,  line.product_id.name, text_left)
-                worksheet[work].write(i, 5,  quantity, text_center)
-                worksheet[work].write(i, 6,  line.product_id.standard_price, text_center)
-                worksheet[work].write(i, 7,  line.product_id.standard_price * quantity, text_center)
-                total_qty += line.inventory_quantity_auto_apply
-                total_cost += line.product_id.standard_price
-                total_value += line.product_id.standard_price * line.inventory_quantity_auto_apply
-                i = i + 1
+        i = 9
+        res = products._compute_quantities_dict(lot_id=False, owner_id=False, package_id=False, from_date=False,
+                                               to_date=inventory_date)
+        for product in products:
+            qty = res[product.id]['qty_available']
+            worksheet[work].write(i, 3, product.default_code, text_left)
+            worksheet[work].write(i, 4, product.name, text_left)
+            worksheet[work].write(i, 5, qty, text_center)
+            worksheet[work].write(i, 6, product.standard_price, text_center)
+            worksheet[work].write(i, 7, product.standard_price * qty, text_center)
+            total_qty += qty
+            total_cost += product.standard_price
+            total_value += product.standard_price * qty
+            i = i + 1
+        
+        # for line in lines:
+        #     quantity = line.inventory_quantity_auto_apply if line.inventory_quantity_auto_apply > 0 else 0
+        #     if line.inventory_quantity_auto_apply > 0:
+        #         worksheet[work].write(i, 3, line.product_id.default_code, text_left)
+        #         worksheet[work].write(i, 4,  line.product_id.name, text_left)
+        #         worksheet[work].write(i, 5,  quantity, text_center)
+        #         worksheet[work].write(i, 6,  line.product_id.standard_price, text_center)
+        #         worksheet[work].write(i, 7,  line.product_id.standard_price * quantity, text_center)
+        #         total_qty += (line.inventory_quantity_auto_apply)
+        #         total_cost += line.product_id.standard_price
+        #         total_value += line.product_id.standard_price * line.inventory_quantity_auto_apply
+        #         i = i + 1
 
         worksheet[work].write(i, 4, "Total", header_style)
         worksheet[work].write(i, 5,  "{:.3f}".format(total_qty), header_style)
