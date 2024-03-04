@@ -13,7 +13,7 @@ class StockReportWizard(models.TransientModel):
     _description = 'Report wizard'
 
     company_ids = fields.Many2many('res.company')
-    date = fields.Datetime('Inventory at Date')
+    date = fields.Date('Inventory at Date')
 
     def print_report(self):
         data = {}
@@ -48,15 +48,8 @@ class StockReportWizard(models.TransientModel):
         for l in range(0, 1):
             worksheet.append(l)
         work = 0
-        # date_from = self.date_from.strftime("%d-%m-%Y")
-        # date_to = self.date_from.strftime("%d-%m-%Y")
         worksheet[work] = workbook.add_sheet('Stock Report')
 
-        # if self.company_ids:
-        #     lines = self.env['stock.quant'].sudo().search([('company_id', 'in', self.company_ids.ids)])
-        # else:
-        #     lines = self.env['stock.quant'].sudo().search([])
-            
         if self.company_ids:
             products = self.env['product.product'].search([('company_id', 'in', self.company_ids.ids)])
         else:
@@ -67,7 +60,7 @@ class StockReportWizard(models.TransientModel):
             inventory_date = datetime.today()
         
         worksheet[work].write_merge(3, 4, 3, 7, ','.join(self.company_ids.mapped('name')), main_date_style)
-        worksheet[work].write_merge(5, 6, 4, 6, (inventory_date+timedelta(hours=5)).strftime("%d-%m-%Y %H:%M:%S"), main_date_style)
+        worksheet[work].write_merge(5, 6, 4, 6, (inventory_date).strftime("%d-%m-%Y"), main_date_style)
 
         worksheet[work].write(8, 3, 'Default Code', header_style)
         worksheet[work].write(8, 4, 'Product', header_style)
