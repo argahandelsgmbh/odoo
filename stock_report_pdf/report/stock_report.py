@@ -10,7 +10,7 @@ class StockReportCustom(models.AbstractModel):
         model = self.env.context.get('active_model')
         rec_model = self.env[model].browse(self.env.context.get('active_id'))
         if rec_model.company_ids:
-            lines = self.env['stock.quant'].search([('company_id', 'in', rec_model.company_ids.ids)])
+            lines = self.env['stock.quant'].search([])
         else:
             lines = self.env['stock.quant'].search([])
         return {
