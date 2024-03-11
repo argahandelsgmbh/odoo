@@ -74,7 +74,7 @@
                                             <span t-esc="line.product_id.name"/>
                                         </td>
                                         <td class="text-center">
-                                            <span t-esc="line.inventory_quantity_auto_apply"/>
+                                            <span t-if="line.inventory_quantity_auto_apply > 0 " t-esc="line.inventory_quantity_auto_apply"/>
                                         </td>
                                         <td class="text-center">
                                             <span t-field="line.product_id.standard_price"/>
