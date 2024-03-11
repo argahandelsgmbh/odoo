@@ -10,9 +10,9 @@ class StockReportCustom(models.AbstractModel):
         model = self.env.context.get('active_model')
         rec_model = self.env[model].browse(self.env.context.get('active_id'))
         if rec_model.company_ids:
-            lines = self.env['stock.quant'].search([])
+            lines = self.env['stock.quant'].search([("inventory_quantity_auto_apply",'!=',0)])
         else:
-            lines = self.env['stock.quant'].search([])
+            lines = self.env['stock.quant'].search([("inventory_quantity_auto_apply",'!=',0)])
         return {
             'doc_ids': self.ids,
             'doc_model': 'stock_report_pdf.stock.report.wizard',
