@@ -81,45 +81,31 @@ class StockReportWizard(models.TransientModel):
                                                to_date=inventory_date)
         for product in products:
             qty = res[product.id]['qty_available']
-            print(work)
-            worksheet[work].write(i, 3, product.default_code, text_left)
-            worksheet[work].write(i, 4, product.name, text_left)
-            worksheet[work].write(i, 5, qty, text_center)
-            worksheet[work].write(i, 6, product.standard_price, text_center)
-            worksheet[work].write(i, 7, product.standard_price * qty, text_center)
-            total_qty += qty
-            total_cost += product.standard_price
-            total_value += product.standard_price * qty
-            i = i + 1
-            if i == 65500:
-                i = 9
-                work += 1
-                worksheet[work] = workbook.add_sheet('Stock Report '+ str(work))
-                worksheet[work].write(8, 3, 'Default Code', header_style)
-                worksheet[work].write(8, 4, 'Product', header_style)
-                worksheet[work].write(8, 5, 'Quantity on Hand', header_style)
-                worksheet[work].write(8, 6, 'Cost Price', header_style)
-                worksheet[work].write(8, 7, 'Total Value', header_style)
-
-                worksheet[work].col(3).width = 256 * 20
-                worksheet[work].col(4).width = 256 * 30
-                worksheet[work].col(5).width = 256 * 20
-                worksheet[work].col(6).width = 256 * 20
-                worksheet[work].col(7).width = 256 * 20
-
-        
-        # for line in lines:
-        #     quantity = line.inventory_quantity_auto_apply if line.inventory_quantity_auto_apply > 0 else 0
-        #     if line.inventory_quantity_auto_apply > 0:
-        #         worksheet[work].write(i, 3, line.product_id.default_code, text_left)
-        #         worksheet[work].write(i, 4,  line.product_id.name, text_left)
-        #         worksheet[work].write(i, 5,  quantity, text_center)
-        #         worksheet[work].write(i, 6,  line.product_id.standard_price, text_center)
-        #         worksheet[work].write(i, 7,  line.product_id.standard_price * quantity, text_center)
-        #         total_qty += (line.inventory_quantity_auto_apply)
-        #         total_cost += line.product_id.standard_price
-        #         total_value += line.product_id.standard_price * line.inventory_quantity_auto_apply
-        #         i = i + 1
+            if qty > 0:
+                worksheet[work].write(i, 3, product.default_code, text_left)
+                worksheet[work].write(i, 4, product.name, text_left)
+                worksheet[work].write(i, 5, qty, text_center)
+                worksheet[work].write(i, 6, product.standard_price, text_center)
+                worksheet[work].write(i, 7, product.standard_price * qty, text_center)
+                total_qty += qty
+                total_cost += product.standard_price
+                total_value += product.standard_price * qty
+                i = i + 1
+                if i == 65500:
+                    i = 9
+                    work += 1
+                    worksheet[work] = workbook.add_sheet('Stock Report '+ str(work))
+                    worksheet[work].write(8, 3, 'Default Code', header_style)
+                    worksheet[work].write(8, 4, 'Product', header_style)
+                    worksheet[work].write(8, 5, 'Quantity on Hand', header_style)
+                    worksheet[work].write(8, 6, 'Cost Price', header_style)
+                    worksheet[work].write(8, 7, 'Total Value', header_style)
+    
+                    worksheet[work].col(3).width = 256 * 20
+                    worksheet[work].col(4).width = 256 * 30
+                    worksheet[work].col(5).width = 256 * 20
+                    worksheet[work].col(6).width = 256 * 20
+                    worksheet[work].col(7).width = 256 * 20
 
         worksheet[work].write(i, 4, "Total", header_style)
         worksheet[work].write(i, 5,  "{:.3f}".format(total_qty), header_style)
