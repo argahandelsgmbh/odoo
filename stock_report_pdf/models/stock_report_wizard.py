@@ -45,7 +45,7 @@ class StockReportWizard(models.TransientModel):
                             num_format_str='0.00')
         workbook = xlwt.Workbook()
         worksheet = []
-        for l in range(0, 1):
+        for l in range(0, 3):
             worksheet.append(l)
         work = 0
         worksheet[work] = workbook.add_sheet('Stock Report')
@@ -81,6 +81,7 @@ class StockReportWizard(models.TransientModel):
                                                to_date=inventory_date)
         for product in products:
             qty = res[product.id]['qty_available']
+            print(work)
             worksheet[work].write(i, 3, product.default_code, text_left)
             worksheet[work].write(i, 4, product.name, text_left)
             worksheet[work].write(i, 5, qty, text_center)
@@ -90,6 +91,22 @@ class StockReportWizard(models.TransientModel):
             total_cost += product.standard_price
             total_value += product.standard_price * qty
             i = i + 1
+            if i == 65500:
+                i = 9
+                work += 1
+                worksheet[work] = workbook.add_sheet('Stock Report '+ str(work))
+                worksheet[work].write(8, 3, 'Default Code', header_style)
+                worksheet[work].write(8, 4, 'Product', header_style)
+                worksheet[work].write(8, 5, 'Quantity on Hand', header_style)
+                worksheet[work].write(8, 6, 'Cost Price', header_style)
+                worksheet[work].write(8, 7, 'Total Value', header_style)
+
+                worksheet[work].col(3).width = 256 * 20
+                worksheet[work].col(4).width = 256 * 30
+                worksheet[work].col(5).width = 256 * 20
+                worksheet[work].col(6).width = 256 * 20
+                worksheet[work].col(7).width = 256 * 20
+
         
         # for line in lines:
         #     quantity = line.inventory_quantity_auto_apply if line.inventory_quantity_auto_apply > 0 else 0
@@ -112,11 +129,11 @@ class StockReportWizard(models.TransientModel):
         fp = BytesIO()
         workbook.save(fp)
         export_id = self.env['stock.excel'].create(
-            {'excel_file': base64.encodebytes(fp.getvalue()), 'file_name': 'Stock Report.xls'})
+            {'excel_file': base64.encodebytes(fp.getvalue()), 'file_name': 'StockReport.xlsx'})
 
         return {
             'type': 'ir.actions.act_url',
-            'url': 'web/content/?model=stock.excel&field=excel_file&download=true&id=%s&filename=Stock Report.xls' % (
+            'url': 'web/content/?model=stock.excel&field=excel_file&download=true&id=%s&filename=StockReport.xlsx' % (
                 export_id.id),
             'target': 'new', }
 
