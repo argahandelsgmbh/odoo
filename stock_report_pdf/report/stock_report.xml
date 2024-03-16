@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <report
+            id="report_xlsx_stock"
+            model="stock.report.wizard"
+            string="Print to XLSX"
+            report_type="xlsx"
+            name="stock_report_pdf.report_id_xlsx"
+            file="stock_report_pdf.report_id_xlsx"
+    />
+
     <record id="paper_format_stock_report" model="report.paperformat">
         <field name="name">Stock Report</field>
         <field name="default" eval="True"/>
@@ -74,7 +83,7 @@
                                             <span t-esc="line.product_id.name"/>
                                         </td>
                                         <td class="text-center">
-                                            <span t-if="line.inventory_quantity_auto_apply > 0 " t-esc="line.inventory_quantity_auto_apply"/>
+                                            <span t-esc="line.inventory_quantity_auto_apply"/>
                                         </td>
                                         <td class="text-center">
                                             <span t-field="line.product_id.standard_price"/>
