@@ -21,7 +21,7 @@
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'sale',
-    'version': '0.1',
+    'version': '17.1',
     'license': 'OPL-1',
 
     # any module necessary for this one to work correctly
