@@ -14,10 +14,10 @@ class CalendarEvent(models.Model):
     sale_id = fields.Many2one('sale.order')
 
 
-class RepairOrderLineInh(models.Model):
-    _inherit = 'repair.line'
+# class RepairOrderLineInh(models.Model):
+#     _inherit = 'repair.line'
 
-    qty_available = fields.Float(related='product_id.qty_available')
+#     qty_available = fields.Float(related='product_id.qty_available')
 
 
 class RepairOrderInh(models.Model):
