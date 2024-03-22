@@ -21,8 +21,8 @@
                         <button string="Receive PO" type="object" name="action_receive_po"/>
                     </header>
                     <sheet>
-                         <widget name="web_ribbon" title="Total Received" attrs="{'invisible': [('is_all_received', '=', False)]}"/>
-                         <widget name="web_ribbon" bg_color="bg-danger" title="Not Totally Received" attrs="{'invisible': [('is_all_received', '=', True)]}"/>
+                         <widget name="web_ribbon" title="Total Received" />
+                         <widget name="web_ribbon" bg_color="bg-danger" title="Not Totally Received" />
                         <group>
                             <group>
                                 <field name="truckPlate" />
