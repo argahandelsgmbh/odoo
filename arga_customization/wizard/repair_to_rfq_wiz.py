@@ -9,7 +9,7 @@ class SaleQuoteToRfq(models.TransientModel):
     name = fields.Char(string='Name')
     repair_id = fields.Many2one('repair.order', string='Repair')
     vendor_id = fields.Many2one('res.partner', string='Vendor')
-    repair_line_ids = fields.Many2many('repair.line', string='Products')
+    # repair_line_ids = fields.Many2many('repair.line', string='Products')
     select_po_rfq = fields.Selection([('rfq', 'RFQ'), ('po', 'PO')], string='Create', default='rfq')
 
     def create_rfq(self):
