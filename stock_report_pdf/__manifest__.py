@@ -24,9 +24,9 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'wizard/stock_report_wizard.xml',
-        'report/stock_report.xml',
+        # 'security/ir.model.access.csv',
+        # 'wizard/stock_report_wizard.xml',
+        # 'report/stock_report.xml',
     ],
 
 }
