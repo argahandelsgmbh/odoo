@@ -15,7 +15,7 @@
                         </group>
                         <notebook>
                             <page string="Products">
-                                <field name="repair_line_ids" domain="[('repair_id', '=', repair_id)]">
+<!--                                 <field name="repair_line_ids" domain="[('repair_id', '=', repair_id)]">
                                     <tree create="0">
                                         <field name="product_id"/>
                                         <field name="product_uom_qty"/>
@@ -23,7 +23,7 @@
                                         <field name="price_unit"/>
                                         <field name="tax_id" widget="many2many_tags"/>
                                     </tree>
-                                </field>
+                                </field> -->
                             </page>
                         </notebook>
                     </sheet>
