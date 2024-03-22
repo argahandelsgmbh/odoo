@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_repair_to_rfq_user,repair.rfq.wizard,model_repair_rfq_wizard,,1,1,1,1
-access_repair_delivery_wizard_user,repair.delivery.wizard,model_repair_delivery_wizard,,1,1,1,1
