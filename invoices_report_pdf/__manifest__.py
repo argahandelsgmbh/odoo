@@ -25,9 +25,9 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'wizard/invoice_report_wizard.xml',
-        'report/invoices_report.xml',
+        # 'security/ir.model.access.csv',
+        # 'wizard/invoice_report_wizard.xml',
+        # 'report/invoices_report.xml',
     ],
 
 }
