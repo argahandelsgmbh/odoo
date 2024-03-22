@@ -25,10 +25,10 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'data/sequence.xml',
-        'views/views.xml',
-        'wizard/help_to_rfq_wiz_view.xml',
+        # 'security/ir.model.access.csv',
+        # 'data/sequence.xml',
+        # 'views/views.xml',
+        # 'wizard/help_to_rfq_wiz_view.xml',
 
     ],
    
