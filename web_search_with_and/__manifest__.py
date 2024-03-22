@@ -15,5 +15,5 @@
     #         "/web_search_with_and/static/src/js/control_panel_model_extension.js",
     #         "/web_search_with_and/static/src/js/search_bar.js",
     #     ],
-    },
+    # },
 }
