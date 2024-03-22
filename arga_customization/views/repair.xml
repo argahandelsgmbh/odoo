@@ -8,8 +8,8 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//header" position="inside">
-                    <button name="open_repair_to_rfq_wizard" string="Create RFQ/PO" type="object" attrs="{'invisible': [('state', '!=', 'confirmed')]}" class="oe_highlight"/>
-                    <button name="open_repair_to_delivery_wizard" string="Create Delivery" type="object" attrs="{'invisible': [('state', '!=', 'confirmed')]}" class="oe_highlight"/>
+                    <button name="open_repair_to_rfq_wizard" string="Create RFQ/PO" type="object"/>
+                    <button name="open_repair_to_delivery_wizard" string="Create Delivery" type="object" class="oe_highlight"/>
                 </xpath>
 
                 <div name="button_box" position="inside">
