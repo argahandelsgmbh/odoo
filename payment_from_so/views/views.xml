@@ -26,7 +26,7 @@
                             <field name="payment_ids" />
                         </group>
                         <group>
-                            <field name="invoice_ids" "/>
+                            <field name="invoice_ids"/>
                         </group>
                           <group>
                         <field name="picking_ids" string="Receipts"/>
