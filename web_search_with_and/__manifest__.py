@@ -8,6 +8,7 @@
     "author": "Versada UAB, ACSONE SA/NV, Serincloud, Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "category": "web",
+    'license': 'OPL-1',
     "website": "https://github.com/OCA/web",
     "depends": ["web"],
     # "assets": {
