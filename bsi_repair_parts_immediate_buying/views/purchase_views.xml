@@ -6,9 +6,9 @@
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//form//field[@name='date_order']" position='after'>
+<!--                 <xpath expr="//form//field[@name='date_order']" position='after'>
                     <field name="repair_order_id"/>
-                </xpath>                                  
+                </xpath>                                   -->
             </field>
         </record>  
     </data>   
