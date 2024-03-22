@@ -18,7 +18,7 @@ class PurchaseOrderInh(models.Model):
         ('done', 'Done'), ('cancel', 'Cancelled')
     ], string='Receipt Status', readonly=True, copy=False)
 
-    total_lines = fields.Integer(compute="_compute_sale_order")
+    total_lines = fields.Integer()
     total_istikbal_lines = fields.Integer(string="Istikbal Lines")
     total_bellona_lines = fields.Integer(string="Bellona Lines")
     total_received = fields.Integer(string="Received")
