@@ -29,19 +29,19 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'views/account.xml',
-        'views/helpdesk.xml',
-        'views/partner.xml',
-        'views/picking.xml',
-        'views/project.xml',
-        'views/purchase.xml',
-        'views/repair.xml',
-        'views/sale.xml',
-        'views/report_delivery_order.xml',
-        'wizard/repair_to_rfq_wiz_view.xml',
-        'wizard/repair_to_delivery_wiz_view.xml',
-        "data/sequencer.xml"
+        # 'security/ir.model.access.csv',
+        # 'views/account.xml',
+        # 'views/helpdesk.xml',
+        # 'views/partner.xml',
+        # 'views/picking.xml',
+        # 'views/project.xml',
+        # 'views/purchase.xml',
+        # 'views/repair.xml',
+        # 'views/sale.xml',
+        # 'views/report_delivery_order.xml',
+        # 'wizard/repair_to_rfq_wiz_view.xml',
+        # 'wizard/repair_to_delivery_wiz_view.xml',
+        # "data/sequencer.xml"
     ],
 
 }
