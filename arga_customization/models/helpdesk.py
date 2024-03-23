@@ -21,6 +21,6 @@ class HelpdeskTicketInh(models.Model):
             'ticket_id': self.id,
             'location_id': location.id,
             'sale_order_id': self.sale_line_id.order_id.id or False,
-            'product_id': self.product_id.id,
-            'product_uom': self.product_id.uom_id.id,
+            # 'product_id': self.product_id.id,
+            # 'product_uom': self.product_id.uom_id.id,
         })
