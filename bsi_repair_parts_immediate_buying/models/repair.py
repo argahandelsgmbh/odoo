@@ -29,15 +29,15 @@ class RepairLine(models.Model):
 
     def action_Purchase_part(self):
         self.ensure_one()
-        purchase_order = self.env['purchase.order'].search([(
-            'repair_order_id', '=', self.repair_id.id)])
-        context = {'default_repair_order_id': self.repair_id.id,
-                   'default_order_line': [(0, 0, {"product_id": self.id,
-                                                  "name": self.name,
-                                                  "product_qty": self.product_uom_qty,
-                                                  "price_unit": self.price_unit,
-                                                  "product_uom": self.product_uom.id,
-                                                  "date_planned": date.today()})]}
+        # purchase_order = self.env['purchase.order'].search([(
+        #     'repair_order_id', '=', self.repair_id.id)])
+        # context = {'default_repair_order_id': self.repair_id.id,
+        #            'default_order_line': [(0, 0, {"product_id": self.id,
+        #                                           "name": self.name,
+        #                                           "product_qty": self.product_uom_qty,
+        #                                           "price_unit": self.price_unit,
+        #                                           "product_uom": self.product_uom.id,
+        #                                           "date_planned": date.today()})]}
         return {
           'res_model': 'purchase.order',
           'type': 'ir.actions.act_window',
