@@ -24,14 +24,14 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'views/res_settings_config.xml',
-        'views/otto_market_settings.xml',
-        'views/product_brand.xml',
-        'views/product_category_group.xml',
-        'views/product_category.xml',
-        'views/product_template.xml',
-        'wizard/message_wizard.xml',
-        'data/import_scheduler.xml',
+        # 'security/ir.model.access.csv',
+        # 'views/res_settings_config.xml',
+        # 'views/otto_market_settings.xml',
+        # 'views/product_brand.xml',
+        # 'views/product_category_group.xml',
+        # 'views/product_category.xml',
+        # 'views/product_template.xml',
+        # 'wizard/message_wizard.xml',
+        # 'data/import_scheduler.xml',
     ],
 }
