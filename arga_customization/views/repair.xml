@@ -1,6 +1,6 @@
 <odoo>
     <data>
-
+<!-- 
         <record id="repair_order_view_form_inherit" model="ir.ui.view">
             <field name='name'>repair.order.form.inherit</field>
             <field name="model">repair.order</field>
@@ -199,6 +199,6 @@
                 </xpath>
             </field>
         </record>
-
+ -->
     </data>
 </odoo>
