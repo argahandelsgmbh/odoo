@@ -9,10 +9,10 @@
                 <xpath expr="//header" position="inside">
                     <button string="Create Repair" type="object" name="action_create_repair"  class="oe_highlight"/>
                 </xpath>
-                <xpath expr="//field[@name='user_id']" position="after">
+<!--                 <xpath expr="//field[@name='user_id']" position="after">
                     <field name="product_id"/>
                     <field name="sale_line_id"/>
-                </xpath>
+                </xpath> -->
             </field>
         </record>
     </data>
