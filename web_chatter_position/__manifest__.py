@@ -10,6 +10,6 @@
     "license": "LGPL-3",
     "category": "Extra Tools",
     "depends": ["web", "mail"],
-    "data": ["views/res_users.xml", "views/web.xml"],
+    "data": [],
     
 }
