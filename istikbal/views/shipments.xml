@@ -160,7 +160,7 @@
                                 <field name="productPackage" />
                                 <field name="quantity" />
                                 <field name="price" />
-                                <field name="pricelist_price" />
+<!--                                <field name="pricelist_price" />-->
                                 <field name="subtotal" />
                                 <field name="orderReference" />
                                 <field name="bdtOrderNumber" />
