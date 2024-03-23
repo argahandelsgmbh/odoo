@@ -11,10 +11,10 @@
                 </button>
             </div>  
             
-            <xpath expr="//tree//field[@name='price_subtotal']" position='after' >
-                <field name="is_purchase_part_show" invisible="1"/>
-                <button name="action_Purchase_part" string="Purchase Part" type="object" class="oe_highlight" attrs="{'invisible': [('is_purchase_part_show', '=', False)]}"/>
-            </xpath>
+<!--            <xpath expr="//tree//field[@name='price_subtotal']" position='after' >-->
+<!--                <field name="is_purchase_part_show" invisible="1"/>-->
+<!--                <button name="action_Purchase_part" string="Purchase Part" type="object" class="oe_highlight"/>-->
+<!--            </xpath>-->
         </field>
     </record>
 </odoo>

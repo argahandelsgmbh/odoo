@@ -23,7 +23,7 @@ from datetime import date, time
 
 
 class RepairLine(models.Model):
-    _inherit = "repair.line"
+    _inherit = "stock.move"
 
     is_purchase_part_show = fields.Boolean(string="Is Purchase Part Show")
 
