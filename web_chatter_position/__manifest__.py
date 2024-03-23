@@ -11,7 +11,10 @@
     "category": "Extra Tools",
     "images": ["static/description/images/web_chatter_position.png"],
     "depends": ["web", "mail"],
-    "data": ["views/res_users.xml", "views/web.xml"],
+    "data": [
+        # "views/res_users.xml",
+        # "views/web.xml"
+    ],
     # "assets": {
     #     "web.assets_backend": [
     #         "/web_chatter_position/static/src/scss/chatter_position.scss",
