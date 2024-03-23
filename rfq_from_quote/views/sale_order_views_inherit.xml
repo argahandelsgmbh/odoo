@@ -23,7 +23,7 @@
                 <xpath expr="//group[@name='note_group']" position="after">
                 <group>
                     <group>
-                        <field name="ticket_ids" attrs="{'invisible': [('ticket_ids', '=', [])]}"/>
+                        <field name="ticket_ids" />
                     </group>
                 </group>
                 </xpath>
