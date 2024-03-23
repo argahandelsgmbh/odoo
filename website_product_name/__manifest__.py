@@ -14,8 +14,7 @@
         """,
     'depends': ['website_sale', 'product'],
     'data': [
-        'views/website_template.xml',
-        'views/product_views.xml',
+
     ],
     'images': ['static/description/banner.png'],
     'installable': True,
