@@ -19,13 +19,13 @@
     'version': '17.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'stock', 'report_xlsx'],
+    'depends': [],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'wizard/stock_report_wizard.xml',
-        'report/stock_report.xml',
+        # 'security/ir.model.access.csv',
+        # 'wizard/stock_report_wizard.xml',
+        # 'report/stock_report.xml',
     ],
 
 }
