@@ -25,9 +25,9 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'wizard/var_wizard.xml',
-        'wizard/pricelists.xml',
+        # 'security/ir.model.access.csv',
+        # 'wizard/var_wizard.xml',
+        # 'wizard/pricelists.xml',
     ],
 
 }
