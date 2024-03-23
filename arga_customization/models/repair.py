@@ -15,7 +15,7 @@ class CalendarEvent(models.Model):
 
 
 class RepairOrderLineInh(models.Model):
-    _inherit = 'repair.line'
+    _inherit = 'stock.move'
 
     qty_available = fields.Float(related='product_id.qty_available')
 

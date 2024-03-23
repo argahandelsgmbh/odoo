@@ -8,8 +8,8 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//header" position="inside">
-                    <button name="open_repair_to_rfq_wizard" string="Create RFQ/PO" type="object" attrs="{'invisible': [('state', '!=', 'confirmed')]}" class="oe_highlight"/>
-                    <button name="open_repair_to_delivery_wizard" string="Create Delivery" type="object" attrs="{'invisible': [('state', '!=', 'confirmed')]}" class="oe_highlight"/>
+                    <button name="open_repair_to_rfq_wizard" string="Create RFQ/PO" type="object" class="oe_highlight"/>
+                    <button name="open_repair_to_delivery_wizard" string="Create Delivery" type="object" class="oe_highlight"/>
                 </xpath>
 
                 <div name="button_box" position="inside">
@@ -98,12 +98,12 @@
                     <field name="commitment_date"  string="Expected date" readonly="0"/>
                 </xpath>
 
-                <xpath expr="//field[@name='tax_totals_json']" position="after">
-                    <field name="total_invoice_amount"/>
-                    <field name="total_invoice_paid"/>
-                    <field name="total_payment"/>
-                    <field name="total_open_amount"/>
-                </xpath>
+<!--                <xpath expr="//field[@name='tax_totals_json']" position="after">-->
+<!--                    <field name="total_invoice_amount"/>-->
+<!--                    <field name="total_invoice_paid"/>-->
+<!--                    <field name="total_payment"/>-->
+<!--                    <field name="total_open_amount"/>-->
+<!--                </xpath>-->
 
             </field>
         </record>
@@ -127,8 +127,8 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
                 <field name="partner_ref" position="after">
-                    <field name="sale_order" attrs="{'invisible': [('sale_order', '!=', False)]}"/>
-                    <field name="sale_repair_id" attrs="{'invisible': [('sale_repair_id', '!=', False)]}"/>
+                    <field name="sale_order" />
+                    <field name="sale_repair_id"/>
                     <field name="total_lines" invisible="1"/>
                 </field>
                 <xpath expr="//field[@name='order_line']//tree/field[@name='product_id']" position="before">

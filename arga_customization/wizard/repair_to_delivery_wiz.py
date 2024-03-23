@@ -10,7 +10,7 @@ class RepairToDeliveryWi(models.TransientModel):
     repair_id = fields.Many2one('repair.order', string='Repair')
     partner_id = fields.Many2one('res.partner', string='Customer')
     operation_type_id = fields.Many2one('stock.picking.type', string='Operation Type')
-    repair_line_ids = fields.Many2many('repair.line', string='Products')
+    repair_line_ids = fields.Many2many('stock.move', string='Products')
 
     def create_delivery(self):
         if not self.repair_id or not self.repair_line_ids:
