@@ -42,10 +42,10 @@ class ReportXlsx(models.AbstractModel):
 
         for product in products:
             qty = res[product.id]['qty_available']
-            sheet.write(i, 3, product.default_code)
-            sheet.write(i, 4, product.name)
-            sheet.write(i, 5, qty)
-            sheet.write(i, 6, product.standard_price)
-            sheet.write(i, 7, product.standard_price * qty)
-
-            i = i + 1
+            if qty>0:
+                sheet.write(i, 3, product.default_code)
+                sheet.write(i, 4, product.name)
+                sheet.write(i, 5, qty)
+                sheet.write(i, 6, product.standard_price)
+                sheet.write(i, 7, product.standard_price * qty)
+                i = i + 1
