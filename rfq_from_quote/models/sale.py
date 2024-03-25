@@ -8,11 +8,11 @@ class SaleOrderLineInh(models.Model):
 
     product_status = fields.Selection([('stock', 'Stock'), ('po', 'PO')], string='Product Status', default='stock')
 
-    def _get_protected_fields(self):
-        return [
-            # 'product_id', 'name', 'price_unit', 'product_uom', 'product_uom_qty',
-            # 'tax_id', 'analytic_tag_ids'
-        ]
+    # def _get_protected_fields(self):
+    #     return [
+    #         # 'product_id', 'name', 'price_unit', 'product_uom', 'product_uom_qty',
+    #         # 'tax_id', 'analytic_tag_ids'
+    #     ]
 
 
 class SaleOrderRFQ(models.Model):
@@ -30,27 +30,29 @@ class SaleOrderRFQ(models.Model):
         return vendor_list
 
     def open_so_to_rfq_wizard(self):
-        # sale_line_ids = self.order_line.filtered(lambda line: line.product_id.type in ['product']).mapped('id')
-        sale_line_ids = self.order_line.filtered(lambda line: not line.display_type).mapped('id')
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Create RFQ/PO',
-            'view_id': self.env.ref('rfq_from_quote.so_to_rfq_wizard_form', False).id,
-            'context': {'default_sale_id': self.id, 'default_sale_line_ids': sale_line_ids},
-            'target': 'new',
-            'res_model': 'quote.rfq.wizard',
-            'view_mode': 'form',
-        }
+        pass
+        # # sale_line_ids = self.order_line.filtered(lambda line: line.product_id.type in ['product']).mapped('id')
+        # sale_line_ids = self.order_line.filtered(lambda line: not line.display_type).mapped('id')
+        # return {
+        #     'type': 'ir.actions.act_window',
+        #     'name': 'Create RFQ/PO',
+        #     'view_id': self.env.ref('rfq_from_quote.so_to_rfq_wizard_form', False).id,
+        #     'context': {'default_sale_id': self.id, 'default_sale_line_ids': sale_line_ids},
+        #     'target': 'new',
+        #     'res_model': 'quote.rfq.wizard',
+        #     'view_mode': 'form',
+        # }
 
     def open_so_to_ticket_wizard(self):
-        # sale_line_ids = self.order_line.filtered(lambda line: line.product_id.type in ['product']).mapped('id')
-        sale_line_ids = self.order_line.filtered(lambda line: not line.display_type).mapped('id')
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Create Ticket',
-            'view_id': self.env.ref('rfq_from_quote.so_to_ticket_wizard_form', False).id,
-            'context': {'default_sale_id': self.id, 'default_sale_line_ids': sale_line_ids},
-            'target': 'new',
-            'res_model': 'quote.ticket.wizard',
-            'view_mode': 'form',
-        }
+        pass
+        # # sale_line_ids = self.order_line.filtered(lambda line: line.product_id.type in ['product']).mapped('id')
+        # sale_line_ids = self.order_line.filtered(lambda line: not line.display_type).mapped('id')
+        # return {
+        #     'type': 'ir.actions.act_window',
+        #     'name': 'Create Ticket',
+        #     'view_id': self.env.ref('rfq_from_quote.so_to_ticket_wizard_form', False).id,
+        #     'context': {'default_sale_id': self.id, 'default_sale_line_ids': sale_line_ids},
+        #     'target': 'new',
+        #     'res_model': 'quote.ticket.wizard',
+        #     'view_mode': 'form',
+        # }
