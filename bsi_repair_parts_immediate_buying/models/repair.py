@@ -42,7 +42,7 @@ class RepairLine(models.Model):
 class Repair(models.Model):
     _inherit = "repair.order"
 
-    purchase_count = fields.Integer(string="Purchases)
+    purchase_count = fields.Integer(string="Purchases")
 
     def compute_count(self):
         for record in self:
