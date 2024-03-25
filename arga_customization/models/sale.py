@@ -12,7 +12,7 @@ class SaleOrderInh(models.Model):
     taxes_ids = fields.Many2many('account.tax',string="Taxes")
     delivery_date = fields.Date(string='Delivery Date', copy=False)
     stock_val = fields.Selection([('stock', '100% Stock')], string='100% Stock')
-    total_invoice_amount = fields.Float(compute='get_invoice_amount')
+    total_invoice_amount = fields.Float()
     total_qty = fields.Float('Total Lines')
     istikabl_qty = fields.Float('Istikabal')
     bellona_qty = fields.Float('Bellona')
@@ -39,7 +39,7 @@ class SaleOrderInh(models.Model):
         ('cancel', 'Cancelled'), ('', '    ')
     ], 'PO Status', readonly=True)
 
-    purchase_count = fields.Integer(string='Purchase Order Count', compute='get_invoice_amount')
+    purchase_count = fields.Integer(string='Purchase Order Count')
 
     is_ready = fields.Boolean()
     is_po_draft = fields.Boolean()
@@ -114,17 +114,17 @@ class SaleOrderInh(models.Model):
             #     if all(line.state == 'cancel' for line in rec.picking_ids):
             #         rec.do_status = 'cancel'
 
-    def write(self, vals):
-        res = super(SaleOrderInh, self).write(vals)
-        if vals.get('delivery_date'):
-            project_task = self.env['project.task'].search([("sale_line_id.order_id", '=', self.id)], limit=1)
-            project_task.delivery_date = self.delivery_date
-            project_task.planned_date_begin = self.delivery_date
-            project_task.date_deadline = self.delivery_date
-            for k in self.picking_ids:
-                if k.state not in ['done', 'cancel']:
-                    k.delivery_date = self.delivery_date
-        return res
+    # def write(self, vals):
+    #     res = super(SaleOrderInh, self).write(vals)
+    #     if vals.get('delivery_date'):
+    #         project_task = self.env['project.task'].search([("sale_line_id.order_id", '=', self.id)], limit=1)
+    #         project_task.delivery_date = self.delivery_date
+    #         project_task.planned_date_begin = self.delivery_date
+    #         project_task.date_deadline = self.delivery_date
+    #         for k in self.picking_ids:
+    #             if k.state not in ['done', 'cancel']:
+    #                 k.delivery_date = self.delivery_date
+    #     return res
 
 
 
@@ -132,7 +132,7 @@ class SaleOrderLineInh(models.Model):
     _inherit = 'sale.order.line'
 
     number = fields.Integer(string="Sr#")
-    available = fields.Float('Available Qty', related="product_id.qty_available")
+    available = fields.Float('Available Qty')
     remaining_qty = fields.Float('Not Available')
     qty_in = fields.Float()
     qty_out = fields.Float()
@@ -141,12 +141,12 @@ class SaleOrderLineInh(models.Model):
 
    
     
-    def _compute_tax_id(self):
-        for line in self:
-            line = line.with_company(line.company_id)
-            fpos = line.order_id.fiscal_position_id or line.order_id.fiscal_position_id.get_fiscal_position(
-                line.order_partner_id.id)
-            # If company_id is set, always filter taxes by the company
-            # taxes = line.product_id.taxes_id.filtered(lambda t: t.company_id == line.env.company)
-            # line.tax_id = fpos.map_tax(taxes)
-            line.tax_id = line.order_id.taxes_ids.ids
+    # def _compute_tax_id(self):
+    #     for line in self:
+    #         line = line.with_company(line.company_id)
+    #         fpos = line.order_id.fiscal_position_id or line.order_id.fiscal_position_id.get_fiscal_position(
+    #             line.order_partner_id.id)
+    #         # If company_id is set, always filter taxes by the company
+    #         # taxes = line.product_id.taxes_id.filtered(lambda t: t.company_id == line.env.company)
+    #         # line.tax_id = fpos.map_tax(taxes)
+    #         line.tax_id = line.order_id.taxes_ids.ids
