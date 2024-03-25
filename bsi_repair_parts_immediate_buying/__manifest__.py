@@ -30,8 +30,8 @@
     'version': '1.0',
     'depends': ['base', 'repair', 'purchase'],
     'data': [
-               "views/purchase_views.xml",
-               "views/repair_order_view.xml",
+               # "views/purchase_views.xml",
+               # "views/repair_order_view.xml",
             ],
 
     "images":  ['static/description/Repair Parts Immediate Buying.gif'],
