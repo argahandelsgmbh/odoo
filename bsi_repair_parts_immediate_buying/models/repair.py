@@ -50,6 +50,7 @@ class Repair(models.Model):
                 'repair_order_id', '=', record.id)])
 
     def get_purchase_part(self):
+        pass
         # self.ensure_one()
         # return{
         #     'name': 'purchases',
