@@ -35,8 +35,8 @@ class IncomingShipments(models.Model):
     customerBarCode = fields.Char('customerBarCode')
     text = fields.Char('text')
     quantity = fields.Char('Quantity')
-    purchase_id = fields.Many2one('purchase.order',string="Purchase Order")
-    sale_id = fields.Many2one('sale.order',string="Purchase Order")
+    purchase_id = fields.Many2one('purchase.order', string="Purchase Order")
+    sale_id = fields.Many2one('sale.order', string="Purchase Order")
 
 
 class Shipments(models.Model):
@@ -93,7 +93,7 @@ class ShipmentDetails(models.Model):
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True,
                                  default=lambda self: self.env.company)
 
-    qr_image = fields.Binary("QR Code",compute="_generate_qr_code")
+    qr_image = fields.Binary("QR Code", compute="_generate_qr_code")
     purchase_id = fields.Many2one('purchase.order')
     sale_id = fields.Many2one('sale.order')
     combine_id = fields.Many2one('istikbal.combine.shipments')
@@ -101,13 +101,12 @@ class ShipmentDetails(models.Model):
     price = fields.Float()
     picking_id = fields.Many2one('stock.picking')
     subtotal = fields.Float()
-    product_id = fields.Many2one("product.template","Product")
-    pricelist_price = fields.Float("Pricelist Price")
+    product_id = fields.Many2one("product.template", "Product")
+    pricelist_price = fields.Float("Pricelist Price", related="product_id.list_price")
 
-    
     def _generate_qr_code(self):
         for i in self:
-            i.product_id=self.env['product.template'].search([("default_code",'=',i.productCode)],limit=1).id
+            i.product_id = self.env['product.template'].search([("default_code", '=', i.productCode)], limit=1).id
             qr = qrcode.QRCode(
                 version=1,
                 error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -121,8 +120,6 @@ class ShipmentDetails(models.Model):
             img.save(temp, format="PNG")
             qr_img = base64.b64encode(temp.getvalue())
             i.qr_image = qr_img
-
-
 
     def action_receive_po(self):
         if self.purchase_id.state in ['purchase', 'done'] and not self.is_received:
@@ -166,7 +163,8 @@ class ShipmentDetails(models.Model):
                         backorder_wizard = self.env['stock.backorder.confirmation'].with_context(action_data['context'])
                         backorder_wizard.process()
                     if not self.picking_id:
-                        pick = lines.move_ids.filtered(lambda h: h.product_id.default_code == self.productCode).picking_id.ids
+                        pick = lines.move_ids.filtered(
+                            lambda h: h.product_id.default_code == self.productCode).picking_id.ids
                         pick_id = pick[-2] if len(pick) > 1 else pick[0]
                         stock_picking = self.env['stock.picking'].browse([pick_id])
 
