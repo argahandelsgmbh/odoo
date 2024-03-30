@@ -63,21 +63,18 @@
                  <xpath expr="//group[@name='note_group']" position="after">
                     <group>
                         <group>
-<!--                            <field name="istikbal_shipments" attrs="{'invisible': [('istikbal_shipments', '=', [])]}"/>-->
-                            <field name="istikbal_shipments" invisible="istikbal_shipments == []"/>
+                            <field name="istikbal_shipments" attrs="{'invisible': [('istikbal_shipments', '=', [])]}"/>
                         </group>
                     </group>
                      <group>
                         <group>
-<!--                            <field name="istikbal_shp_details" attrs="{'invisible': [('istikbal_shp_details', '=', [])]}"/>-->
-                            <field name="istikbal_shp_details" invisible="istikbal_shp_details == []"/>
+                            <field name="istikbal_shp_details" attrs="{'invisible': [('istikbal_shp_details', '=', [])]}"/>
                         </group>
                     </group>
                 </xpath>
   
                 <xpath expr="//page[@name='other_information']" position="after">
-<!--                    <page name="istikbal_shipments" string="Istikbal Inventory" attrs="{'invisible': [('istikbal_shp_details', '!=', False)]}">-->
-                    <page name="istikbal_shipments" string="Istikbal Inventory" invisible="istikbal_shp_details != False">
+                    <page name="istikbal_shipments" string="Istikbal Inventory" attrs="{'invisible': [('istikbal_shp_details', '!=', False)]}">
                         <field name="istikbal_shipments" mode="tree">
                             <tree create="1" edit="1"  delete="1">
                                 <field name="customerBarCode"/>
@@ -99,8 +96,7 @@
                             </tree>
                         </field>
                     </page>
-<!--                    <page name="istikbal_shp_details" string="Istikbal Shipment Details" attrs="{'invisible': [('istikbal_shp_details', '=', False)]}">-->
-                    <page name="istikbal_shp_details" string="Istikbal Shipment Details" invisible="istikbal_shp_details != True">
+                    <page name="istikbal_shp_details" string="Istikbal Shipment Details" attrs="{'invisible': [('istikbal_shp_details', '=', False)]}">
                         <field name="istikbal_shp_details" mode="tree">
                             <tree create="1" edit="1"  delete="1">
                                 <field name="shipMentNumber"/>
