@@ -22,7 +22,7 @@
     'license': 'OPL-1',
 
     # any module necessary for this one to work correctly
-    'depends': ['stock','sale','purchase'],
+    'depends': ['stock','sale','purchase','hak_products_var_import'],
 
     # always loaded
     'data': [
