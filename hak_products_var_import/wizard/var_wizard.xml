@@ -1,0 +1,69 @@
+<odoo>
+
+    <record id="view_products_form_inherit" model="ir.ui.view">
+        <field name="name">product.template.form.inh</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="before">
+                <field name="price_code"/>
+                <field name="pricelist_price"/>
+                <field name="factor"/>
+                <field name="price_update"/>
+            </xpath>
+        </field>
+    </record>
+
+       <record id="product_template_tree_view_var_inherit" model="ir.ui.view">
+        <field name="name">product.template.tree.view.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_code']" position="before">
+                 <field name="price_code"/>
+            </xpath>
+        </field>
+    </record>
+
+
+       <record id="product_categ_inherit_form" model="ir.ui.view">
+        <field name="name">product.category.form</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="factor"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="product_var_import_form_view" model="ir.ui.view">
+        <field name="name">product.var.import.form</field>
+        <field name="model">product.var.import</field>
+        <field name="arch" type="xml">
+            <form string="Report">
+                <group col="4">
+                    <field name="file_upload"/>
+
+                </group>
+                <footer>
+                    <button name="action_import_products" string="Import" class="btn-primary" type="object"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="product_var_import_wizard_action" model="ir.actions.act_window">
+        <field name="name">Import Products</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.var.import</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="product_var_import_form_view"/>
+        <field name="target">new</field>
+    </record>
+
+<!--    <menuitem id="product_var_import_wizard_root" name="Import Products" parent="stock.menu_stock_inventory_control" action="product_var_import_wizard_action" sequence="21"/>-->
+
+</odoo>
