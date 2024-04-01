@@ -21,11 +21,9 @@
                     <button string="Receive PO" type="object" name="action_receive_po"/>
                 </header>
                 <sheet>
-<!--                         <widget name="web_ribbon" title="Total Received" attrs="{'invisible': [('is_all_received', '=', False)]}"/>-->
-                    <widget name="web_ribbon" title="Total Received" invisible="is_all_received is False"/>
-<!--                         <widget name="web_ribbon" bg_color="bg-danger" title="Not Totally Received" attrs="{'invisible': [('is_all_received', '=', True)]}"/>-->
+<!--                     <widget name="web_ribbon" title="Total Received" invisible="is_all_received is False"/>
                     <widget name="web_ribbon" bg_color="bg-danger" title="Not Totally Received"
-                            invisible="'is_all_received' is True"/>
+                            invisible="'is_all_received' is True"/> -->
 
                     <group>
                         <group>
@@ -44,7 +42,7 @@
                             <field name="create_date"/>
                             <field name="total_lines"/>
                             <field name="total_value" readonly="1"/>
-                            <field name="is_all_received" invisible="1"/>
+<!--                             <field name="is_all_received" invisible="1"/> -->
                         </group>
                     </group>
                     <notebook>
