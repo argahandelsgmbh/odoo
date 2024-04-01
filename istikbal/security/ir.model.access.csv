@@ -1,9 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_istikbal_credentials,access.istikbal.credentials,model_istikbal_credentials,base.group_user,1,1,1,1
-access_istikbal_materials,access.istikbal.materials,model_istikbal_materials,base.group_user,1,1,1,1
-access_istikbal_shipments_header,access.istikbal.shipments.header,model_istikbal_shipments_header,base.group_user,1,1,1,1
-access_istikbal_shipments_details,access.istikbal.shipments.details,model_istikbal_shipments_details,base.group_user,1,1,1,1
-access_istikbal_incoming_shipments,access.istikbal.incoming.shipments,model_istikbal_incoming_shipments,base.group_user,1,1,1,1
-access_istikbal_sales_order_analysis,access.istikbal_sales_order_analysis,model_istikbal_sales_order_analysis,base.group_user,1,1,1,1
-access_istikbal_log_notes,istikbal_log_notes_istikbal_log_notes,model_istikbal_log_notes,base.group_user,1,1,1,1
-access_istikbal_combine_shipments,access.istikbal.combine.shipments,model_istikbal_combine_shipments,base.group_user,1,1,1,1
