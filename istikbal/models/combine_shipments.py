@@ -84,7 +84,7 @@ class IstikbalLogNotes(models.Model):
         for rec in combine_records:
             rec.total_lines = len(rec.detail_ids)
             rec.total_value = sum(rec.detail_ids.mapped('subtotal'))
-            rec.is_all_received = True if all([x.is_received for x in rec.detail_ids]) else False
+            # rec.is_all_received = True if all([x.is_received for x in rec.detail_ids]) else False
         for rec in recs:
             combine_rec = self.search([('truckPlate', '=', rec.truckPlate), ('shipmentDate', '=', rec.shipmentDate),
                                        ('company_id', '=', rec.company_id.id)], limit=1)
