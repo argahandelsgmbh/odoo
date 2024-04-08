@@ -28,7 +28,7 @@ class SaleOrder(models.Model):
             rec.purchase_order_ids = self.env['purchase.order'].search([('origin', '=', rec.name)]).ids
             pay_list = []
             for inv in rec.invoice_ids:
-                reconciled_payments_widget_vals = json.loads(inv.invoice_payments_widget)
+                reconciled_payments_widget_vals = inv.invoice_payments_widget
     
                 if inv.invoice_payments_widget != 'false':
                     pay_list += [vals['account_payment_id'] for vals in reconciled_payments_widget_vals['content']]
@@ -46,7 +46,7 @@ class SaleOrder(models.Model):
         self.ensure_one()
         pay_list = []
         for inv in self.invoice_ids:
-            reconciled_payments_widget_vals = json.loads(inv.invoice_payments_widget)
+            reconciled_payments_widget_vals = inv.invoice_payments_widget
 
             if inv.invoice_payments_widget != 'false':
                 pay_list += [vals['account_payment_id'] for vals in reconciled_payments_widget_vals['content']]
