@@ -7,7 +7,7 @@
             <field name="state">code</field>
             <field name="active">1</field>
             <field name="code">model.importBellonaInventoryScheduler()</field>
-            <field name="interval_number">2</field>
+            <field name="interval_number">8</field>
             <field name="interval_type">hours</field>
             <field name="numbercall">-1</field>
         </record>
@@ -18,7 +18,7 @@
             <field name="state">code</field>
             <field name="active">1</field>
             <field name="code">model.importPriceScheduler()</field>
-            <field name="interval_number">3</field>
+            <field name="interval_number">8</field>
             <field name="interval_type">hours</field>
             <field name="numbercall">-1</field>
         </record>
