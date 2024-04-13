@@ -40,7 +40,7 @@
         <field name="state">code</field>
         <field name="active">1</field>
         <field name="code">model.importMaterialsScheduler()</field>
-        <field name="interval_number">10</field>
+        <field name="interval_number">8</field>
         <field name="interval_type">hours</field>
         <field name="numbercall">-1</field>
     </record>
