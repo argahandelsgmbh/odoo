@@ -19,7 +19,7 @@
                 <xpath expr="//group[@name='note_group']" position="after">
                     <group>
                         <group>
-                            <field invisible="ticket_ids == []" name="ticket_ids"/>
+                            <field invisible="not ticket_ids"  name="ticket_ids"/>
                         </group>
                     </group>
                 </xpath>
