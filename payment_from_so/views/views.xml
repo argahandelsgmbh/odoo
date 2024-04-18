@@ -18,18 +18,16 @@
                 <xpath expr="//group[@name='note_group']" position="after">
                     <group>
                         <group>
-                            <field name="purchase_order_ids"/>
-                        </group>
-                    </group>
-                    <group>
-                        <group>
-                            <field name="payment_ids"/>
+                            <field name="purchase_order_ids" invisible="not purchase_order_ids"/>
                         </group>
                         <group>
-                            <field name="invoice_ids" />
+                            <field name="payment_ids" invisible="not payment_ids"/>
                         </group>
+                            <group>
+                            <field name="invoice_ids" invisible="not invoice_ids"/>
+                            </group>
                           <group>
-                        <field name="picking_ids" string="Receipts" />
+                        <field name="picking_ids" string="Receipts" invisible="not picking_ids"/>
                     </group>
                     </group>
                 </xpath>
