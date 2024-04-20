@@ -10,6 +10,8 @@ class SaleOrderInh(models.Model):
     _inherit = 'sale.order'
 
     stock_val = fields.Selection([('stock', '100% Stock')], string='100% Stock')
+    commitment_date = fields.Datetime('Delivery Date', copy=False,
+                                      help="This is the delivery date promised to the customer. ")
 
     def write(self, vals):
         res = super(SaleOrderInh, self).write(vals)
