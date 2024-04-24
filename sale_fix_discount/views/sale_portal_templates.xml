@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <template
+<!--     <template
         id="sale_order_portal_content_fixed_discount"
         inherit_id="sale.sale_order_portal_content"
         priority="100"
@@ -55,5 +55,5 @@
                 </strong>
             </td>
         </xpath>
-    </template>
+    </template> -->
 </odoo>
