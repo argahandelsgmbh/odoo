@@ -13,11 +13,13 @@ class SaleOrder(models.Model):
                                  help="Creation date of draft/sent orders,\nConfirmation date of confirmed orders.")
     payment_ids = fields.Many2many('account.payment', compute="compute_payments")
     purchase_order_ids = fields.Many2many('purchase.order', compute="compute_payments")
+    purchase_count = fields.Integer(string='Purchase Order Count', compute="compute_payments")
 
 
     def compute_payments(self):
         for rec in self:
             rec.purchase_order_ids = self.env['purchase.order'].search([('origin', '=', rec.name)]).ids
+            rec.purchase_count=self.env['purchase.order'].search_count([('origin', '=', rec.name)])
             pay_list = []
             for inv in rec.invoice_ids:
                 reconciled_payments_widget_vals = inv.invoice_payments_widget
