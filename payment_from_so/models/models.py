@@ -16,6 +16,13 @@ class SaleOrder(models.Model):
     purchase_count = fields.Integer(string='Purchase Order Count', compute="compute_payments")
 
 
+    def open_related_po(self):
+        po_id = self.env['purchase.order'].search([('origin', '=', self.name)])
+        action = self.env.ref('purchase.purchase_rfq').read()[0]
+        action['domain'] = [('id', 'in', po_id.ids)]
+        return action
+
+
     def compute_payments(self):
         for rec in self:
             rec.purchase_order_ids = self.env['purchase.order'].search([('origin', '=', rec.name)]).ids
