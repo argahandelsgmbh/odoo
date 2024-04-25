@@ -45,12 +45,8 @@
                     </page>
                 </xpath>
 
-                <xpath expr="//group[@name='note_group']" position="after">
-                    <group>
-                        <group>
-                              <field name="bellona_shipments" invisible="not bellona_shipments"/>
-                        </group>
-                    </group>
+                <xpath expr="//field[@name='note']" position="after">
+                <field name="bellona_shipments" invisible="not bellona_shipments"/>
                 </xpath>
 
             </field>
