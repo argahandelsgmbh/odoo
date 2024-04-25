@@ -25,7 +25,7 @@ class RepairOrderInh(models.Model):
     def action_open_delivery(self):
         self.ensure_one()
         return {
-            'name': 'purchases',
+            'name': 'Delivery Orders',
             'res_model': 'stock.picking',
             'domain': [('origin', '=', self.name)],
             'view_mode': 'tree,form',
