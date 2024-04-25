@@ -4,6 +4,24 @@ from odoo import api, fields, models, _
 class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
+    delivery_count = fields.Integer(string='Delivery Count', compute='count_delivery')
+
+
+    def action_open_delivery(self):
+        self.ensure_one()
+        return {
+            'name': 'Delivery Orders',
+            'res_model': 'stock.picking',
+            'domain': [('origin', '=', self.name)],
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+            'context': "{'create': False}"
+        }
+
+    def count_delivery(self):
+        for rec in self:
+            rec.delivery_count = self.env['stock.picking'].search_count([('origin', '=', self.name),('group_id', '=',False)])
+
     def open_ticket_to_delivery_wizard(self):
         picking = self.env['stock.picking.type'].search([('code', '=', 'outgoing')], limit=1)
         return {
