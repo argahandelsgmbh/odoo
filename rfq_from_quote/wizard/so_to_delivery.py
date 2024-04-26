@@ -8,7 +8,7 @@ class SaleQuoteToDelivery(models.TransientModel):
 
     name = fields.Char(string='Name')
     sale_id = fields.Many2one('sale.order', string='Quotation/Sale order')
-    picking_type_id = fields.Many2one('stock.picking.type')
+    picking_type_id = fields.Many2one('stock.picking.type',domain="[('code', '=', 'outgoing'), ('company_id', '=', company_id)]")
     company_id = fields.Many2one('res.company',domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     partner_id = fields.Many2one('res.partner', string='Customer', domain="[('customer_rank', '>', 0)]")
     sale_line_ids = fields.Many2many('sale.order.line', string='Products')
