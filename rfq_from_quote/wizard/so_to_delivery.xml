@@ -11,8 +11,8 @@
                         <group col="4">
                             <field name="sale_id" readonly="1"/>
                             <field name="partner_id" required="1"/>
-                            <field name="picking_type_id" required="1"/>
-                            <field name="company_id" required="1"/>
+<!--                             <field name="picking_type_id"/>
+                            <field name="company_id" /> -->
                         </group>
                         <notebook>
                             <page string="Products">
