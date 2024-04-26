@@ -9,6 +9,7 @@
                 <xpath expr="//button[@name='action_cancel']" position="after">
                     <button class="oe_highlight" name="open_so_to_rfq_wizard" string="Create RFQ/PO" type="object"/>
                     <button class="oe_highlight" name="open_so_to_ticket_wizard" string="Create Ticket" type="object"/>
+                    <button class="oe_highlight" name="open_so_to_delivery_wizard" string="Create Delivery" type="object"/>
                 </xpath>
                 <xpath expr="//field[@name='date_order']" position="after">
                     <field invisible="1" name="is_po_created"/>

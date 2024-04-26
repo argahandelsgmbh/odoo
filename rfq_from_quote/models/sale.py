@@ -21,6 +21,11 @@ class SaleOrderRFQ(models.Model):
     is_po_created = fields.Boolean()
     ticket_ids = fields.Many2many('helpdesk.ticket',string="Tickets")
 
+    def action_confirm(self):
+        r = super().action_confirm()
+        print('ff')
+        return r
+
     def get_products_vendor(self):
         vendor_list = []
         for line in self.order_line:
@@ -31,7 +36,7 @@ class SaleOrderRFQ(models.Model):
 
     def open_so_to_rfq_wizard(self):
         # sale_line_ids = self.order_line.filtered(lambda line: line.product_id.type in ['product']).mapped('id')
-        sale_line_ids = self.order_line.filtered(lambda line: not line.display_type).mapped('id')
+        sale_line_ids = self.order_line.filtered(lambda line: not line.display_type and line.product_id.type in ['product']).mapped('id')
         return {
             'type': 'ir.actions.act_window',
             'name': 'Create RFQ/PO',
@@ -52,5 +57,18 @@ class SaleOrderRFQ(models.Model):
             'context': {'default_sale_id': self.id, 'default_sale_line_ids': sale_line_ids},
             'target': 'new',
             'res_model': 'quote.ticket.wizard',
+            'view_mode': 'form',
+        }
+
+    def open_so_to_delivery_wizard(self):
+        # sale_line_ids = self.order_line.filtered(lambda line: line.product_id.type in ['product']).mapped('id')
+        sale_line_ids = self.order_line.filtered(lambda line: not line.display_type and line.product_id.type in ['product']).mapped('id')
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Create Delivery',
+            'view_id': self.env.ref('rfq_from_quote.so_to_delivery_wizard_form', False).id,
+            'context': {'default_sale_id': self.id, 'default_partner_id': self.partner_id.id, 'default_sale_line_ids': sale_line_ids},
+            'target': 'new',
+            'res_model': 'sale.delivery.wizard',
             'view_mode': 'form',
         }
