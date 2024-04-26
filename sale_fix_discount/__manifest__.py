@@ -2,7 +2,7 @@
 {
     "name": "Sale Fixed Discount",
     "summary": "Allows to apply fixed amount discounts in sales orders.",
-    "version": "17.0",
+    "version": "16.1",
     "category": "Sales",
     "website": "hunainfast@gmail.com",
     "author": "HAK Technologies",

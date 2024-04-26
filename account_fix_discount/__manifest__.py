@@ -1,7 +1,7 @@
 {
     "name": "Account Fix Discount",
     "summary": "Allows to apply fixed amount discounts in invoices.",
-    "version": "17.0",
+    "version": "16.1",
     "category": "Accounting & Finance",
     "website": "hunainfast@gmail.com",
     "author": "HAK Technologies",

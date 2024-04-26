@@ -30,8 +30,8 @@ class SaleOrderLine(models.Model):
                 raise ValidationError(
                     _("You can only set one type of discount per line.")
                 )
-    
-    def _convert_to_tax_base_line_dict(self):
+
+    def _convert_to_tax_base_line_dict(self, **kwargs):
         """ Convert the current record to a dictionary in order to use the generic taxes computation method
         defined on account.tax.
 
@@ -54,6 +54,7 @@ class SaleOrderLine(models.Model):
             quantity=self.product_uom_qty,
             discount=dis,
             price_subtotal=self.price_subtotal,
+            **kwargs
         )
 
     @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id')
