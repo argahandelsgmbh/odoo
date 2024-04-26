@@ -14,7 +14,7 @@ class SaleQuoteToDelivery(models.TransientModel):
     sale_line_ids = fields.Many2many('sale.order.line', string='Products')
 
     def create_delivery(self):
-        picking_tye=self.env['stock.picking.type'].search([('code','=','outgoing'),('company_id','=',self.company_id.id)],limit=1)
+        picking_type=self.env['stock.picking.type'].search([('code','=','outgoing'),('company_id','=',self.company_id.id)],limit=1)
         vals = {
             'partner_id': self.partner_id.id,
             'location_id': self.picking_type_id.default_location_src_id.id,
@@ -22,7 +22,7 @@ class SaleQuoteToDelivery(models.TransientModel):
             'origin': self.sale_id.name,
             'sale_id': self.sale_id.id,
             'company_id': self.company_id.id,
-            'picking_type_id': picking_tye.id,
+            'picking_type_id': picking_type.id,
         }
         picking = self.env['stock.picking'].create(vals)
         for line in self.sale_line_ids:
