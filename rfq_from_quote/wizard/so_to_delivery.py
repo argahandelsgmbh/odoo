@@ -21,7 +21,7 @@ class SaleQuoteToDelivery(models.TransientModel):
             'location_dest_id': self.picking_type_id.default_location_src_id.id,
             'origin': self.sale_id.name,
             'sale_id': self.sale_id.id,
-            'company_id': self.company_id.id
+            'company_id': self.company_id.id,
             'picking_type_id': picking_tye.id,
         }
         picking = self.env['stock.picking'].create(vals)
