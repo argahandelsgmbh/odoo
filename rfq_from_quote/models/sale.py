@@ -67,7 +67,7 @@ class SaleOrderRFQ(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Create Delivery',
             'view_id': self.env.ref('rfq_from_quote.so_to_delivery_wizard_form', False).id,
-            'context': {'default_sale_id': self.id, 'default_partner_id': self.partner_id.id, 'default_sale_line_ids': sale_line_ids},
+            'context': {'default_company_id': self.company_id.id,'default_sale_id': self.id, 'default_partner_id': self.partner_id.id, 'default_sale_line_ids': sale_line_ids},
             'target': 'new',
             'res_model': 'sale.delivery.wizard',
             'view_mode': 'form',
