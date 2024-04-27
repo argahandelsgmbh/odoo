@@ -27,7 +27,8 @@ class DiscountInvoiceImport(models.TransientModel):
                     [('product_id', '=', rec.get('Product')), ('move_id.name', '=', rec.get('Order Reference')),
                      ('quantity', '=', rec.get('Quantity'))],limit=1)
                 if order:
-                    order.discount_fixed = rec.get('Discount')
+                    if not order.discount_fixed
+                        order.discount_fixed = rec.get('Discount')
 
         return {'type': 'ir.actions.client', 'tag': 'reload'}
 
@@ -54,7 +55,8 @@ class ProductVarImport(models.TransientModel):
                 order = self.env['sale.order.line'].search([('product_id', '=', rec.get('Product')), ('order_id.name', '=', rec.get('Order Reference')), ('product_uom_qty', '=', rec.get('Quantity'))],limit=1)
                 _logger.info(order)
                 if order:
-                    order.discount_fixed = rec.get('Discount')
-                    _logger.info(rec.get('Discount'))
+                    if not order.discount_fixed:
+                        order.discount_fixed = rec.get('Discount')
+                        _logger.info(rec.get('Discount'))
 
         return {'type': 'ir.actions.client', 'tag': 'reload'}
