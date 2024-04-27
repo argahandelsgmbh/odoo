@@ -2,7 +2,7 @@
     'name': 'Generate RFQ from Sales Quotation',
     'version': '1.0',
     'summary': '',
-    'description': 'Create PO from SO, Create ticket from SO, Create DO from Helpdesk',
+    'description': 'Create PO from SO, Create ticket from SO, Create DO from Helpdesk,Create Delivery from Sale order',
     'license': 'OPL-1',
     'category': 'Sales',
     'author': "HAK Technologies",

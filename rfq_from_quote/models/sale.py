@@ -63,11 +63,14 @@ class SaleOrderRFQ(models.Model):
     def open_so_to_delivery_wizard(self):
         # sale_line_ids = self.order_line.filtered(lambda line: line.product_id.type in ['product']).mapped('id')
         sale_line_ids = self.order_line.filtered(lambda line: not line.display_type and line.product_id.type in ['product']).mapped('id')
+        picking_type = self.env['stock.picking.type'].search(
+            [('code', '=', 'outgoing'), ('company_id', '=', self.company_id.id)], limit=1)
+        print(picking_type.name)
         return {
             'type': 'ir.actions.act_window',
             'name': 'Create Delivery',
             'view_id': self.env.ref('rfq_from_quote.so_to_delivery_wizard_form', False).id,
-            'context': {'default_company_id': self.company_id.id,'default_sale_id': self.id, 'default_partner_id': self.partner_id.id, 'default_sale_line_ids': sale_line_ids},
+            'context': {'default_picking_type_id':picking_type.id,'default_company_id': self.company_id.id,'default_sale_id': self.id, 'default_partner_id': self.partner_shipping_id.id, 'default_sale_line_ids': sale_line_ids},
             'target': 'new',
             'res_model': 'sale.delivery.wizard',
             'view_mode': 'form',
