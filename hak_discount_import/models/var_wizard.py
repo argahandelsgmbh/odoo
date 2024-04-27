@@ -49,9 +49,12 @@ class ProductVarImport(models.TransientModel):
                 for col in range(s.ncols):
                     elm[first_row[col]] = s.cell_value(row, col)
                 data.append(elm)
+            _logger.info(data)
             for rec in data:
                 order = self.env['sale.order.line'].search([('product_id', '=', rec.get('Product')), ('order_id.name', '=', rec.get('Order Reference')), ('product_uom_qty', '=', rec.get('Quantity'))],limit=1)
+                _logger.info(order)
                 if order:
                     order.discount_fixed = rec.get('Discount')
+                    _logger.info(rec.get('Discount'))
 
         return {'type': 'ir.actions.client', 'tag': 'reload'}
