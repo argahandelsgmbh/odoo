@@ -13,17 +13,17 @@ class SaleOrderInh(models.Model):
     commitment_date = fields.Datetime('Delivery Date', copy=False,
                                       help="This is the delivery date promised to the customer. ")
 
-    def write(self, vals):
-        res = super(SaleOrderInh, self).write(vals)
-        if vals.get('commitment_date'):
-            project_task = self.env['project.task'].search([("sale_line_id.order_id", '=', self.id)], limit=1)
-            project_task.delivery_date = self.commitment_date
-            project_task.planned_date_begin = self.commitment_date
-            project_task.date_deadline = self.commitment_date
-            for k in self.picking_ids:
-                if k.state not in ['done', 'cancel']:
-                    k.delivery_date = self.commitment_date
-        return res
+    # def write(self, vals):
+    #     res = super(SaleOrderInh, self).write(vals)
+    #     if vals.get('commitment_date'):
+    #         project_task = self.env['project.task'].search([("sale_line_id.order_id", '=', self.id)], limit=1)
+    #         project_task.delivery_date = self.commitment_date
+    #         project_task.planned_date_begin = self.commitment_date
+    #         project_task.date_deadline = self.commitment_date
+    #         for k in self.picking_ids:
+    #             if k.state not in ['done', 'cancel']:
+    #                 k.delivery_date = self.commitment_date
+    #     return res
 
 
 #
