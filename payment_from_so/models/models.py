@@ -12,7 +12,7 @@ class SaleOrder(models.Model):
                                  default=fields.Datetime.now,
                                  help="Creation date of draft/sent orders,\nConfirmation date of confirmed orders.")
     payment_ids = fields.Many2many('account.payment', compute="compute_payments")
-    purchase_order_ids = fields.Many2many('purchase.order', compute="compute_payments")
+    purchase_order_ids = fields.Many2many('purchase.order', compute="compute_payments",string="Fabrika siparisleri")
     purchase_count = fields.Integer(string='Purchase Order Count', compute="compute_payments")
 
 
