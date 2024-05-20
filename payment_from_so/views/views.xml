@@ -26,9 +26,9 @@
                     
                             <field name="payment_ids" invisible="not payment_ids"/>
               
-                            <field name="invoice_ids" invisible="not invoice_ids"/>
+                            <field name="invoice_ids" string="Faturalar" invisible="not invoice_ids"/>
              
-                        <field name="picking_ids" string="Receipts" invisible="not picking_ids"/>
+                        <field name="picking_ids" string="Teslimatlar" invisible="not picking_ids"/>
          
                 </xpath>
 
