@@ -10,7 +10,7 @@ class SaleOrderInh(models.Model):
     _inherit = 'sale.order'
 
     stock_val = fields.Selection([('stock', '100% Stock')], string='100% Stock')
-    commitment_date = fields.Datetime('Delivery Date', copy=False,
+    commitment_date = fields.Datetime('Liefertermin Bestätigt', copy=False,
                                       help="This is the delivery date promised to the customer. ")
 
     # def write(self, vals):
