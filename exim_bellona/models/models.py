@@ -187,10 +187,10 @@ class BeloonaPTInherit(models.Model):
 class SaleOrderInh(models.Model):
     _inherit = 'sale.order'
 
-    bellona_shipments = fields.Many2many('bellona.shipments', string='Bellona Shipments')
+    bellona_shipments = fields.Many2many('bellona.shipments', string='Fabrikadan Gelenleri')
 
 
 class PurchaseOrderInh(models.Model):
     _inherit = 'purchase.order'
 
-    bellona_shipments = fields.Many2many('bellona.shipments', string='Bellona Shipments')
+    bellona_shipments = fields.Many2many('bellona.shipments', string='Fabrikadan Gelenleri')
