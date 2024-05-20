@@ -19,7 +19,7 @@ class SaleOrderRFQ(models.Model):
     _inherit = 'sale.order'
 
     is_po_created = fields.Boolean()
-    ticket_ids = fields.Many2many('helpdesk.ticket',string="Tickets")
+    ticket_ids = fields.Many2many('helpdesk.ticket',string="Yardim masasi")
 
     def action_confirm(self):
         r = super().action_confirm()
