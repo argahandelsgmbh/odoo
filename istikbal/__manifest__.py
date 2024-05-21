@@ -11,7 +11,7 @@
        Import Shipment, Import inventory,Import sales order analysis,Import Materials.
     """,
 
-    'author': "HAKTechnologies",
+    'author': "HAK Technologies",
     'website': "http://www.HAKTechnologies.com",
 
     # Categories can be used to filter modules in modules listing
