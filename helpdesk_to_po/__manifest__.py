@@ -9,7 +9,7 @@
         Create Purchase order from Helpdesk
     """,
 
-    'author': "HAKTechnologies",
+    'author': "HAK Technologies",
     'website': "http://www.HAKTechnologies.com",
 
     # Categories can be used to filter modules in modules listing
