@@ -32,7 +32,7 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='payment_term_id']" position="after">
-                    <field name="commitment_date"  string="Delivery Date" readonly="0"/>
+                    <field name="commitment_date" readonly="0" context="{'from_sale': True}"/>
                      <field name="stock_val" optional="show"/>
                 </xpath>
             </field>
