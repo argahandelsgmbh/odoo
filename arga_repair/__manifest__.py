@@ -11,7 +11,7 @@
         Create Repair from Helpdesk
     """,
 
-    'author': "HAKTechnologies",
+    'author': "HAK Technologies",
     'website': "http://www.haktechnologies.com",
     'images': ['static/description/icon.png'],
 
