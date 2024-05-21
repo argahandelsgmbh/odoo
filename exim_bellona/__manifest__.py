@@ -22,7 +22,7 @@
           https://www.loom.com/share/296b682aa14d49c8a680878ff8414caa
     """,
 
-    'author': "HAK solutions",
+    'author': "HAK Technologies",
     'website': "http://www.hasksolutions.com",
     'license': 'OPL-1',
 
