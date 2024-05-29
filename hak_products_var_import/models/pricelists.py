@@ -31,7 +31,7 @@ class ProductVarImport(models.Model):
                         p.price_code = rec.pricecode
                         p.standard_price = rec.cost
                         rec.product_tmpl_id=p.id
-                        p.list_price = rec.cost * p.factor
+                        p.list_price = rec.sales_price if rec.sales_price else rec.cost * p.factor 
                         if categ_id:
                             p.categ_id = categ_id.id
                             
@@ -80,7 +80,7 @@ class ProductVarImport(models.Model):
                         p.price_code = rec.pricecode
                         p.standard_price = rec.cost
                         rec.product_tmpl_id=p.id
-                        p.list_price = (rec.cost * p.factor)
+                        p.list_price = rec.sales_price if rec.sales_price else rec.cost * p.factor 
                         if categ_id:
                             p.categ_id = categ_id.id
                             
