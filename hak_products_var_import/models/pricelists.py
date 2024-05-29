@@ -31,15 +31,16 @@ class ProductVarImport(models.Model):
                         p.price_code = rec.pricecode
                         p.standard_price = rec.cost
                         rec.product_tmpl_id=p.id
+                        p.list_price = rec.cost * p.factor
                         if categ_id:
                             p.categ_id = categ_id.id
-                            p.list_price = rec.cost * categ_id.factor if categ_id.factor else rec.cost
-                        else:
-                            if not p.list_price:
-                                if rec.sales_price:
-                                    p.list_price = rec.sales_price
-                                else:
-                                    p.list_price = rec.cost
+                            
+                        # else:
+                        #     if not p.list_price:
+                        #         if rec.sales_price:
+                        #             p.list_price = rec.sales_price
+                        #         else:
+                        #             p.list_price = rec.cost
                         rec.imp = True
                         _logger.info('Assigned %s price code to %s product', pcount, rec.pricecode)
 
@@ -79,9 +80,10 @@ class ProductVarImport(models.Model):
                         p.price_code = rec.pricecode
                         p.standard_price = rec.cost
                         rec.product_tmpl_id=p.id
+                        p.list_price = (rec.cost * p.factor)
                         if categ_id:
                             p.categ_id = categ_id.id
-                            p.list_price = (rec.cost * categ_id.factor) if categ_id.factor else rec.cost
+                            
                         else:
                             if not p.list_price:
                                 if rec.sales_price:
