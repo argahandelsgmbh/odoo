@@ -135,7 +135,7 @@ class ShipmentDetails(models.Model):
                         self.is_received = True
                 for move in lines.move_ids:
                     if move.state not in ['done', 'cancel']:
-                        move.quantity_done = self.quantity
+                        move.quantity = self.quantity
 
                 if len(lines.move_ids) > 1:
                     action_data = lines.move_ids.filtered(

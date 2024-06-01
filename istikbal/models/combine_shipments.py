@@ -40,7 +40,7 @@ class IstikbalLogNotes(models.Model):
                         for move in lines.move_ids:
                             if move.state not in ['done', 'cancel']:
                                 qty = self.detail_ids.filtered(lambda k:k.purchase_id.id == po.id and k.productCode == move.product_id.default_code and not k.is_received).quantity
-                                move.quantity_done = qty
+                                move.quantity = qty
                         if len(lines.move_ids) > 1:
                             action_data = lines.move_ids.filtered(
                                 lambda h: h.state not in ['done', 'cancel']).picking_id.with_context(
@@ -138,7 +138,7 @@ class IstikbalLogNotes(models.Model):
                 for k in po.picking_ids:
                     if k.state not in ['cancel', 'done']:
                         for mv in k.move_ids_without_package or k.move_lines:
-                            mv.quantity_done = mv.product_uom_qty
+                            mv.quantity = mv.product_uom_qty
                         k.button_validate()
                         for mv in k.move_ids_without_package or k.move_lines:
                             mv._action_done()
