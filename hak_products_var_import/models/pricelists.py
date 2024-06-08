@@ -60,7 +60,8 @@ class ProductVarImport(models.Model):
                                                                                     "product_tmpl_id":p.id,
                                                                                     "product_name":rec.product_name,
                                                                                     "product_code":rec.pricecode,
-                                                                                    "price":rec.cost
+                                                                                    "price":rec.cost,
+                                                                                    "company_id":False
                                                                                   })
                     else:
                         _logger.info('No product found %s', rec.pricecode)
