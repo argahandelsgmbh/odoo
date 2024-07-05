@@ -1,11 +1,46 @@
-from odoo import api, fields, models, _
+from odoo import fields, models
 
 
 class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
     delivery_count = fields.Integer(string='Delivery Count', compute='count_delivery')
+    sale_order_count = fields.Integer(string='Order Count', compute='count_delivery')
+    invoices_count = fields.Integer(string='Invoice Count', compute='count_delivery')
+    all_ticket_count = fields.Integer(string='Tickets Count', compute='count_delivery')
 
+    def action_open_related_tickets(self):
+        self.ensure_one()
+        return {
+            'name': 'Tickets',
+            'res_model': 'helpdesk.ticket',
+            'domain': [('partner_id', '=', self.partner_id.id), ('id', '!=', self.id)],
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+            'context': "{'create': False}"
+        }
+
+    def action_open_related_invoices(self):
+        self.ensure_one()
+        return {
+            'name': 'Invoices',
+            'res_model': 'account.move',
+            'domain': [('partner_id', '=', self.partner_id.id)],
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+            'context': "{'create': False}"
+        }
+
+    def action_open_related_orders(self):
+        self.ensure_one()
+        return {
+            'name': 'Sale Orders',
+            'res_model': 'sale.order',
+            'domain': [('partner_id', '=', self.partner_id.id)],
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+            'context': "{'create': False}"
+        }
 
     def action_open_delivery(self):
         self.ensure_one()
@@ -21,6 +56,9 @@ class HelpdeskTicket(models.Model):
     def count_delivery(self):
         for rec in self:
             rec.delivery_count = self.env['stock.picking'].search_count([('origin', '=', self.name),('group_id', '=',False)])
+            rec.sale_order_count = self.env['sale.order'].search_count([('partner_id', '=', self.partner_id.id)])
+            rec.invoices_count = self.env['account.move'].search_count([('partner_id', '=', self.partner_id.id),('move_type', '=', 'out_invoice')])
+            rec.all_ticket_count = self.env['helpdesk.ticket'].search_count([('partner_id', '=', self.partner_id.id),('id', '!=', self.id)])
 
     def open_ticket_to_delivery_wizard(self):
         picking = self.env['stock.picking.type'].search([('code', '=', 'outgoing')], limit=1)
