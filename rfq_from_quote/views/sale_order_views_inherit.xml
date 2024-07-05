@@ -11,6 +11,13 @@
                     <button class="oe_highlight" name="open_so_to_ticket_wizard" string="Create Ticket" type="object"/>
                     <button class="oe_highlight" name="open_so_to_delivery_wizard" string="Create Delivery" type="object"/>
                 </xpath>
+
+                <div name="button_box" position="inside">
+                    <button type="object" class="oe_stat_button" icon="fa-ticket" name="action_open_ticket" invisible="ticket_so_count == 0">
+                        <field string="Tickets" name="ticket_so_count" widget="statinfo"/>
+                    </button>
+                </div>
+
                 <xpath expr="//field[@name='date_order']" position="after">
                     <field invisible="1" name="is_po_created"/>
                 </xpath>

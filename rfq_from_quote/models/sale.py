@@ -20,10 +20,24 @@ class SaleOrderRFQ(models.Model):
 
     is_po_created = fields.Boolean()
     ticket_ids = fields.Many2many('helpdesk.ticket',string="Yardim masasi")
+    ticket_so_count = fields.Integer(compute="compute_related_tickets")
+
+    @api.depends('ticket_ids')
+    def compute_related_tickets(self):
+        for rec in self:
+            rec.ticket_so_count = len(self.ticket_ids.ids)
+
+    def action_open_ticket(self):
+        return {
+            'name': _('Tickets'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'helpdesk.ticket',
+            'view_mode': 'kanban,tree,form',
+            'domain': [('id', 'in', self.ticket_ids.ids)],
+        }
 
     def action_confirm(self):
         r = super().action_confirm()
-        print('ff')
         return r
 
     def get_products_vendor(self):
