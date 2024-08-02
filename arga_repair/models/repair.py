@@ -20,6 +20,7 @@ class RepairOrderInh(models.Model):
         return super().action_repair_end()
 
     delivery_count = fields.Integer(string='Delivery Count', compute='count_delivery')
+    po_count = fields.Integer(string='PO Count', compute='count_delivery')
     is_po_created = fields.Boolean()
 
     def action_open_delivery(self):
@@ -33,9 +34,21 @@ class RepairOrderInh(models.Model):
             'context': "{'create': False}"
         }
 
+    def action_open_po(self):
+        self.ensure_one()
+        return {
+            'name': 'Purchase Order',
+            'res_model': 'purchase.order',
+            'domain': [('origin', '=', self.name)],
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+            'context': "{'create': False}"
+        }
+
     def count_delivery(self):
         for rec in self:
             rec.delivery_count = self.env['stock.picking'].search_count([('origin', '=', self.name)])
+            rec.po_count = self.env['purchase.order'].search_count([('origin', '=', self.name)])
 
     def open_repair_to_rfq_wizard(self):
         return {

@@ -23,7 +23,8 @@
     'license': 'OPL-1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale', 'stock','helpdesk', 'repair', 'helpdesk_sale_timesheet','helpdesk_repair'],
+    'depends': ['base', 'sale', 'stock', 'helpdesk', 'repair', 'helpdesk_sale_timesheet', 'helpdesk_repair',
+                'purchase'],
 
     # always loaded
     'data': [
