@@ -42,9 +42,10 @@ class CustomerExport(models.AbstractModel):
         i = 3
         for po in lines:
             sale_order = self.env['sale.order'].search([('name', '=', po.origin)])
+            code=sale_order.name.split(" ")[0]
             for line in po.order_line:
                 sheet.write(i, 0, sale_order.partner_id.company_registry or '', format5)
-                sheet.write(i, 1, sale_order.partner_id.ref or '', format5)
+                sheet.write(i, 1, code or '', format5)
                 sheet.write(i, 2, line.product_id.default_code or '', format5)
                 sheet.write(i, 3, line.product_qty, format5)
                 sheet.write(i, 4, sale_order.partner_id.name or '', format5)
