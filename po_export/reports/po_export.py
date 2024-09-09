@@ -41,7 +41,7 @@ class CustomerExport(models.AbstractModel):
 
         i = 3
         for po in lines:
-            sale_order = self.env['sale.order'].search([('name', '=', po.origin)])
+            sale_order = self.env['sale.order'].search([('name', '=', po.origin)],limit=1)
             code=sale_order.name.split(" ")[0] if sale_order else ""
             for line in po.order_line:
                 sheet.write(i, 0, sale_order.partner_id.company_registry or '', format5)
