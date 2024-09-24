@@ -20,9 +20,6 @@ class CustomerExport(models.AbstractModel):
         format5 = workbook.add_format({'font_size': 12, 'align': 'vcenter', 'bold': False})
 
         sheet = workbook.add_worksheet("PO Export")
-        customers = self.env['res.partner'].search([])
-        print(lines)
-        print(data)
 
         sheet.write(1, 0, 'Customer Code', format1)
         sheet.write(1, 1, 'Customer Reference', format1)
