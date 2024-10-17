@@ -122,7 +122,7 @@ class Integration(models.TransientModel):
                     {"error": "shipments creation error " + shipment['saleS_ORDER']+" "+str(e)})
         if count:
             log_notes = self.env["bellona.log.notes"].sudo().create(
-                {"error": "shipments imported " + str(count)})
+                {"error": "shipments imported " + str(count)+ " "+str(fields.Date.today())})
 
     # Bellona Materials
     def importBellonaMaterialsScheduler(self):
