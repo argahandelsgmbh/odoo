@@ -106,7 +106,7 @@ class Integration(models.TransientModel):
                     })
 
 
-
+                self.env.cr.commit()
                 shipment_obj = self.env['bellona.shipments'].search([('customerbarcode', '=',  shipment['customerbarcode'])])
                 purchase_order = self.env['purchase.order'].search([('name', '=', shipment['customerbarcode'])],
                                                                    limit=1)
