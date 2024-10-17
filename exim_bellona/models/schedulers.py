@@ -25,6 +25,7 @@ class Integration(models.TransientModel):
     def importBellonaInventoryScheduler(self):
         bellona_company = self.env['bellona.credentials'].search([])
         for company in bellona_company:
+            company.connect_bellona_credentials()
             token = company.token
             company_id = company.company_id.id
             url = self.getBaseURL() + "api/Material/SearchInventory"
