@@ -22,7 +22,7 @@ class BeloonaPTInherit(models.Model):
             }
             data = {
                 "matnr": self.default_code,
-                 "date": "2013-01-01"
+                 "date": "2024-01-01"
             }
             payload = json.dumps(data)
             response = requests.request("POST", url, headers=headers, data=payload)
