@@ -12,7 +12,7 @@ class SaleOrderInh(models.Model):
 
     stock_val = fields.Selection([('stock', '100% Stock')], string='100% Stock')
     commitment_date = fields.Datetime('Liefertermin Bestätigt', copy=False)
-    task_id = fields.Many2one("project.task", string="Task", readonly=True)
+    # task_id = fields.Many2one("project.task", string="Task", readonly=True)
 
     def write(self, vals):
         res = super(SaleOrderInh, self.with_context(from_sale=True)).write(vals)
