@@ -2,14 +2,14 @@
     <data>
 
 
-        <record model="ir.ui.view" id="bellona_setting_form_view">
+        <record model="ir.ui.view" id="res_config_settings_view_form">
             <field name="name">res.config.settings.bellona_settings</field>
             <field name="model">res.config.settings</field>
             <field name="inherit_id" ref="base.res_config_settings_view_form" />
             <field name="arch" type="xml">
-               <xpath expr="//form" position="inside">
-                    <div class="app_settings_block" data-string="Bellona" string="Bellona" data-key="exim_bellona">
-
+                <xpath expr="//form" position="inside">
+                    <app string="Bellona" data-string="exim_bellona" name="exim_bellona">
+                        <!--                    <div class="app_settings_block" data-string="Bellona" string="Bellona" data-key="exim_bellona">-->
                         <div id="manual-import">
                             <h2>Manual Import Utility</h2>
                             <div class="row mt16 o_settings_container">
@@ -79,10 +79,22 @@
                                     </div>
                                 </div>
                             </div>
+                            <!--                        </div>-->
                         </div>
-                    </div>
+                    </app>
                 </xpath>
             </field>
         </record>
+
+        <record id="action_bellona_config_settings" model="ir.actions.act_window">
+            <field name="name">Settings</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_id" ref="res_config_settings_view_form"/>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module' : 'exim_bellona'}</field>
+        </record>
+
     </data>
 </odoo>
