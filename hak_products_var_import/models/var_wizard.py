@@ -9,10 +9,12 @@ _logger = logging.getLogger(__name__)
 class ProductTemplateInh(models.Model):
     _inherit = 'product.template'
 
-    price_code = fields.Char()
-    pricelist_price = fields.Float("Pricelist Price")
-    factor = fields.Float(related="categ_id.factor",string="Factor")
-    price_update = fields.Boolean(string="Updated by Pricelist")
+    price_code = fields.Char(readonly=True)
+    product_model_name = fields.Char(readonly=True)
+    pricelist_price = fields.Float("Pricelist Price",readonly=True)
+    compare_price = fields.Float("Compare Price",readonly=True)
+    factor = fields.Float(string="Factor",readonly=True)
+    price_update = fields.Boolean(string="Updated by Pricelist",readonly=True)
 
     @api.onchange('factor','categ_id','standard_price')
     def _onchange_categ_factor(self):
