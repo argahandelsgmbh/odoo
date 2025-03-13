@@ -28,21 +28,13 @@
                 <field name="category" readonly="1"/>
                 <field name="imp"/>
                 <field name="not_imp"/>
-
                 <field name="internal_reference"/>
-                <field name="product_model_name" />
-
+                <field name="product_model_name"/>
                 <field name="check_code"/>
                 <field name="pricelist_price" />
-
                 <field name="compare_to_price" />
-
-                <field name="sale_tax" optional="show"/>
-                <field name="so_delivery_time_days" optional="show"/>
-                <field name="vendor_delivery_lead_time" optional="show"/>
-                <field name="vendor_tax" optional="show"/>
                 <field name="factor" optional="show"/>
-                <field name="vendor_price" show/>
+                <field name="vendor_price"/>
             </tree>
         </field>
     </record>
