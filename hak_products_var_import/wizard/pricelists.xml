@@ -26,15 +26,16 @@
                 <field name="sales_price"/>
                 <field name="product_tmpl_id" readonly="1"/>
                 <field name="category" readonly="1"/>
-                <field name="imp"/>
-                <field name="not_imp"/>
-                <field name="internal_reference"/>
+                 <field name="internal_reference"/>
                 <field name="product_model_name"/>
                 <field name="check_code"/>
                 <field name="pricelist_price" />
                 <field name="compare_to_price" />
-                <field name="factor" optional="show"/>
+                <field name="factor"/>
                 <field name="vendor_price"/>
+                <field name="imp"/>
+                <field name="not_imp"/>
+               
             </tree>
         </field>
     </record>
