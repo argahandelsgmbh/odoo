@@ -7,9 +7,11 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='barcode']" position="before">
                 <field name="price_code"/>
-                <field name="pricelist_price"/>
-                <field name="factor"/>
-                <field name="price_update"/>
+                <field name="pricelist_price" readonly=""/>
+                <field name="factor" readonly=""/>
+                <field name="price_update" readonly=""/>
+                <field name="product_model_name" readonly=""/>
+                <field name="compare_price" readonly=""/>
             </xpath>
         </field>
     </record>
@@ -25,15 +27,15 @@
         </field>
     </record>
 
-       <record id="product_categ_inherit_form" model="ir.ui.view">
-        <field name="name">product.category.form</field>
-        <field name="model">product.category</field>
-        <field name="inherit_id" ref="product.product_category_form_view"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='parent_id']" position="after">
-                <field name="factor"/>
-            </xpath>
-        </field>
-    </record>
+<!--       <record id="product_categ_inherit_form" model="ir.ui.view">-->
+<!--        <field name="name">product.category.form</field>-->
+<!--        <field name="model">product.category</field>-->
+<!--        <field name="inherit_id" ref="product.product_category_form_view"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//field[@name='parent_id']" position="after">-->
+<!--                <field name="factor"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
 
 </odoo>
