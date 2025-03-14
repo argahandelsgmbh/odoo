@@ -4,7 +4,6 @@ import logging
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 from datetime import datetime
-_logger = logging.getLogger(__name__)
 
 class ProductTemplateInh(models.Model):
     _inherit = 'product.template'
