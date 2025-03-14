@@ -29,17 +29,7 @@
                 <field name="imp"/>
                 <field name="not_imp"/>
 
-                <field name="internal_reference"/>
-                <field name="product_model_name" optional="hide"/>
-                <field name="check_code"/>
-                <field name="pricelist_price" optional="hide"/>
-                <field name="compare_to_price" optional="hide"/>
-                <field name="sale_tax" optional="hide"/>
-                <field name="so_delivery_time_days" optional="hide"/>
-                <field name="vendor_delivery_lead_time" optional="hide"/>
-                <field name="vendor_tax" optional="hide"/>
-                <field name="factor" optional="hide"/>
-                <field name="vendor_price"/>
+                
             </tree>
         </field>
     </record>
