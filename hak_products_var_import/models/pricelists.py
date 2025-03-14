@@ -2,7 +2,6 @@ import base64
 import xlrd
 import logging
 from odoo import models, fields, api
-_logger = logging.getLogger(__name__)
 
 class ProductVarImport(models.Model):
     _name = 'pricelist.pricelist'
@@ -128,6 +127,4 @@ class ProductVarImport(models.Model):
                                 "product_code": rec.pricecode,
                                 "price": rec.cost
                             })
-                        _logger.info('Cron Assigned %s price code', rec.pricecode)
-                        _logger.info('Count %s ', count)
                         self._cr.commit()
