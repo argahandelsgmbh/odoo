@@ -37,11 +37,11 @@ class ProductVarImport(models.Model):
             pcount = pcount + 1
             if rec.pricecode or rec.internal_reference:
                 l = len(rec.pricecode)
-                products = self.env['product.template'].search(['|',('price_code','=',rec.pricecode),('default_code','=',rec.internal_reference)])
+                products = self.env['product.template'].sudo().search(['|',('price_code','=',rec.pricecode),('default_code','=',rec.internal_reference)])
                 for p in products:
                     _logger.info('Priceocde %s', rec.pricecode)
                     if p.default_code[:l] == rec.pricecode or p.price_code == rec.pricecode or p.default_code== rec.internal_reference:
-                        categ_id = self.env['product.category'].search([("name", '=', rec.category)], limit=1)
+                        categ_id = self.env['product.category'].sudo().search([("name", '=', rec.category)], limit=1)
 
                         vals={
                             "price_code":rec.pricecode,
@@ -57,7 +57,7 @@ class ProductVarImport(models.Model):
                         if categ_id:
                             p.categ_id = categ_id.id
 
-                        vendor_pricelist = self.env['product.supplierinfo'].search([('product_tmpl_id', '=',p.id),('product_code', '=', rec.pricecode)],limit=1)
+                        vendor_pricelist = self.env['product.supplierinfo'].sudo().search([('product_tmpl_id', '=',p.id),('product_code', '=', rec.pricecode)],limit=1)
 
                         if vendor_pricelist:
                             vendor_pricelist = self.env['product.supplierinfo'].write({
@@ -69,7 +69,7 @@ class ProductVarImport(models.Model):
                                 "delay": rec.vendor_delivery_lead_time
                             })
                         else:
-                            vendor_pricelist=self.env['product.supplierinfo'].create({
+                            vendor_pricelist=self.env['product.supplierinfo'].sudo().create({
                                                                                     "partner_id":rec.vendor_id.id,
                                                                                     "product_tmpl_id":p.id,
                                                                                     "product_name":rec.product_name,
