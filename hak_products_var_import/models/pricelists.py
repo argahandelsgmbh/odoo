@@ -84,7 +84,7 @@ class ProductVarImport(models.Model):
                         _logger.info('No product found %s', rec.pricecode)
                     self.env.cr.commit()
     def cron_import_products(self):
-         pcount = 0
+        pcount = 0
         for rec in self.env['pricelist.pricelist'].search([('imp','=',False)],limit=500):
             pcount = pcount + 1
             if rec.pricecode or rec.internal_reference:
