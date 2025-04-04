@@ -34,7 +34,7 @@ class ProductVarImport(models.Model):
     def action_import_products(self):
         pcount = 0
         ids=self.env.context.get('active_id')
-        pro_list=self.env['pricelist.pricelist'].search([("id","in",ids)]
+        pro_list=self.env['pricelist.pricelist'].search([("id","in",ids)])
         _logger.info('ids %s', ids)
         for rec in pro_list:
             pcount = pcount + 1
