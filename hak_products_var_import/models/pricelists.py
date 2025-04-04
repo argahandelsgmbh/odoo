@@ -33,7 +33,7 @@ class ProductVarImport(models.Model):
 
     def action_import_products(self):
         pcount = 0
-        for rec in self.env['pricelist.pricelist'].search([]):
+        for rec in self.env['pricelist.pricelist'].search([('imp','=',False)],limit=500):
             pcount = pcount + 1
             if rec.pricecode or rec.internal_reference:
                 l = len(rec.pricecode)
@@ -50,6 +50,7 @@ class ProductVarImport(models.Model):
                             "compare_price":rec.sales_price,
                             "pricelist_price":rec.cost*(rec.factor+1),
                         }
+                        rec.imp=True
                         p.write(vals)
                         rec.product_tmpl_id=p.id
                         if categ_id:
