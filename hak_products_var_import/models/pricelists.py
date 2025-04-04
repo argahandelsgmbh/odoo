@@ -35,7 +35,7 @@ class ProductVarImport(models.Model):
         pcount = 0
         ids=self.env.context.get('active_id')
         pro_list=self.env['pricelist.pricelist'].search([("id","in",ids)]
-        _logger.info('Priceocde %s', rec.pricecode)
+        _logger.info('ids %s', ids)
         for rec in pro_list:
             pcount = pcount + 1
             if rec.pricecode or rec.internal_reference:
