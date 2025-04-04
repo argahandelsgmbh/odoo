@@ -83,53 +83,5 @@ class ProductVarImport(models.Model):
                         _logger.info('No product found %s', rec.pricecode)
                     self.env.cr.commit()
     def cron_import_products(self):
-        count=0
-        for rec in self.env['pricelist.pricelist'].search([("imp", '=', False),("not_imp",'=',False)],limit=200):
-            if rec.pricecode and rec.imp == False:
-                l = len(rec.pricecode)
-                products = self.env['product.template'].search(['|',('price_code','=',rec.pricecode),('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code[:l] == rec.pricecode)
-                if not products:
-                    rec.not_imp=True
-                for p in products:
-                    p.price_update = False
-                    if p.default_code[:l] == rec.pricecode or p.price_code == rec.pricecode:
-                        categ_id = self.env['product.category'].search([("name", '=', rec.category)], limit=1)
-                        p.price_code = rec.pricecode
-                        p.standard_price = rec.cost
-                        rec.product_tmpl_id=p.id
-                        p.list_price = rec.sales_price if rec.sales_price else rec.cost * p.factor 
-                        if categ_id:
-                            p.categ_id = categ_id.id
-                            
-                        else:
-                            if not p.list_price:
-                                if rec.sales_price:
-                                    p.list_price = rec.sales_price
-                                else:
-                                    p.list_price = rec.cost
-                        rec.imp = True
-                        p.price_update = True
-                        count=count+1
-
-                        vendor_pricelist = self.env['product.supplierinfo'].search(
-                            [('product_tmpl_id', '=', p.id), ('product_code', '=', rec.pricecode)], limit=1)
-
-                        if vendor_pricelist:
-                            vendor_pricelist = self.env['product.supplierinfo'].update({
-                                "partner_id": rec.vendor_id.id,
-                                "product_tmpl_id": p.id,
-                                "product_name": rec.product_name,
-                                "product_code": rec.pricecode,
-                                "price": rec.cost
-                            })
-                        else:
-                            vendor_pricelist = self.env['product.supplierinfo'].create({
-                                "partner_id": rec.vendor_id.id,
-                                "product_tmpl_id": p.id,
-                                "product_name": rec.product_name,
-                                "product_code": rec.pricecode,
-                                "price": rec.cost
-                            })
-                        _logger.info('Cron Assigned %s price code', rec.pricecode)
-                        _logger.info('Count %s ', count)
-                        self._cr.commit()
+        self.action_import_products()
+       
