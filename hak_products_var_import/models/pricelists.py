@@ -36,12 +36,13 @@ class ProductVarImport(models.Model):
         model = self.env.context.get('active_model')
         docs = self.env[model].browse(self.env.context.get('active_ids', [])).ids
         pro_list=self.env['pricelist.pricelist'].search([("id","in",docs)])
-        _logger.info('ids %s', docs)
         for rec in pro_list:
             pcount = pcount + 1
             if rec.pricecode or rec.internal_reference:
                 l = len(rec.pricecode)
                 products = self.env['product.template'].sudo().search(['|',('default_code','ilike',rec.pricecode),('default_code','=',rec.internal_reference)])
+                if not products:
+                   _logger.info('No products found %s', products)
                 for p in products:
                     _logger.info('Priceocde %s', rec.pricecode)
                     if p.default_code[:l] == rec.pricecode or p.price_code == rec.pricecode or p.default_code== rec.internal_reference:
