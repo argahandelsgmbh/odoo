@@ -41,7 +41,7 @@ class ProductVarImport(models.Model):
             pcount = pcount + 1
             if rec.pricecode or rec.internal_reference:
                 l = len(rec.pricecode)
-                products = self.env['product.template'].sudo().search(['|',('price_code','=',rec.pricecode),('default_code','=',rec.internal_reference)])
+                products = self.env['product.template'].sudo().search(['|',('default_code','ilike',rec.pricecode),('default_code','=',rec.internal_reference)])
                 for p in products:
                     _logger.info('Priceocde %s', rec.pricecode)
                     if p.default_code[:l] == rec.pricecode or p.price_code == rec.pricecode or p.default_code== rec.internal_reference:
@@ -92,7 +92,7 @@ class ProductVarImport(models.Model):
             pcount = pcount + 1
             if rec.pricecode or rec.internal_reference:
                 l = len(rec.pricecode)
-                products = self.env['product.template'].sudo().search(['|',('price_code','=',rec.pricecode),('default_code','=',rec.internal_reference)])
+                products = self.env['product.template'].sudo().search(['|',('default_code','ilike',rec.pricecode),('default_code','=',rec.internal_reference)])
                 for p in products:
                     _logger.info('Priceocde %s', rec.pricecode)
                     if p.default_code[:l] == rec.pricecode or p.price_code == rec.pricecode or p.default_code== rec.internal_reference:
