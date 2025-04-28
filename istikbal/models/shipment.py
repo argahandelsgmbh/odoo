@@ -35,8 +35,13 @@ class IncomingShipments(models.Model):
     customerBarCode = fields.Char('customerBarCode')
     text = fields.Char('text')
     quantity = fields.Char('Quantity')
-    purchase_id = fields.Many2one('purchase.order', string="Purchase Order")
+    purchase_id = fields.Many2one('purchase.order', string="Purchase Order",compute='compute_the_purchase_no')
     sale_id = fields.Many2one('sale.order', string="Purchase Order")
+
+    def compute_the_purchase_no(self):
+        for rec in self:
+            purchase_id=self.env['purchase.order'].search([('name','=',rec.customerItemCode)],limit=1)
+            rec.purchase_id=purchase_id.id
 
 
 class Shipments(models.Model):
