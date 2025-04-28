@@ -112,7 +112,7 @@ class ShipmentDetails(models.Model):
             if not purchase_id:
                 if '*' in rec.customerItemCode:
                     name=rec.customerItemCode.split('*')[0]
-                purchase_id=self.env['purchase.order'].search([('name','=',name)],limit=1)
+                    purchase_id=self.env['purchase.order'].search([('name','=',name)],limit=1)
                 
             rec.purchase_id=purchase_id.id
     
