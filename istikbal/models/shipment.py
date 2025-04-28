@@ -109,6 +109,11 @@ class ShipmentDetails(models.Model):
     def compute_the_purchase_no(self):
         for rec in self:
             purchase_id=self.env['purchase.order'].search([('name','=',rec.customerItemCode)],limit=1)
+            if not purchase_id:
+                if '*' in rec.customerItemCode:
+                    name=rec.customerItemCode.split('*')[0]
+                purchase_id=self.env['purchase.order'].search([('name','=',name)],limit=1)
+                
             rec.purchase_id=purchase_id.id
     
 
