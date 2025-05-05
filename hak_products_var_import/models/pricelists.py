@@ -42,7 +42,7 @@ class ProductVarImport(models.Model):
                 l = len(rec.pricecode)
                 products = self.env['product.template'].search(['|',('default_code','ilike',rec.internal_reference),('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code and o.default_code[:l] == rec.pricecode)
                 if not products:
-                   _logger.info('No products found %s', rec.pricecode)
+                   _logger.info('No products found %s', l)
                 for p in products:
                     categ_id = self.env['product.category'].sudo().search([("name", '=', rec.category)], limit=1)
                     vals={
