@@ -41,8 +41,7 @@ class ProductVarImport(models.Model):
             if rec.pricecode or rec.internal_reference:
                 l = len(rec.pricecode)
                 _logger.info('Length %s', l)
-                products = self.env['product.template'].sudo().search([('default_code', '!=', '')])
-                products = products.filtered(lambda p: rec.pricecode in p.default_code)
+                products = self.env['product.template'].sudo().search([('default_code','!=',"")]).filtered(lambda o:o.default_code[:l] == rec.pricecode)
                 if not products:
                    _logger.info('No products found %s', rec.pricecode)
                 for p in products:
