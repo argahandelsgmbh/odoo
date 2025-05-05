@@ -46,7 +46,7 @@ class ProductVarImport(models.Model):
                 for p in products:
                     _logger.info('Priceocde %s', rec.pricecode)
                     # if p.default_code[:l] == rec.pricecode or p.price_code == rec.pricecode or p.default_code== str(rec.internal_reference):
-                    if (isinstance(p.default_code, str) and p.default_code[:l] == rec.pricecode) or (p.price_code == rec.pricecode) or (str(p.default_code) == str(rec.internal_reference)):
+                    if (isinstance(p.default_code, str) and p.default_code[:l] == rec.pricecode) or (str(p.default_code) == str(rec.internal_reference)):
                         categ_id = self.env['product.category'].sudo().search([("name", '=', rec.category)], limit=1)
 
                         vals={
