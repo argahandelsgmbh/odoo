@@ -45,7 +45,7 @@ class ProductVarImport(models.Model):
                    _logger.info('No products found %s', products)
                 for p in products:
                     _logger.info('Priceocde %s', rec.pricecode)
-                    if p.default_code[:l] == rec.pricecode or p.price_code == rec.pricecode or p.default_code== rec.internal_reference:
+                    if p.default_code[:l] == rec.pricecode or p.price_code == rec.pricecode or p.default_code== str(rec.internal_reference):
                         categ_id = self.env['product.category'].sudo().search([("name", '=', rec.category)], limit=1)
 
                         vals={
@@ -96,7 +96,7 @@ class ProductVarImport(models.Model):
                 products = self.env['product.template'].sudo().search(['|',('default_code','ilike',rec.pricecode),('default_code','=',rec.internal_reference)])
                 for p in products:
                     _logger.info('Priceocde %s', rec.pricecode)
-                    if p.default_code[:l] == rec.pricecode or p.price_code == rec.pricecode or p.default_code== rec.internal_reference:
+                    if p.default_code[:l] == rec.pricecode or p.price_code == rec.pricecode or p.default_code== str(rec.internal_reference):
                         categ_id = self.env['product.category'].sudo().search([("name", '=', rec.category)], limit=1)
 
                         vals={
