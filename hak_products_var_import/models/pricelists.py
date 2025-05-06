@@ -40,7 +40,10 @@ class ProductVarImport(models.Model):
             pcount = pcount + 1
             if rec.pricecode or rec.internal_reference:
                 l = len(rec.pricecode)
-                products = self.env['product.template'].search(['|',('default_code','ilike',rec.internal_reference),('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code and o.default_code[:l] == rec.pricecode)
+                if rec.internal_reference:
+                    products = self.env['product.template'].search([('default_code','=',rec.internal_reference)])
+                else:
+                    products = self.env['product.template'].search(['|',('default_code','ilike',rec.internal_reference),('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code and o.default_code[:l] == rec.pricecode)
                 if not products:
                    _logger.info('No products found %s', rec.pricecode)
                 for p in products:
@@ -88,7 +91,12 @@ class ProductVarImport(models.Model):
             pcount = pcount + 1
             if rec.pricecode or rec.internal_reference:
                 l = len(rec.pricecode)
-                products = self.env['product.template'].search(['|',('default_code','ilike',rec.internal_reference),('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code and o.default_code[:l] == rec.pricecode)
+                
+                if rec.internal_reference:
+                    products = self.env['product.template'].search([('default_code','=',rec.internal_reference)])
+                else:
+                    products = self.env['product.template'].search(['|',('default_code','ilike',rec.internal_reference),('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code and o.default_code[:l] == rec.pricecode)
+                
                 for p in products:
                     _logger.info('Priceocde %s', rec.pricecode)
                     # if p.default_code[:l] == rec.pricecode or p.price_code == rec.pricecode or p.default_code== str(rec.internal_reference):
