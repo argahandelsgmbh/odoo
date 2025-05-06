@@ -95,7 +95,7 @@ class ProductVarImport(models.Model):
                 if rec.internal_reference:
                     products = self.env['product.template'].search([('default_code','=',rec.internal_reference)])
                 else:
-                    products = self.env['product.template'].search(['|',('default_code','ilike',rec.internal_reference),('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code and o.default_code[:l] == rec.pricecode)
+                    products = self.env['product.template'].search([('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code and o.default_code[:l] == rec.pricecode)
                 
                 for p in products:
                     _logger.info('Priceocde %s', rec.pricecode)
