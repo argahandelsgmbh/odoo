@@ -2,6 +2,7 @@ import base64
 import xlrd
 import logging
 from odoo import models, fields, api
+_logger = logging.getLogger(__name__)
 
 class ProductVarImport(models.Model):
     _name = 'pricelist.pricelist'
@@ -32,14 +33,76 @@ class ProductVarImport(models.Model):
 
     def action_import_products(self):
         pcount = 0
-        for rec in self.env['pricelist.pricelist'].search([]):
+        model = self.env.context.get('active_model')
+        docs = self.env[model].browse(self.env.context.get('active_ids', [])).ids
+        pro_list=self.env['pricelist.pricelist'].search([("id","in",docs)])
+        for rec in pro_list:
             pcount = pcount + 1
             if rec.pricecode or rec.internal_reference:
                 l = len(rec.pricecode)
-                products = self.env['product.template'].search(['|',('price_code','=',rec.pricecode),('default_code','=',rec.internal_reference)])
+                if rec.internal_reference:
+                    products = self.env['product.template'].search([('default_code','=',rec.internal_reference)])
+                else:
+                    products = self.env['product.template'].search(['|',('default_code','ilike',rec.internal_reference),('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code and o.default_code[:l] == rec.pricecode)
+                if not products:
+                   _logger.info('No products found %s', rec.pricecode)
                 for p in products:
-                    if p.default_code[:l] == rec.pricecode or p.price_code == rec.pricecode or p.default_code== rec.internal_reference:
-                        categ_id = self.env['product.category'].search([("name", '=', rec.category)], limit=1)
+                    categ_id = self.env['product.category'].sudo().search([("name", '=', rec.category)], limit=1)
+                    vals={
+                        "price_code":rec.pricecode,
+                        "standard_price":rec.cost,
+                        "product_model_name":rec.product_model_name,
+                        "list_price":p.list_price if p.list_price >1 else rec.sales_price,
+                        "compare_price":rec.sales_price,
+                        "pricelist_price":rec.cost*(rec.factor+1),
+                    }
+                    rec.imp=True
+                    p.write(vals)
+                    rec.product_tmpl_id=p.id
+                    if categ_id:
+                        p.categ_id = categ_id.id
+
+                    vendor_pricelist = self.env['product.supplierinfo'].sudo().search([('product_tmpl_id', '=',p.id),('product_code', '=', rec.pricecode)],limit=1)
+
+                    if vendor_pricelist:
+                        vendor_pricelist = self.env['product.supplierinfo'].write({
+                            "partner_id": rec.vendor_id.id,
+                            "product_tmpl_id": p.id,
+                            "product_name": rec.product_name,
+                            "product_code": rec.pricecode,
+                            "price": rec.vendor_price,
+                            "delay": rec.vendor_delivery_lead_time
+                        })
+                    else:
+                        vendor_pricelist=self.env['product.supplierinfo'].sudo().create({
+                                                                                "partner_id":rec.vendor_id.id,
+                                                                                "product_tmpl_id":p.id,
+                                                                                "product_name":rec.product_name,
+                                                                                "product_code":rec.pricecode,
+                                                                                "price":rec.vendor_price,
+                                                                                "delay":rec.vendor_delivery_lead_time,
+                                                                                "company_id":False
+                                                                              })
+
+                    self.env.cr.commit()
+    def cron_import_products(self):
+        pcount = 0
+        for rec in self.env['pricelist.pricelist'].search([('imp','=',False)],limit=500):
+            pcount = pcount + 1
+            if rec.pricecode or rec.internal_reference:
+                l = len(rec.pricecode)
+                
+                if rec.internal_reference:
+                    products = self.env['product.template'].search([('default_code','=',rec.internal_reference)])
+                else:
+                    products = self.env['product.template'].search(['|',('default_code','ilike',rec.internal_reference),('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code and o.default_code[:l] == rec.pricecode)
+                
+                for p in products:
+                    _logger.info('Priceocde %s', rec.pricecode)
+                    # if p.default_code[:l] == rec.pricecode or p.price_code == rec.pricecode or p.default_code== str(rec.internal_reference):
+                    if rec.pricecode or rec.internal_reference:
+                    
+                        categ_id = self.env['product.category'].sudo().search([("name", '=', rec.category)], limit=1)
 
                         vals={
                             "price_code":rec.pricecode,
@@ -49,12 +112,13 @@ class ProductVarImport(models.Model):
                             "compare_price":rec.sales_price,
                             "pricelist_price":rec.cost*(rec.factor+1),
                         }
+                        rec.imp=True
                         p.write(vals)
                         rec.product_tmpl_id=p.id
                         if categ_id:
                             p.categ_id = categ_id.id
 
-                        vendor_pricelist = self.env['product.supplierinfo'].search([('product_tmpl_id', '=',p.id),('product_code', '=', rec.pricecode)],limit=1)
+                        vendor_pricelist = self.env['product.supplierinfo'].sudo().search([('product_tmpl_id', '=',p.id),('product_code', '=', rec.pricecode)],limit=1)
 
                         if vendor_pricelist:
                             vendor_pricelist = self.env['product.supplierinfo'].write({
@@ -66,7 +130,7 @@ class ProductVarImport(models.Model):
                                 "delay": rec.vendor_delivery_lead_time
                             })
                         else:
-                            vendor_pricelist=self.env['product.supplierinfo'].create({
+                            vendor_pricelist=self.env['product.supplierinfo'].sudo().create({
                                                                                     "partner_id":rec.vendor_id.id,
                                                                                     "product_tmpl_id":p.id,
                                                                                     "product_name":rec.product_name,
@@ -79,53 +143,4 @@ class ProductVarImport(models.Model):
                     else:
                         _logger.info('No product found %s', rec.pricecode)
                     self.env.cr.commit()
-    def cron_import_products(self):
-        pass
-        # count=0
-        # for rec in self.env['pricelist.pricelist'].search([("imp", '=', False),("not_imp",'=',False)],limit=200):
-        #     if rec.pricecode and rec.imp == False:
-        #         l = len(rec.pricecode)
-        #         products = self.env['product.template'].search(['|',('price_code','=',rec.pricecode),('default_code','ilike',rec.pricecode)]).filtered(lambda o:o.default_code[:l] == rec.pricecode)
-        #         if not products:
-        #             rec.not_imp=True
-        #         for p in products:
-        #             p.price_update = False
-        #             if p.default_code[:l] == rec.pricecode or p.price_code == rec.pricecode:
-        #                 categ_id = self.env['product.category'].search([("name", '=', rec.category)], limit=1)
-        #                 p.price_code = rec.pricecode
-        #                 p.standard_price = rec.cost
-        #                 rec.product_tmpl_id=p.id
-        #                 p.list_price = rec.sales_price if rec.sales_price else rec.cost * p.factor 
-        #                 if categ_id:
-        #                     p.categ_id = categ_id.id
-                            
-        #                 else:
-        #                     if not p.list_price:
-        #                         if rec.sales_price:
-        #                             p.list_price = rec.sales_price
-        #                         else:
-        #                             p.list_price = rec.cost
-        #                 rec.imp = True
-        #                 p.price_update = True
-        #                 count=count+1
-
-        #                 vendor_pricelist = self.env['product.supplierinfo'].search(
-        #                     [('product_tmpl_id', '=', p.id), ('product_code', '=', rec.pricecode)], limit=1)
-
-        #                 if vendor_pricelist:
-        #                     vendor_pricelist = self.env['product.supplierinfo'].update({
-        #                         "partner_id": rec.vendor_id.id,
-        #                         "product_tmpl_id": p.id,
-        #                         "product_name": rec.product_name,
-        #                         "product_code": rec.pricecode,
-        #                         "price": rec.cost
-        #                     })
-        #                 else:
-        #                     vendor_pricelist = self.env['product.supplierinfo'].create({
-        #                         "partner_id": rec.vendor_id.id,
-        #                         "product_tmpl_id": p.id,
-        #                         "product_name": rec.product_name,
-        #                         "product_code": rec.pricecode,
-        #                         "price": rec.cost
-        #                     })
-        #                 self._cr.commit()
+       
