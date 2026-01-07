@@ -96,7 +96,7 @@ class ShipmentDetails(models.Model):
                                  default=lambda self: self.env.company)
 
     qr_image = fields.Binary("QR Code", compute="_generate_qr_code")
-    purchase_id = fields.Many2one('purchase.order',string="Purchase Order",compute="compute_the_purchase_no")
+    purchase_id = fields.Many2one('purchase.order',string="Purchase Order",compute="compute_the_purchase_no",store=True)
     sale_id = fields.Many2one('sale.order')
     combine_id = fields.Many2one('istikbal.combine.shipments')
     is_received = fields.Boolean('Received')
@@ -106,6 +106,7 @@ class ShipmentDetails(models.Model):
     product_id = fields.Many2one("product.template", "Product")
     pricelist_price = fields.Float("Pricelist Price")
 
+    @api.depends('customerItemCode')
     def compute_the_purchase_no(self):
         for rec in self:
             purchase_id=self.env['purchase.order'].search([('name','=',rec.customerItemCode)],limit=1)
