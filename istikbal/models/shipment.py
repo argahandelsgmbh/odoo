@@ -96,7 +96,7 @@ class ShipmentDetails(models.Model):
                                  default=lambda self: self.env.company)
 
     qr_image = fields.Binary("QR Code", compute="_generate_qr_code")
-    purchase_id = fields.Many2one('purchase.order',compute="compute_the_purchase_no")
+    purchase_id = fields.Many2one('purchase.order')
     sale_id = fields.Many2one('sale.order')
     combine_id = fields.Many2one('istikbal.combine.shipments')
     is_received = fields.Boolean('Received')
