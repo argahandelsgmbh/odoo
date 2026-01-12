@@ -115,7 +115,7 @@
 
                     <field name="pakageEnum"/>
                     <field name="customerItemCode"/>
-                    <field name="purchase_id"  optional="show"/>
+                    <!-- <field name="purchase_id"  optional="show"/> -->
                     <field name="customerOrderReference"/>
                     <field name="productName"/>
                     <field name="productCode"/>
