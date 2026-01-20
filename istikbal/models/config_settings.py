@@ -45,9 +45,9 @@ class Integration(models.TransientModel):
                 self.createIncomingShipment(products)
                 self.env.cr.commit()
             else:
-                raise UserError(_('Please wait server is buy.', str(response.text)))
+                raise UserError(('Please wait server is buy.', str(response.text)))
         except Exception as e:
-            raise UserError(_('Please wait server is buy.', str(e)))
+            raise UserError(('Please wait server is buy.', str(e)))
 
     def createIncomingShipment(self, products):
         for product in products:
@@ -94,7 +94,7 @@ class Integration(models.TransientModel):
                          })
 
             except Exception as e:
-                raise UserError(_('Error.', str(e)))
+                raise UserError(('Error.', str(e)))
 
     def importMaterials(self):
         try:
@@ -113,11 +113,11 @@ class Integration(models.TransientModel):
                     if len(materials) > 0:
                         allMaterials.extend(materials)
                 else:
-                    raise UserError(_('Error.', str(response.text)))
+                    raise UserError(('Error.', str(response.text)))
             self.createMaterials(allMaterials)
             self.env.cr.commit()
         except Exception as e:
-           raise UserError(_('Error.', str(e)))
+           raise UserError(('Error.', str(e)))
 
     def createMaterials(self, materials):
         for material in materials:
@@ -230,9 +230,9 @@ class Integration(models.TransientModel):
                 self.createShipmentsHeader(shipmentsHeader,shipmentsDetails)
                 self.env.cr.commit()
             else:    
-                raise UserError(_('Please wait server is buy.', str(response.text)))
+                raise UserError(('Please wait server is buy.', str(response.text)))
         except Exception as e:
-             raise UserError(_('Please wait server is buy.', str(e)))
+             raise UserError(('Please wait server is buy.', str(e)))
 
 
     def createShipmentsHeader(self, headers,shipmentsDetails):

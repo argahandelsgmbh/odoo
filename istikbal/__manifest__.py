@@ -18,7 +18,7 @@
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '17.7',
+    'version': '19.4',
     'license': 'OPL-1',
 
     # any module necessary for this one to work correctly
