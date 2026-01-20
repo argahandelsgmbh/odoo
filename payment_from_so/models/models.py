@@ -49,7 +49,7 @@ class SaleOrder(models.Model):
             'name': 'Payments',
             'res_model': 'account.payment',
             'domain': ['|', ('ref', '=', self.name), ('id', 'in', pay_list)],
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'type': 'ir.actions.act_window',
             'context': "{'create': False}"
         }
