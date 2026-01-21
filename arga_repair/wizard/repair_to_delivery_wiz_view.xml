@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record id="repair_to_delivery_wizard_form" model="ir.ui.view">
             <field name="name">repair.to.rfq.wizard.form</field>
             <field name="model">repair.delivery.wizard</field>
@@ -16,12 +15,12 @@
                         <notebook>
                             <page string="Products">
                                 <field name="repair_line_ids" domain="[('repair_id', '=', repair_id)]">
-                                    <tree create="0">
+                                    <list create="0">
                                         <field name="product_id"/>
                                         <field name="product_uom_qty"/>
                                         <field name="product_uom" string="UOM"/>
                                         <field name="qty_available"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                         </notebook>
@@ -33,6 +32,5 @@
                 </form>
             </field>
         </record>
-
     </data>
 </odoo>

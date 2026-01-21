@@ -1,21 +1,19 @@
 <odoo>
-
-   <record id="cron_import_pricelist_scheduler" model="ir.cron">
-<field name="name">Import pricelist</field>
-<field name="model_id" ref="model_pricelist_pricelist" />
-<field name="state">code</field>
-<field name="active">1</field>
-<field name="code">model.cron_import_products()</field>
-<field name="interval_number">30</field>
-<field name="interval_type">minutes</field>
-<field name="numbercall">-1</field>
-</record>
+        <record id="cron_import_pricelist_scheduler" model="ir.cron">
+                <field name="name">Import pricelist</field>
+                <field name="model_id" ref="model_pricelist_pricelist" />
+                <field name="state">code</field>
+                <field name="active">1</field>
+                <field name="code">model.cron_import_products()</field>
+                <field name="interval_number">30</field>
+                <field name="interval_type">minutes</field>
+        </record>
 
     <record id="pricelists_tree" model="ir.ui.view">
         <field name="name">pricelist.pricelist.tree</field>
         <field name="model">pricelist.pricelist</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <list editable="bottom">
                 <header>
                     <button name="action_import_products" type="object" string="Import Pricelists"/>
                 </header>
@@ -40,7 +38,7 @@
                 <field name="vendor_tax" optional="hide"/>
                 <field name="factor" optional="hide"/>
                 <field name="vendor_price"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -61,7 +59,7 @@
     <record id="action_pricelist_pricelist" model="ir.actions.act_window">
         <field name="name">Import Pricelists</field>
         <field name="res_model">pricelist.pricelist</field>
-        <field name='view_mode'>tree</field>
+        <field name='view_mode'>list</field>
     </record>
 
     <menuitem id="root_menu_pricelists" name="Import Pricelists" action="action_pricelist_pricelist" parent="sale.sale_menu_root"

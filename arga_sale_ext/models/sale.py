@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-import datetime
-from datetime import timedelta
-
-from odoo.exceptions import UserError
-
 
 class SaleOrderInh(models.Model):
     _inherit = 'sale.order'
