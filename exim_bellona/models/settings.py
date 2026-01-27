@@ -4,8 +4,9 @@ import json
 from odoo.exceptions import ValidationError, UserError
 from odoo.exceptions import AccessError
 import logging
+from requests.exceptions import RequestException
+from odoo.exceptions import UserError
 
-_logger = logging.getLogger(__name__)
 
 _logger = logging.getLogger(__name__)
 
