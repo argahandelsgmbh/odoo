@@ -77,7 +77,7 @@ class Credentials(models.Model):
             else:
                 bellonaCredentials.state = 'disconnect'
                 self.env["bellona.log.notes"].sudo().create({
-                    "Note": f"Credentials not working for {currentCompany.name}: "
+                    'error': f"Credentials not working for {currentCompany.name}: "
                             f"{response.status_code} - {response.text}",
                 })
         
@@ -89,28 +89,10 @@ class Credentials(models.Model):
             _logger.exception("Bellona API connection error")
         
             self.env["bellona.log.notes"].sudo().create({
-                "Note": f"Bellona API connection failed for {currentCompany.name}: {str(e)}",
+                'error': f"Bellona API connection failed for {currentCompany.name}: {str(e)}",
             })
         
-            raise UserError(
-                "Unable to connect to Bellona API.\n"
-                "Please check server network access or IP whitelisting."
-            )
         
-        except Exception as e:
-            # Any unexpected error
-            if bellonaCredentials:
-                bellonaCredentials.state = 'disconnect'
-        
-            _logger.exception("Unexpected Bellona integration error")
-        
-            raise UserError(
-                "Unexpected error occurred while connecting to Bellona API.\n"
-                "Please contact system administrator."
-            )
-
-
-
 
 
 
