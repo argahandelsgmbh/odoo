@@ -54,6 +54,8 @@ class Credentials(models.Model):
             })
         else:
             bellonaCredentials.state = 'disconnect'
+            log_notes = self.env["bellona.log.notes"].sudo().create(
+                    {"Credentials not working " + str(company.company_id.name) + ": " + str(response)})
 
 
 
