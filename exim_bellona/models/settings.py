@@ -3,6 +3,11 @@ import requests
 import json
 from odoo.exceptions import ValidationError, UserError
 from odoo.exceptions import AccessError
+import logging
+
+_logger = logging.getLogger(__name__)
+
+_logger = logging.getLogger(__name__)
 
 class Credentials(models.Model):
     _name = 'bellona.credentials'
@@ -31,32 +36,78 @@ class Credentials(models.Model):
 
     def connect_bellona_credentials(self):
 
-        settings = self.env['res.config.settings']
-        url = settings.getBaseURL() + "api/Account"
-        username,  password = self.getBellonaCredentials()
-        payload = json.dumps({
-            "userName": username,
-            "password": password
-        })
-        headers = {
-            'Content-Type': 'application/json'
-        }
-        currentCompany = self.env.company
-        bellonaCredentials = self.env['bellona.credentials'].search([('company_id', '=', currentCompany.id),
-                                                                     ('active', '=', True)],limit=1)
+        try:
+            settings = self.env['res.config.settings']
+            url = settings.getBaseURL() + "api/Account"
+        
+            username, password = self.getBellonaCredentials()
+        
+            payload = json.dumps({
+                "userName": username,
+                "password": password
+            })
+        
+            headers = {
+                'Content-Type': 'application/json'
+            }
+        
+            currentCompany = self.env.company
+            bellonaCredentials = self.env['bellona.credentials'].search(
+                [
+                    ('company_id', '=', currentCompany.id),
+                    ('active', '=', True)
+                ],
+                limit=1
+            )
+        
+            response = requests.post(
+                url,
+                headers=headers,
+                data=payload,
+                timeout=15
+            )
+        
+            if response.status_code == 200:
+                bellonaCredentials.state = 'active'
+                response_data = response.json()
+                self.write({
+                    'token': response_data.get('value')
+                })
+            else:
+                bellonaCredentials.state = 'disconnect'
+                self.env["bellona.log.notes"].sudo().create({
+                    "Note": f"Credentials not working for {currentCompany.name}: "
+                            f"{response.status_code} - {response.text}",
+                })
+        
+        except RequestException as e:
+            # Network / timeout / DNS / route issues
+            if bellonaCredentials:
+                bellonaCredentials.state = 'disconnect'
+        
+            _logger.exception("Bellona API connection error")
+        
+            self.env["bellona.log.notes"].sudo().create({
+                "Note": f"Bellona API connection failed for {currentCompany.name}: {str(e)}",
+            })
+        
+            raise UserError(
+                "Unable to connect to Bellona API.\n"
+                "Please check server network access or IP whitelisting."
+            )
+        
+        except Exception as e:
+            # Any unexpected error
+            if bellonaCredentials:
+                bellonaCredentials.state = 'disconnect'
+        
+            _logger.exception("Unexpected Bellona integration error")
+        
+            raise UserError(
+                "Unexpected error occurred while connecting to Bellona API.\n"
+                "Please contact system administrator."
+            )
 
-        response = requests.request("POST", url, headers=headers, data=payload)
-        if response.status_code == 200:
-            bellonaCredentials.state='active'
-            response = json.loads(response.text)
-            self.write({
-                'token': response['value']
-            })
-        else:
-            bellonaCredentials.state = 'disconnect'
-            log_notes = self.env["bellona.log.notes"].sudo().create({
-                "Note": f"Credentials not working for {company.company_id.name}: {response}",
-            })
 
 
 
