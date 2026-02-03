@@ -343,7 +343,7 @@ class Integration(models.TransientModel):
 
         response = requests.request("GET", url, headers=headers)
         log_notes = self.env["istikbal.log.notes"].sudo().create({'Import shipment  {}{}'.format(self.company_id.name, str(response.text))})
-        Import shipment 
+        
             # if response.status_code == 200:
             #     materials = json.loads(response.content)
 
