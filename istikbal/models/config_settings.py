@@ -45,10 +45,9 @@ class Integration(models.TransientModel):
                 self.createIncomingShipment(products)
                 self.env.cr.commit()
             else:
-                log_notes = self.env["istikbal.log.notes"].sudo().create({'Import Inventory {}{}'.format(self.company_id.name, str(response.text))})
+                log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(response.text)})
         except Exception as e:
-            log_notes = self.env["istikbal.log.notes"].sudo().create({'Import Inventory {}{}'.format(self.company_id.name, str(e))})
-
+            log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(e)})
     def createIncomingShipment(self, products):
         for product in products:
             try:
@@ -94,7 +93,7 @@ class Integration(models.TransientModel):
                          })
 
             except Exception as e:
-               log_notes = self.env["istikbal.log.notes"].sudo().create({'Create Incoming Shipment {}{}'.format(self.company_id.name, str(e))})
+               log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(e)})
 
     def importMaterials(self):
         try:
@@ -113,12 +112,11 @@ class Integration(models.TransientModel):
                     if len(materials) > 0:
                         allMaterials.extend(materials)
                 else:
-                    log_notes = self.env["istikbal.log.notes"].sudo().create({'Import Materials {}{}'.format(self.company_id.name, str(response.text))})
+                    log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(response.text)})
             self.createMaterials(allMaterials)
             self.env.cr.commit()
         except Exception as e:
-           log_notes = self.env["istikbal.log.notes"].sudo().create({'Import Materials {}{}'.format(self.company_id.name, str(e))})
-
+           log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(e)})
     def createMaterials(self, materials):
         for material in materials:
             odooMaterials = self.env['istikbal.materials'].search([('materialNumber', '=', material['materialNumber'])])
@@ -230,9 +228,9 @@ class Integration(models.TransientModel):
                 self.createShipmentsHeader(shipmentsHeader,shipmentsDetails)
                 self.env.cr.commit()
             else:    
-                log_notes = self.env["istikbal.log.notes"].sudo().create({'Import shipment {}{}'.format(self.company_id.name, str(response.text))})
+                log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(response.text)})
         except Exception as e:
-             log_notes = self.env["istikbal.log.notes"].sudo().create({'Import shipment  {}{}'.format(self.company_id.name, str(e))})
+             log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(e)})
 
 
     def createShipmentsHeader(self, headers,shipmentsDetails):
