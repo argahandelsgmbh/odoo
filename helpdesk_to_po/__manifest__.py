@@ -16,7 +16,7 @@
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.3',
+    'version': '19.4',
      'license': 'OPL-1',
 
     # any module necessary for this one to work correctly
@@ -24,10 +24,10 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'data/sequence.xml',
-        'views/views.xml',
-        'wizard/help_to_rfq_wiz_view.xml',
+        # 'security/ir.model.access.csv',
+        # 'data/sequence.xml',
+        # 'views/views.xml',
+        # 'wizard/help_to_rfq_wiz_view.xml',
 
     ],
    
