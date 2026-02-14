@@ -12,10 +12,10 @@
     "installable": True,
     "depends": ["sale", "account_fix_discount"],
     "data": [
-        "security/res_groups.xml",
-        "reports/report_sale_order.xml",
-        "views/account_invoice_views.xml",
-        "views/sale_order_views.xml",
-        "views/sale_portal_templates.xml",
+        # "security/res_groups.xml",
+        # "reports/report_sale_order.xml",
+        # "views/account_invoice_views.xml",
+        # "views/sale_order_views.xml",
+        # "views/sale_portal_templates.xml",
     ],
 }
