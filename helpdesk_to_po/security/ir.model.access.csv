@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_helpdesk_to_rfq_user,helpdesk.rfq.wizard,model_helpdesk_rfq_wizard,,1,1,1,1
+access_helpdesk_line_to_rfq_user,helpdesk.rfq.wizard.line,model_helpdesk_rfq_wizard_line,,1,1,1,1
