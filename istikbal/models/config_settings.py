@@ -112,7 +112,7 @@ class Integration(models.TransientModel):
                     if len(materials) > 0:
                         allMaterials.extend(materials)
                 else:
-                    log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(response.content)})
+                    log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(response)})
             self.createMaterials(allMaterials)
             self.env.cr.commit()
         except Exception as e:
@@ -228,7 +228,7 @@ class Integration(models.TransientModel):
                 self.createShipmentsHeader(shipmentsHeader,shipmentsDetails)
                 self.env.cr.commit()
             else:    
-                log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(response.content)})
+                log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(response)})
         except Exception as e:
              log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(e)})
 
@@ -340,7 +340,7 @@ class Integration(models.TransientModel):
         }
 
         response = requests.request("GET", url, headers=headers)
-        log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(response.content)})
+        log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(response)})
         
             # if response.status_code == 200:
             #     materials = json.loads(response.content)
