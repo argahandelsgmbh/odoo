@@ -34,14 +34,14 @@
     'website': "https://www.cybrosys.com",
     'depends': ['base','website'],
     'data': [
-        'views/website_views.xml',
-        'views/website_whatsapp_icons_views.xml'
+        # 'views/website_views.xml',
+        # 'views/website_whatsapp_icons_views.xml'
     ],
-    'assets': {
-        'web.assets_frontend': [
-            '/website_floating_whatsapp_icon/static/src/css/website_floating_whatsapp_icon.css',
-        ],
-    },
+    # 'assets': {
+    #     'web.assets_frontend': [
+    #         '/website_floating_whatsapp_icon/static/src/css/website_floating_whatsapp_icon.css',
+    #     ],
+    # },
     'images': ['static/description/banner.png'],
     'license': 'LGPL-3',
     'installable': True,
