@@ -26,14 +26,14 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'security/security.xml',
-        'data/import_schedule.xml',
-        'views/res_config_settings.xml',
-        'views/istikbal_settings.xml',
-        'views/product_template.xml',
-        'views/shipments.xml',
-        'views/combine_shipments.xml',
-        'views/barcodes.xml',
+        # 'security/ir.model.access.csv',
+        # 'security/security.xml',
+        # 'data/import_schedule.xml',
+        # 'views/res_config_settings.xml',
+        # 'views/istikbal_settings.xml',
+        # 'views/product_template.xml',
+        # 'views/shipments.xml',
+        # 'views/combine_shipments.xml',
+        # 'views/barcodes.xml',
     ],
 }
