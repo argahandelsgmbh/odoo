@@ -317,7 +317,7 @@
         </record>
 
 
-        <record id="bellona_material_search" model="ir.ui.view">
+        <!-- <record id="bellona_material_search" model="ir.ui.view">
             <field name="name">bellona.material.search.view</field>
             <field name="model">bellona.material</field>
             <field name="arch" type="xml">
@@ -342,12 +342,9 @@
                     <field name="zbdT_URETICI" />
                     <field name="mvgR1" />
                     <field name="maktx" />
-                    <group expand="0" string="Group By">
-                        <filter string="Material no" name="barcode" context="{'group_by':'matnr'}" />
-                    </group>
                 </search>
             </field>
-        </record>
+        </record> -->
 
 
         <record model="ir.ui.view" id="bellona_shipments_form_view">
@@ -441,7 +438,7 @@
             </field>
         </record>
 
-        <record id="bellona_shipment_search" model="ir.ui.view">
+        <!-- <record id="bellona_shipment_search" model="ir.ui.view">
             <field name="name">bellona.shipments.search.view</field>
             <field name="model">bellona.shipments</field>
             <field name="arch" type="xml">
@@ -455,13 +452,11 @@
                     <field name="maktx"/>
                     <field name="maktX_EN"/>
                     <field name="previouS_ORDER_POS"/>
-                    <group expand="0" string="Group By">
-                        <filter string="Customer Barcode" name="barcode" context="{'group_by':'customerbarcode'}" />
-                    </group>
+  
                 </search>
             </field>
         </record>
-
+ -->
 
 
         <record id="action_confirm_purchase_order" model="ir.actions.server">
