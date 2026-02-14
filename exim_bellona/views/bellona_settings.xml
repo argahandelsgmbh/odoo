@@ -405,7 +405,7 @@
             <field name="name">Search Inventory</field>
             <field name="model">bellona.shipments</field>
             <field name="arch" type="xml">
-                <tree string="Search Inventory"  default_order="create_date desc">
+                <list string="Search Inventory"  default_order="create_date desc">
                     <field name="product_template"/>
                     <field name="saleS_ORDER" />
                     <field name="customerref"/>
@@ -437,11 +437,11 @@
                     <field name="producT_STOCK" optional="hide"/>
                     <field name="company_id"/>
                     <field name="create_date"/>
-                </tree>
+                </list>
             </field>
         </record>
 
-        <record id="bellona_shipment_search" model="ir.ui.view">
+        <!-- <record id="bellona_shipment_search" model="ir.ui.view">
             <field name="name">bellona.shipments.search.view</field>
             <field name="model">bellona.shipments</field>
             <field name="arch" type="xml">
@@ -460,7 +460,7 @@
                     </group>
                 </search>
             </field>
-        </record>
+        </record> -->
 
 
 
