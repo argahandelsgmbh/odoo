@@ -317,7 +317,7 @@
         </record>
 
 
-        <record id="bellona_material_search" model="ir.ui.view">
+        <!-- <record id="bellona_material_search" model="ir.ui.view">
             <field name="name">bellona.material.search.view</field>
             <field name="model">bellona.material</field>
             <field name="arch" type="xml">
@@ -347,7 +347,7 @@
                     </group>
                 </search>
             </field>
-        </record>
+        </record> -->
 
 
         <record model="ir.ui.view" id="bellona_shipments_form_view">
