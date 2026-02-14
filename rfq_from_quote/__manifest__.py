@@ -1,6 +1,6 @@
 {
     'name': 'Generate RFQ from Sales Quotation',
-    'version': '1.0',
+    'version': '19.3',
     'summary': '',
     'description': 'Create PO from SO, Create ticket from SO, Create DO from Helpdesk,Create Delivery from Sale order',
     'license': 'OPL-1',
