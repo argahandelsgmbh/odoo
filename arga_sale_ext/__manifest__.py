@@ -25,12 +25,11 @@
 
     # always loaded
     'data': [
-        #'security/ir.model.access.csv',
-        'views/picking.xml',
-        'views/project.xml',
-        'views/sale.xml',
-        'views/report_delivery_order.xml',
-        "data/sequencer.xml"
+        # 'views/picking.xml',
+        # 'views/project.xml',
+        # 'views/sale.xml',
+        # 'views/report_delivery_order.xml',
+        # "data/sequencer.xml"
     ],
 
 }
