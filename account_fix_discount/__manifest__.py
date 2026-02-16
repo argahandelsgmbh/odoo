@@ -13,8 +13,8 @@
     "installable": True,
     "depends": ["account"],
     "data": [
-        "security/res_groups.xml",
-        "views/account_move_view.xml",
-        "reports/report_account_invoice.xml",
+        # "security/res_groups.xml",
+        # "views/account_move_view.xml",
+        # "reports/report_account_invoice.xml",
     ],
 }
