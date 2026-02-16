@@ -19,7 +19,7 @@
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'sale',
-    'version': '0.2',
+    'version': '19.2',
     'license': 'OPL-1',
         'installable': True,
 
@@ -32,7 +32,6 @@
         'security/ir.model.access.csv',
         'views/helpdesk.xml',
         'views/repair.xml',
-        # 'views/report_delivery_order.xml',
         'wizard/repair_to_rfq_wiz_view.xml',
         'wizard/repair_to_delivery_wiz_view.xml',
         "data/sequencer.xml"
