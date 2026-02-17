@@ -1,6 +1,6 @@
 <odoo>
     <data>
-        <record id="helpdesk_ticket_view_form_inherit" model="ir.ui.view">
+        <!-- <record id="helpdesk_ticket_view_form_inherit" model="ir.ui.view">
             <field name='name'>helpdesk.ticket.form.inherit.invoicing</field>
             <field name="model">helpdesk.ticket</field>
             <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
@@ -13,6 +13,6 @@
                     <field name="sale_line_id"/>
                 </xpath>
             </field>
-        </record>
+        </record> -->
     </data>
 </odoo>
