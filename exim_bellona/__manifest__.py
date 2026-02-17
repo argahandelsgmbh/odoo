@@ -38,12 +38,12 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
-        # 'security/security.xml',
-        # 'views/bellona_settings.xml',
-        # 'views/res_config_settings.xml',
-        # 'views/bellona_receiving.xml',
-        # 'data/import_schedulers.xml',
+        'security/ir.model.access.csv',
+        'security/security.xml',
+        'views/bellona_settings.xml',
+        'views/res_config_settings.xml',
+        'views/bellona_receiving.xml',
+        'data/import_schedulers.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
