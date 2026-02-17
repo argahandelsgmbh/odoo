@@ -4,8 +4,6 @@
         <field name="name">Combine Header Shipment</field>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
-        <field name="doall" eval="False"/>
         <field name="model_id" ref="model_istikbal_combine_shipments"/>
         <field name="code">model.cron_merger_of_header()</field>
         <field name="state">code</field>
@@ -47,8 +45,8 @@
                     </group>
                     <notebook>
                         <page name="istikbal_shipment_details" string="Details">
-                            <field name="detail_ids" mode="tree">
-                                <tree delete="1" default_order="is_received">
+                            <field name="detail_ids" mode="list">
+                                <list delete="1" default_order="is_received">
                                     <field name="product_id" optional="hide"/>
                                     <field name="shipment_id" optional="hide"/>
                                     <field name="pakageEnum" optional="hide"/>
@@ -80,7 +78,7 @@
                                     <field name="vrkme" optional="hide"/>
                                     <field name="is_received" optional="show"/>
                                     <button string="Receive PO" type="object" name="action_receive_po"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
@@ -93,7 +91,7 @@
         <field name="name">istikbal.combine.shipments.tree</field>
         <field name="model">istikbal.combine.shipments</field>
         <field name="arch" type="xml">
-            <tree default_order="shipmentDate desc">
+            <list default_order="shipmentDate desc">
                 <field name="name"/>
                 <field name="invoiceNumber"/>
                 <field name="disPactDate"/>
@@ -106,7 +104,7 @@
                 <field name="is_all_received"/>
                 <field name="company_id"/>
                 <field name="create_date"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -132,7 +130,7 @@
     <record model="ir.actions.act_window" id="istikbal_combine_shipments_action">
         <field name="name">Istikbal Combine Shipments</field>
         <field name="res_model">istikbal.combine.shipments</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="istikbal_shiment_combine_menu" parent="istikbal.istikbal_root" name="Truck Shipments"
