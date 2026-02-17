@@ -1,6 +1,6 @@
 {
     'name': 'Generate RFQ from Sales Quotation',
-    'version': '1.0',
+    'version': '19.6',
     'summary': '',
     'description': 'Create PO from SO, Create ticket from SO, Create DO from Helpdesk,Create Delivery from Sale order',
     'license': 'OPL-1',
@@ -15,9 +15,7 @@
         'wizard/so_to_ticket.xml',
         'wizard/ticket_to_delivery_view.xml',
         'wizard/so_to_delivery.xml',
-        'views/product_view.xml',
         'views/sale_order_views_inherit.xml',
-        'views/purchase_order_views_inherit.xml',
         'views/helpdesk_views.xml',
     ],
     'installable': True,

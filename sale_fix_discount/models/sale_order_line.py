@@ -1,6 +1,10 @@
+# Copyright 2017-20 ForgeFlow S.L.
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare, float_round
+
 
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
@@ -11,71 +15,90 @@ class SaleOrderLine(models.Model):
         help="Fixed amount discount.",
     )
 
-    @api.onchange("discount")
-    def _onchange_discount_percent(self):
-        # _onchange_discount method already exists in core,
-        # but discount is not in the onchange definition
-        if self.discount:
-            self.discount_fixed = 0.0
-
-    @api.onchange("discount_fixed")
-    def _onchange_discount_fixed(self):
-        if self.discount_fixed:
-            self.discount = 0.0
-
-    @api.constrains("discount", "discount_fixed")
-    def _check_only_one_discount(self):
+    @api.constrains("discount_fixed", "discount")
+    def _check_discounts(self):
+        """Check that the fixed discount and the discount percentage are consistent."""
         for line in self:
-            if line.discount and line.discount_fixed:
-                raise ValidationError(
-                    _("You can only set one type of discount per line.")
+            if line.discount_fixed and line.discount:
+                currency = line.currency_id
+                calculated_fixed_discount = float_round(
+                    line._get_discount_from_fixed_discount(),
+                    precision_rounding=currency.rounding,
                 )
 
-    def _convert_to_tax_base_line_dict(self, **kwargs):
-        """ Convert the current record to a dictionary in order to use the generic taxes computation method
-        defined on account.tax.
+                if (
+                    float_compare(
+                        calculated_fixed_discount,
+                        line.discount,
+                        precision_rounding=currency.rounding,
+                    )
+                    != 0
+                ):
+                    raise ValidationError(
+                        self.env._(
+                            "The fixed discount %(fixed)s does not match the calculated"
+                            "discount %(discount)s %%."
+                            "Please correct one of the discounts.",
+                            fixed=line.discount_fixed,
+                            discount=line.discount,
+                        )
+                    )
+
+    def _prepare_base_line_for_taxes_computation(self, **kwargs):
+        """Prior to calculating the tax toals for a line, update the discount value
+        used in the tax calculation to the full float value. Otherwise, we get rounding
+        errors in the resulting calculated totals.
+
+        For example:
+            - price_unit = 750.0
+            - discount_fixed = 100.0
+            - discount = 13.33
+            => price_subtotal = 650.03
 
         :return: A python dictionary.
         """
         self.ensure_one()
-        dis = self.discount
+
+        # Accurately pass along the fixed discount amount to the tax computation method.
         if self.discount_fixed:
-            if int(self.price_unit) != 0:
-                dis = (self.discount_fixed * 100) / self.price_unit
-            else:
-                dis = 0
-        return self.env['account.tax']._convert_to_tax_base_line_dict(
-            self,
-            partner=self.order_id.partner_id,
-            currency=self.order_id.currency_id,
-            product=self.product_id,
-            taxes=self.tax_id,
-            price_unit=self.price_unit,
-            quantity=self.product_uom_qty,
-            discount=dis,
-            price_subtotal=self.price_subtotal,
-            **kwargs
+            return self.env["account.tax"]._prepare_base_line_for_taxes_computation(
+                self,
+                **{
+                    "tax_ids": self.tax_ids,
+                    "quantity": self.product_uom_qty,
+                    "partner_id": self.order_id.partner_id,
+                    "currency_id": self.order_id.currency_id
+                    or self.order_id.company_id.currency_id,
+                    "rate": self.order_id.currency_rate,
+                    "discount": self._get_discount_from_fixed_discount(),
+                    **kwargs,
+                },
+            )
+
+        return super()._prepare_base_line_for_taxes_computation(**kwargs)
+
+    @api.depends("discount_fixed", "price_unit")
+    def _compute_discount(self):
+        lines_with_discount_fixed = self.filtered(lambda sol: sol.discount_fixed)
+        for line in lines_with_discount_fixed:
+            line.discount = line._get_discount_from_fixed_discount()
+        return super(
+            SaleOrderLine, self - lines_with_discount_fixed
+        )._compute_discount()
+
+    def _get_discount_from_fixed_discount(self):
+        """Calculate the discount percentage from the fixed discount amount."""
+        self.ensure_one()
+        if not self.discount_fixed:
+            return 0.0
+
+        return (
+            (self.price_unit != 0)
+            and ((self.discount_fixed) / self.price_unit) * 100
+            or 0.00
         )
-
-    @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id')
-    def _compute_amount(self):
-        """
-        Compute the amounts of the SO line.
-        """
-        for line in self:
-            tax_results = self.env['account.tax']._compute_taxes([line._convert_to_tax_base_line_dict()])
-            totals = list(tax_results['totals'].values())[0]
-            amount_untaxed = totals['amount_untaxed']
-            amount_tax = totals['amount_tax']
-
-            line.update({
-                'price_subtotal': amount_untaxed,
-                'price_tax': amount_tax,
-                'price_total': amount_untaxed + amount_tax,
-            })
 
     def _prepare_invoice_line(self, **optional_values):
         res = super()._prepare_invoice_line(**optional_values)
         res.update({"discount_fixed": self.discount_fixed})
         return res
-

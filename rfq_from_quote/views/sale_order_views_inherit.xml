@@ -21,7 +21,7 @@
                 <xpath expr="//field[@name='date_order']" position="after">
                     <field invisible="1" name="is_po_created"/>
                 </xpath>
-                <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="before">
+                <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="before">
                     <field name="product_status" readonly="1"/>
                 </xpath>
                 <xpath expr="//group[@name='note_group']" position="after">
