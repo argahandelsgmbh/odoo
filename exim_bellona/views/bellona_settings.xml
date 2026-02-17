@@ -8,8 +8,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='other_information']" position="after">
                     <page name="bellona_shipments" string="Bellona Shipments">
-                        <field name="bellona_shipments" mode="tree">
-                            <tree create="1" edit="1"  delete="1">
+                        <field name="bellona_shipments" mode="list">
+                            <list create="1" edit="1"  delete="1">
                                 <field name="product_template"/>
                                 <field name="saleS_ORDER" />
                                 <field name="customerref"/>
@@ -40,7 +40,7 @@
                                 <field name="producT_STOCK" optional="hide"/>
                                 <field name="company_id"/>
                                 <field name="create_date"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </xpath>
@@ -60,8 +60,8 @@
 
                 <xpath expr="//page[@name='purchase_delivery_invoice']" position="after">
                     <page name="bellona_shipments" string="Bellona Shipments">
-                        <field name="bellona_shipments" mode="tree">
-                            <tree create="1" edit="1"  delete="1">
+                        <field name="bellona_shipments" mode="list">
+                            <list create="1" edit="1"  delete="1">
                                 <field name="product_template"/>
                                 <field name="saleS_ORDER" />
                                 <field name="customerref"/>
@@ -92,7 +92,7 @@
                                 <field name="producT_STOCK" optional="hide"/>
                                 <field name="company_id"/>
                                 <field name="create_date"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </xpath>
@@ -105,13 +105,13 @@
             <field name="model">product.template</field>
             <field name="inherit_id" ref="stock.product_template_form_view_procurement_button" />
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='action_update_quantity_on_hand']" position="after">
+                <xpath expr="//button[@name='action_open_documents']" position="after">
                     <button string="Get Bellona Material" type="object" name="importBellonaMaterials"/>
                 </xpath>
                 <notebook position='inside'>
                     <page name="bellona_materials" string="Bellona Materials">
-                        <field name="bellona_material_ids" mode="tree">
-                            <tree create="0" delete="1">
+                        <field name="bellona_material_ids" mode="list">
+                            <list create="0" delete="1">
                                 <field name="matnr"/>
                                 <field name="meins"/>
                                 <field name="ersda"/>
@@ -162,7 +162,7 @@
                                 <field name="biriM_FIYAT"/>
                                 <field name="company_id"/>
                                 <field name="create_date"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </notebook>
@@ -172,7 +172,7 @@
             <field name="name">Bellona Credentials</field>
             <field name="model">bellona.credentials</field>
             <field name="arch" type="xml">
-                <tree editable="top" create="1" delete="1" multi_edit="1" string="Bellona Credentials">
+                <list editable="top" create="1" delete="1" multi_edit="1" string="Bellona Credentials">
                     <field name="username" />
                     <field name="password" password="1"/>
                     <field name="active" widget="boolean_toggle"/>
@@ -180,7 +180,7 @@
                     <field name="token" invisible="1"/>
                     <field name="state" widget="badge" decoration-info="state == 'active'" decoration-danger="state == 'disconnect'" />
                     <button name="connect_bellona_credentials" type="object" string="Connect"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -260,7 +260,7 @@
             <field name="name">Bellona Materials</field>
             <field name="model">bellona.material</field>
             <field name="arch" type="xml">
-                <tree string="Bellona Materials"  default_order="create_date desc">
+                <list string="Bellona Materials"  default_order="create_date desc">
                     <field name="matnr"/>
                     <field name="meins"/>
                     <field name="ersda"/>
@@ -312,7 +312,7 @@
                     <field name="biriM_FIYAT"/>
                     <field name="company_id"/>
                     <field name="create_date"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -342,9 +342,6 @@
                     <field name="zbdT_URETICI" />
                     <field name="mvgR1" />
                     <field name="maktx" />
-                    <group expand="0" string="Group By">
-                        <filter string="Material no" name="barcode" context="{'group_by':'matnr'}" />
-                    </group>
                 </search>
             </field>
         </record>
@@ -441,7 +438,7 @@
             </field>
         </record>
 
-        <!-- <record id="bellona_shipment_search" model="ir.ui.view">
+        <record id="bellona_shipment_search" model="ir.ui.view">
             <field name="name">bellona.shipments.search.view</field>
             <field name="model">bellona.shipments</field>
             <field name="arch" type="xml">
@@ -455,12 +452,9 @@
                     <field name="maktx"/>
                     <field name="maktX_EN"/>
                     <field name="previouS_ORDER_POS"/>
-                    <group expand="0" string="Group By">
-                        <filter string="Customer Barcode" name="barcode" context="{'group_by':'customerbarcode'}" />
-                    </group>
                 </search>
             </field>
-        </record> -->
+        </record>
 
 
 
@@ -479,19 +473,19 @@
         <record model="ir.actions.act_window" id="bellona_credentials_action">
             <field name="name">Bellona Credentials</field>
             <field name="res_model">bellona.credentials</field>
-            <field name="view_mode">tree</field>
+            <field name="view_mode">list</field>
         </record>
 
         <record model="ir.actions.act_window" id="bellona_shipments_action">
             <field name="name">Search Inventory</field>
             <field name="res_model">bellona.shipments</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
         <record model="ir.actions.act_window" id="bellona_materials_action">
             <field name="name">Bellona Materials</field>
             <field name="res_model">bellona.material</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
 
@@ -501,9 +495,9 @@
             <field name="name">Bellona Log Notes</field>
             <field name="model">bellona.log.notes</field>
             <field name="arch" type="xml">
-                <tree editable="bottom">
+                <list editable="bottom">
                     <field name="error"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record model="ir.actions.act_window" id="bellona_log_notes_list_action">
