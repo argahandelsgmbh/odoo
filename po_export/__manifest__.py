@@ -10,6 +10,7 @@
     """,
 
     'author': "My Company",
+     "license": "AGPL-3",
     'website': "http://www.yourcompany.com",
 
     # Categories can be used to filter modules in modules listing
