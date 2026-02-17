@@ -1,7 +1,7 @@
 <odoo>
     <data>
 
-        <record id="repair_order_view_form_inherit" model="ir.ui.view">
+        <!-- <record id="repair_order_view_form_inherit" model="ir.ui.view">
             <field name='name'>repair.order.form.inherit</field>
             <field name="model">repair.order</field>
             <field name="inherit_id" ref="repair.view_repair_order_form"/>
@@ -19,6 +19,6 @@
                     </button>
                 </div>
             </field>
-        </record>
+        </record> -->
     </data>
 </odoo>
