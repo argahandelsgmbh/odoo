@@ -22,7 +22,6 @@ class SaleOrder(models.Model):
         action['domain'] = [('id', 'in', po_id.ids)]
         return action
 
-
     def compute_payments(self):
         for rec in self:
             rec.purchase_order_ids = self.env['purchase.order'].search([('origin', '=', rec.name)]).ids
@@ -32,7 +31,7 @@ class SaleOrder(models.Model):
                 reconciled_payments_widget_vals = inv.invoice_payments_widget
                 if inv.invoice_payments_widget != 'False' and reconciled_payments_widget_vals:
                     pay_list += [vals['account_payment_id'] for vals in reconciled_payments_widget_vals['content']]
-            payment = self.env['account.payment'].search([('ref', '=', rec.name)]).ids
+            payment = self.env['account.payment'].search([('memo', '=', rec.name)]).ids
             rec.payment_ids = payment + pay_list
             rec.payment_count = rec.total_payment = rec.total_invoice_paid = sum(rec.payment_ids.mapped('amount'))
             rec.total_open_amount = rec.amount_total - rec.payment_count
@@ -48,8 +47,8 @@ class SaleOrder(models.Model):
         return {
             'name': 'Payments',
             'res_model': 'account.payment',
-            'domain': ['|', ('ref', '=', self.name), ('id', 'in', pay_list)],
-            'view_mode': 'tree,form',
+            'domain': ['|', ('memo', '=', self.name), ('id', 'in', pay_list)],
+            'view_mode': 'list,form',
             'type': 'ir.actions.act_window',
             'context': "{'create': False}"
         }
@@ -62,7 +61,7 @@ class SaleOrder(models.Model):
             'context': {
                 'default_partner_id': self.partner_id.id,
                 'default_amount': self.amount_total,
-                'default_ref': self.name,
+                'default_memo': self.name,
                 'default_payment_type': 'inbound',
                 'default_partner_type': 'customer',
                 'search_default_inbound_filter': 1,
