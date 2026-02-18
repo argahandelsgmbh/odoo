@@ -2,7 +2,7 @@
 
 {
     'name': "Multiple Product Selection",
-    'version': '19.6',
+    'version': '19.1',
     'category': 'Purchases,Sales',
     'summary': 'Multiple product selection for creating sale and'
                ' purchase order',
