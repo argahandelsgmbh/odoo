@@ -56,7 +56,7 @@
         <field name="name">bellona.receiving.tree.view</field>
         <field name="model">bellona.receiving</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="invoice"/>
                 <field name="packet_no"/>
                 <field name="internal_ref"/>
@@ -69,15 +69,14 @@
                 <field name="purchase_id"/>
                 <field name="picking_id"/>
                 <field name="is_received"/>
-            </tree>
+            </list>
         </field>
     </record>
 
     <record model="ir.actions.act_window" id="bellona_receiving_action">
         <field name="name">Bellona Receiving</field>
         <field name="res_model">bellona.receiving</field>
-        <field name="context">{'search_default_invoice': 1}</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="bellona_receiving_menu" parent="exim_bellona.bellona_root" name="Bellona Receiving" action="bellona_receiving_action"/>
