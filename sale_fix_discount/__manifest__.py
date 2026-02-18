@@ -1,19 +1,19 @@
-
+# Copyright 2017-20 ForgeFlow S.L.
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
     "name": "Sale Fixed Discount",
     "summary": "Allows to apply fixed amount discounts in sales orders.",
-    "version": "16.1",
+    "version": "19.2",
     "category": "Sales",
-    "website": "hunainfast@gmail.com",
-    "author": "HAK Technologies",
+    "website": "https://github.com/OCA/sale-workflow",
+    "author": "ForgeFlow, Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "application": False,
     "installable": True,
-    'images': ['static/description/banner.png'],
-    "depends": ["sale_management"],
+    "depends": ["sale", "account_fix_discount"],
     "data": [
-        "views/sale_order_views.xml",
-        # "views/sale_portal_templates.xml",
         "reports/report_sale_order.xml",
+        "views/account_invoice_views.xml",
+        "views/sale_order_views.xml",
     ],
 }
