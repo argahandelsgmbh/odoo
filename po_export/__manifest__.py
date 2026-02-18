@@ -17,7 +17,7 @@
     # for the full list
     'category': 'Uncategorized',
     'license': 'OPL-1',
-    'version': '19.3',
+    'version': '19.1',
         'installable': True,
 
     # any module necessary for this one to work correctly
