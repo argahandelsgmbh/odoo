@@ -89,6 +89,7 @@ class PurchaseOrder(models.Model):
 
 class PurchaseExcel(models.TransientModel):
     _name = "purchase.excel"
+    _description = "purchase.excel"
 
     excel_file = fields.Binary('Excel File')
     file_name = fields.Char('Excel Name', size=64)
