@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_quote_to_rfq_user,quote.rfq.wizard,model_quote_rfq_wizard,purchase.group_purchase_user,1,1,1,1
+access_ticket_to_delivery_user,ticket.delivery.wizard,model_ticket_delivery_wizard,base.group_user,1,1,1,1
+access_quote_ticket_wizard,quote_ticket_wizard,model_quote_ticket_wizard,base.group_user,1,1,1,1
+access_sale_delivery_wizard,sale_delivery_wizard,model_sale_delivery_wizard,base.group_user,1,1,1,1
