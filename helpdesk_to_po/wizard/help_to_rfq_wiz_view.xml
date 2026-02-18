@@ -16,11 +16,11 @@
                         <notebook>
                             <page string="Products">
                                 <field name="helpdesk_lines" >
-                                    <tree create="1" editable="bottom">
+                                    <list create="1" editable="bottom">
                                         <field name="product_id"/>
                                         <field name="quantity"/>
                                         <field name="price_unit"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                         </notebook>
