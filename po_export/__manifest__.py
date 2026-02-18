@@ -16,16 +16,17 @@
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.1',
+    'license': 'OPL-1',
+    'version': '19.3',
+        'installable': True,
 
     # any module necessary for this one to work correctly
     'depends': ['base',  'purchase'],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        # 'reports/po_export.xml',
-        'views/views.xml',
+        # 'security/ir.model.access.csv',
+        # 'views/views.xml',
 
     ],
 
