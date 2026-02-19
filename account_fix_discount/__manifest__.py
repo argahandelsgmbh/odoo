@@ -14,8 +14,7 @@
     "depends": ["account"],
         'installable': True,
     "data": [
-        "views/account_move_view.xml",
-        "reports/report_account_invoice.xml",
+
     ],
     
 }
