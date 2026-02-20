@@ -2,6 +2,7 @@
 <!-- Copyright 2017-20 ForgeFlow S.L.
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
+    <data>
     <template
         id="report_saleorder_document"
         inherit_id="sale.report_saleorder_document"
@@ -34,4 +35,6 @@
             </t>
         </span>
     </template>
+
+    </data>
 </odoo>
