@@ -1,6 +1,7 @@
 <!-- Copyright 2017 ForgeFlow S.L.
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
+    <data>
     <template id="report_invoice_document" inherit_id="account.report_invoice_document">
         <xpath expr="//t[@t-set='display_discount']" position="after">
             <t
@@ -30,4 +31,5 @@
             </t>
         </span>
     </template>
+    </data>
 </odoo>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
+<data>
     <template id="report_quotation_wh_document" inherit_id="stock.report_delivery_document">
 
         <xpath expr="//div[@name='div_sched_date']" position="replace">
@@ -29,5 +29,5 @@
 
 <!--    </template>-->
 
-
+</data>
 </odoo>

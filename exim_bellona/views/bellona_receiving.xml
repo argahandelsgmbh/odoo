@@ -1,5 +1,5 @@
 <odoo>
-
+<data>
      <record id="action_confirm_purchase_receiving" model="ir.actions.server">
             <field name="name">Confirm PO Receiving</field>
             <field name="model_id" ref="model_bellona_receiving"/>
@@ -80,5 +80,5 @@
     </record>
 
     <menuitem id="bellona_receiving_menu" parent="exim_bellona.bellona_root" name="Bellona Receiving" action="bellona_receiving_action"/>
-
+</data>
 </odoo>
