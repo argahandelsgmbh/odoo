@@ -18,7 +18,7 @@
     'category': 'Uncategorized',
     'license': 'OPL-1',
     'version': '19.3',
-        'installable': True,
+    'installable': True,
 
     # any module necessary for this one to work correctly
     'depends': ['base',  'purchase'],
