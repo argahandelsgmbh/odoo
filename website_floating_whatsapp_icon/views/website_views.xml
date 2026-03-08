@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <data>
     <record id="view_website_form" model="ir.ui.view">
         <field name="name">website.view.form.inherit.website.floating.whatsapp.icon</field>
         <field name="model">website</field>
@@ -10,4 +11,5 @@
             </field>
         </field>
     </record>
+    </data>
 </odoo>

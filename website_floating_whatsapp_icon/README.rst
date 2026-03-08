@@ -8,23 +8,25 @@ This module helps you to access your whatsApp web using an icon in the website.
 
 Configuration
 =============
-* No additional configurations needed
+* No additional configuration is needed.
 
 Company
--------
+=======
 * `Cybrosys Techno Solutions <https://cybrosys.com/>`__
 
 License
--------
-General Public License, Version 3 (LGPL v3).
+=======
+Lesser General Public License, Version 3 (LGPL v3).
 (https://www.gnu.org/licenses/lgpl-3.0-standalone.html)
 
 Credits
 -------
-* Developers: (V15) Noorjahan
-              (V16) Athira PS
-              (V17) Muhammed Rishad
-* Contact: odoo@cybrosys.com
+* Developers: (V15) Noorjahan,
+              (V16) Athira PS,
+              (V17) Muhammed Rishad,
+              (V18) Aysha Shalin,
+              (V19) Vaishnav M V
+  Contact: odoo@cybrosys.com
 
 Contacts
 --------

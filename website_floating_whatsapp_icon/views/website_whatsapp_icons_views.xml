@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <data>
     <template id="website_whatsapp_icon" name="Website WhatsApp Icon"
               inherit_id="portal.frontend_layout">
         <xpath expr="//div[@id='wrapwrap']" position="inside">
@@ -9,4 +10,5 @@
             </a>
         </xpath>
     </template>
+    </data>
 </odoo>
