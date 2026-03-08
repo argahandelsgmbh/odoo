@@ -4,6 +4,7 @@ import string
 
 class CustomerExport(models.AbstractModel):
     _name = 'report.po_export.xlsx_po_export'
+    _description='report.po_export.xlsx_po_export'
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, lines):
