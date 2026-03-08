@@ -1,14 +1,8 @@
-from odoo import _, api, fields, models, modules, SUPERUSER_ID, tools
+from odoo import api, fields, models
 import requests
 import json
 from odoo.exceptions import ValidationError, UserError
 from odoo.exceptions import AccessError
-import logging
-from requests.exceptions import RequestException
-from odoo.exceptions import UserError
-
-
-_logger = logging.getLogger(__name__)
 
 class Credentials(models.Model):
     _name = 'bellona.credentials'
@@ -37,87 +31,55 @@ class Credentials(models.Model):
 
     def connect_bellona_credentials(self):
 
-        try:
-            settings = self.env['res.config.settings']
-            url = settings.getBaseURL() + "api/Account"
-        
-            username, password = self.getBellonaCredentials()
-        
-            payload = json.dumps({
-                "userName": username,
-                "password": password
+        settings = self.env['res.config.settings']
+        url = settings.getBaseURL() + "api/Account"
+        username,  password = self.getBellonaCredentials()
+        payload = json.dumps({
+            "userName": username,
+            "password": password
+        })
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        currentCompany = self.env.company
+        bellonaCredentials = self.env['bellona.credentials'].search([('company_id', '=', currentCompany.id),
+                                                                     ('active', '=', True)],limit=1)
+
+        response = requests.request("POST", url, headers=headers, data=payload)
+        if response.status_code == 200:
+            bellonaCredentials.state='active'
+            response = json.loads(response.text)
+            self.write({
+                'token': response['value']
             })
-        
-            headers = {
-                'Content-Type': 'application/json'
-            }
-        
-            currentCompany = self.env.company
-            bellonaCredentials = self.env['bellona.credentials'].search(
-                [
-                    ('company_id', '=', currentCompany.id),
-                    ('active', '=', True)
-                ],
-                limit=1
-            )
-        
-            response = requests.post(
-                url,
-                headers=headers,
-                data=payload,
-                timeout=15
-            )
-        
-            if response.status_code == 200:
-                bellonaCredentials.state = 'active'
-                response_data = response.json()
-                self.write({
-                    'token': response_data.get('value')
-                })
-            else:
-                bellonaCredentials.state = 'disconnect'
-                self.env["bellona.log.notes"].sudo().create({
-                    'error': f"Credentials not working for {currentCompany.name}: "
-                            f"{response.status_code} - {response.text}",
-                })
-        
-        except RequestException as e:
-            # Network / timeout / DNS / route issues
-            if bellonaCredentials:
-                bellonaCredentials.state = 'disconnect'
-        
-            _logger.exception("Bellona API connection error")
-        
-            self.env["bellona.log.notes"].sudo().create({
-                'error': f"Bellona API connection failed for {currentCompany.name}: {str(e)}",
-            })
-        
-        
+        else:
+            bellonaCredentials.state = 'disconnect'
+
+
 
 
 
     def ConnectBellonaScheduler(self):
-        pass
-        # bellona_company = self.env['bellona.credentials'].search([])
-        # for company in bellona_company:
-        #     settings = self.env['res.config.settings']
-        #     url = settings.getBaseURL() + "api/Account"
-        #     username=company.username
-        #     password = company.password
-        #     payload = json.dumps({
-        #         "userName": username,
-        #         "password": password
-        #     })
-        #     headers = {
-        #         'Content-Type': 'application/json'
-        #     }
+        bellona_company = self.env['bellona.credentials'].search([])
+        for company in bellona_company:
+            settings = self.env['res.config.settings']
+            url = settings.getBaseURL() + "api/Account"
+            username=company.username
+            password = company.password
+            payload = json.dumps({
+                "userName": username,
+                "password": password
+            })
+            headers = {
+                'Content-Type': 'application/json'
+            }
 
-        #     response = requests.request("POST", url, headers=headers, data=payload)
-        #     if response.status_code == 200:
-        #         company.state='active'
-        #         response = json.loads(response.text)
-        #         company.write({
-        #             'token': response['value']
-        #         })
-        #     else:
-        #         company.state = 'disconnect'
+            response = requests.request("POST", url, headers=headers, data=payload)
+            if response.status_code == 200:
+                company.state='active'
+                response = json.loads(response.text)
+                company.write({
+                    'token': response['value']
+                })
+            else:
+                company.state = 'disconnect'

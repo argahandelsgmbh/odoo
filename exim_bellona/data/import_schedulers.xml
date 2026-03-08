@@ -9,7 +9,7 @@
             <field name="code">model.importBellonaInventoryScheduler()</field>
             <field name="interval_number">8</field>
             <field name="interval_type">hours</field>
-            <field name="numbercall">-1</field>
+
         </record>
 
         <record id="bellona_import_price_scheduler" model="ir.cron">
@@ -20,7 +20,7 @@
             <field name="code">model.importPriceScheduler()</field>
             <field name="interval_number">8</field>
             <field name="interval_type">hours</field>
-            <field name="numbercall">-1</field>
+
         </record>
         <record id="bellona_import_materials_scheduler" model="ir.cron">
             <field name="name">Import Bellona Materials</field>
@@ -30,7 +30,7 @@
             <field name="code">model.importBellonaMaterialsScheduler()</field>
             <field name="interval_number">8</field>
             <field name="interval_type">hours</field>
-            <field name="numbercall">-1</field>
+
         </record>
 
 
@@ -42,7 +42,7 @@
             <field name="code">model.ConnectBellonaScheduler()</field>
             <field name="interval_number">12</field>
             <field name="interval_type">hours</field>
-            <field name="numbercall">-1</field>
+
         </record>
     </data>
 </odoo>

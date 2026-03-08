@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models, modules, SUPERUSER_ID, tools
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError, UserError
 import json
 import requests
@@ -22,7 +22,7 @@ class BeloonaPTInherit(models.Model):
             }
             data = {
                 "matnr": self.default_code,
-                 "date": "2024-01-01"
+                 "date": "2025-11-11"
             }
             payload = json.dumps(data)
             response = requests.request("POST", url, headers=headers, data=payload)
@@ -32,11 +32,11 @@ class BeloonaPTInherit(models.Model):
                 print("Material response", products)
                 self.createBellonaMaterials(products)
             else:
-                raise UserError(_('Error %s .', response))
+                raise UserError(('Error %s .', response))
             self.env.cr.commit()
         except Exception as e:
             if "Connection aborted" in str(e):
-                raise UserError(_('Error %s .', str(e)))
+                raise UserError(('Error %s .', str(e)))
 
     def createBellonaMaterials(self, materials):
         for material in materials:
@@ -155,7 +155,7 @@ class BeloonaPTInherit(models.Model):
                 product = json.loads(response.content)
                 self.updatePrice(odooProduct, product)
             else:
-                raise UserError(_('Coach of Error %s .', response.text))
+                raise UserError(('Coach of Error %s .', response.text))
         self.env.cr.commit()
 
     def updatePrice(self, odooProduct, product):

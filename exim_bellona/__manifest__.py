@@ -25,12 +25,13 @@
     'author': "HAK Technologies",
     'website': "http://www.hasksolutions.com",
     'license': 'OPL-1',
+        'installable': True,
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '17.3',
+    'version': '19.3',
 
     # any module necessary for this one to work correctly
     'depends': ['stock','sale','purchase'],
