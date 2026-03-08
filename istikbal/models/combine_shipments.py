@@ -69,7 +69,7 @@ class IstikbalLogNotes(models.Model):
                                         r.is_received = True
                     self.env.cr.commit()
         except Exception as e:
-             raise UserError(_( str(e)))
+             raise UserError(( str(e)))
 
 
 

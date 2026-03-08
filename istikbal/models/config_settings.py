@@ -45,9 +45,10 @@ class Integration(models.TransientModel):
                 self.createIncomingShipment(products)
                 self.env.cr.commit()
             else:
-                log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(response.content)})
+                raise UserError(('Please wait server is buy.', str(response.text)))
         except Exception as e:
-            log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(e)})
+            raise UserError(('Please wait server is buy.', str(e)))
+
     def createIncomingShipment(self, products):
         for product in products:
             try:
@@ -93,7 +94,7 @@ class Integration(models.TransientModel):
                          })
 
             except Exception as e:
-               log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(e)})
+                raise UserError(('Error.', str(e)))
 
     def importMaterials(self):
         try:
@@ -112,11 +113,12 @@ class Integration(models.TransientModel):
                     if len(materials) > 0:
                         allMaterials.extend(materials)
                 else:
-                    log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(response)})
+                    raise UserError(('Error.', str(response.text)))
             self.createMaterials(allMaterials)
             self.env.cr.commit()
         except Exception as e:
-           log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(e)})
+           raise UserError(('Error.', str(e)))
+
     def createMaterials(self, materials):
         for material in materials:
             odooMaterials = self.env['istikbal.materials'].search([('materialNumber', '=', material['materialNumber'])])
@@ -228,9 +230,9 @@ class Integration(models.TransientModel):
                 self.createShipmentsHeader(shipmentsHeader,shipmentsDetails)
                 self.env.cr.commit()
             else:    
-                log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(response)})
+                raise UserError(('Please wait server is buy.', str(response.text)))
         except Exception as e:
-             log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(e)})
+             raise UserError(('Please wait server is buy.', str(e)))
 
 
     def createShipmentsHeader(self, headers,shipmentsDetails):
@@ -340,8 +342,7 @@ class Integration(models.TransientModel):
         }
 
         response = requests.request("GET", url, headers=headers)
-        log_notes = self.env["istikbal.log.notes"].sudo().create({'error': str(response)})
-        
+        print(response.text)
             # if response.status_code == 200:
             #     materials = json.loads(response.content)
 

@@ -37,11 +37,11 @@ class InheritPT(models.Model):
                         self.createMaterials(materials)
                         self.env.cr.commit()
                     else:
-                        raise UserError(_(str(response.text)))
+                        raise UserError((str(response.text)))
             else:
-                raise UserError(_("Please add product info code."))
+                raise UserError(("Please add product info code."))
         except Exception as e:
-           raise UserError(_(str(e)))
+           raise UserError((str(e)))
 
 
 

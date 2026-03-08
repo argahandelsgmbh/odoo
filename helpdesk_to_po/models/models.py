@@ -38,7 +38,7 @@ class HelpdeskTicket(models.Model):
             'name': 'purchases',
             'res_model': 'purchase.order',
             'domain': [('origin', '=', self.name)],
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'type': 'ir.actions.act_window',
             'context': "{'create': False}"
         }

@@ -6,13 +6,13 @@
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_only_form_view" />
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='action_update_quantity_on_hand']" position="after">
+                <xpath expr="//button[@name='action_open_documents']" position="after">
                     <button string="Get Material" type="object" name="get_material"/>
                 </xpath>
                 <notebook position='inside'>
                     <page name="istikbal_materials" string="Istikbal Materials">
-                        <field name="material_ids" mode="tree">
-                            <tree create="0" delete="1">
+                        <field name="material_ids" mode="list">
+                            <list create="0" delete="1">
                                 <field name="materialNumber"/>
                                 <field name="bdtMaterialDesc"/>
                                 <field name="netWeight"/>
@@ -47,7 +47,7 @@
                                 <field name="zzbolG14"  optional="hide"/>
                                 <field name="zzbolG15"    optional="hide"/>
                                 <field name="fabric"   optional="hide"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </notebook>
@@ -67,8 +67,8 @@
   
                 <xpath expr="//page[@name='other_information']" position="after">
                     <page name="istikbal_shipments" string="Istikbal Inventory" invisible="istikbal_shp_details != False">
-                        <field name="istikbal_shipments" mode="tree">
-                            <tree create="1" edit="1"  delete="1">
+                        <field name="istikbal_shipments" mode="list">
+                            <list create="1" edit="1"  delete="1">
                                 <field name="customerBarCode"/>
                                 <field name="customerRef" />
                                 <field name="producCode" />
@@ -85,12 +85,12 @@
                                 <field name="text" optional="hide"/>
                                 <field name="company_id" optional="hide"/>
                                 <field name="create_date" optional="hide"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                     <page name="istikbal_shp_details" string="Istikbal Shipment Details" invisible="not istikbal_shp_details" >
-                        <field name="istikbal_shp_details" mode="tree">
-                            <tree create="1" edit="1"  delete="1">
+                        <field name="istikbal_shp_details" mode="list">
+                            <list create="1" edit="1"  delete="1">
                                 <field name="shipMentNumber"/>
                                 <field name="pakageEnum"/>
                                 <field name="customerItemCode"/>
@@ -115,7 +115,7 @@
                                 <field name="volum" optional="show"/>
                                 <field name="vrkme" optional="show"/>
 
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </xpath>
@@ -130,8 +130,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='purchase_delivery_invoice']" position="after">
                     <page name="istikbal_shipments" string="Istikbal Inventory">
-                        <field name="istikbal_shipments" mode="tree">
-                            <tree create="1" edit="1"  delete="1">
+                        <field name="istikbal_shipments" mode="list">
+                            <list create="1" edit="1"  delete="1">
                                 <field name="customerBarCode"/>
                                 <field name="customerRef" />
                                 <field name="producCode" />
@@ -148,12 +148,12 @@
                                 <field name="text" optional="hide"/>
                                 <field name="company_id" optional="hide"/>
                                 <field name="create_date" optional="hide"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                     <page name="istikbal_shp_details" string="Istikbal Shipment Details">
-                        <field name="istikbal_shp_details" mode="tree">
-                            <tree create="1" edit="1"  delete="1">
+                        <field name="istikbal_shp_details" mode="list">
+                            <list create="1" edit="1"  delete="1">
                                 <field name="shipMentNumber"/>
                                 <field name="pakageEnum"/>
                                 <field name="customerItemCode"/>
@@ -178,7 +178,7 @@
                                 <field name="volum" optional="show"/>
                                 <field name="vrkme" optional="show"/>
 
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </xpath>

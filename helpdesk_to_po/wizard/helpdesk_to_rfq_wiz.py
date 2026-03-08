@@ -19,12 +19,9 @@ class HelpdeskToRfq(models.TransientModel):
         purchase_obj = self.env['purchase.order']
         po_vals = []
         for vendor in self.vendor_id:
-            payment_term = vendor.property_supplier_payment_term_id
-
             fpos = FiscalPosition.with_company(self.ticket_id.company_id)._get_fiscal_position(vendor)
             partner = vendor
             fiscal_position_id = fpos.id
-            payment_term_id = payment_term.id,
             company_id = self.ticket_id.company_id.id
             currency_id = partner.currency_id.id
             origin = self.ticket_id.name
@@ -74,7 +71,7 @@ class HelpdeskToRfq(models.TransientModel):
         return {
             'name': name,
             'product_id': product_id.id,
-            'product_uom': product_id.uom_po_id.id,
+            'product_uom_id': product_id.uom_id.id,
             'product_qty': product_qty,
             'price_unit': price_unit,
             'date_planned': date_planned,
