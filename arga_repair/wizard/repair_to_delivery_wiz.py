@@ -15,7 +15,6 @@ class RepairToDeliveryWi(models.TransientModel):
     def create_delivery(self):
         if not self.repair_id or not self.repair_line_ids:
             return
-
         picking_type_id = self.operation_type_id
         customer_location_id = self.env['stock.location'].search([('usage', '=', 'customer')], limit=1)
 
@@ -29,14 +28,4 @@ class RepairToDeliveryWi(models.TransientModel):
 
         }
         picking = self.env['stock.picking'].create(vals)
-        # for pline in self.repair_line_ids:
-        #     moves = {
-        #         'picking_id': picking.id,
-        #         'product_id': pline.product_id.id,
-        #         'name': pline.product_id.name,
-        #         'product_uom': pline.product_id.uom_id.id,
-        #         'location_id': picking_type_id.default_location_src_id.id,
-        #         'location_dest_id': customer_location_id.id,
-        #         'product_uom_qty': pline.product_uom_qty,
-        #     }
-        #     stock_move = self.env['stock.move'].create(moves)
+

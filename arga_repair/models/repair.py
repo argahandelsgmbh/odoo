@@ -2,12 +2,10 @@
 
 from odoo import models, fields, api
 
-
 class RepairOrderLineInh(models.Model):
     _inherit = 'stock.move'
 
     qty_available = fields.Float(related='product_id.qty_available')
-
 
 class RepairOrderInh(models.Model):
     _inherit = 'repair.order'
@@ -29,7 +27,7 @@ class RepairOrderInh(models.Model):
             'name': 'Delivery Orders',
             'res_model': 'stock.picking',
             'domain': [('origin', '=', self.name)],
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'type': 'ir.actions.act_window',
             'context': "{'create': False}"
         }
@@ -40,7 +38,7 @@ class RepairOrderInh(models.Model):
             'name': 'Purchase Order',
             'res_model': 'purchase.order',
             'domain': [('origin', '=', self.name)],
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'type': 'ir.actions.act_window',
             'context': "{'create': False}"
         }

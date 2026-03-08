@@ -1,17 +1,21 @@
+# Copyright 2017 ForgeFlow S.L.
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
+
 {
-    "name": "Account Fix Discount",
+    "name": "Account Fixed Discount",
     "summary": "Allows to apply fixed amount discounts in invoices.",
-    "version": "16.1",
+    'version': '19.6',
     "category": "Accounting & Finance",
-    "website": "hunainfast@gmail.com",
-    "author": "HAK Technologies",
+    "website": "https://github.com/OCA/account-invoicing",
+    "author": "ForgeFlow, Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "application": False,
     "installable": True,
-    'images': ['static/description/banner.png'],
     "depends": ["account"],
+        'installable': True,
     "data": [
         "views/account_move_view.xml",
         "reports/report_account_invoice.xml",
     ],
+    
 }
