@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -7,12 +7,6 @@ class SaleOrderLineInh(models.Model):
     _inherit = 'sale.order.line'
 
     product_status = fields.Selection([('stock', 'Stock'), ('po', 'PO')], string='Product Status', default='stock')
-
-    def _get_protected_fields(self):
-        return [
-            # 'product_id', 'name', 'price_unit', 'product_uom', 'product_uom_qty',
-            # 'tax_id', 'analytic_tag_ids'
-        ]
 
 
 class SaleOrderRFQ(models.Model):
@@ -29,10 +23,10 @@ class SaleOrderRFQ(models.Model):
 
     def action_open_ticket(self):
         return {
-            'name': _('Tickets'),
+            'name': ('Tickets'),
             'type': 'ir.actions.act_window',
             'res_model': 'helpdesk.ticket',
-            'view_mode': 'kanban,tree,form',
+            'view_mode': 'kanban,list,form',
             'domain': [('id', 'in', self.ticket_ids.ids)],
         }
 
@@ -49,7 +43,6 @@ class SaleOrderRFQ(models.Model):
         return vendor_list
 
     def open_so_to_rfq_wizard(self):
-        # sale_line_ids = self.order_line.filtered(lambda line: line.product_id.type in ['product']).mapped('id')
         sale_line_ids = self.order_line.filtered(lambda line: not line.display_type and line.product_id.type in ['product']).mapped('id')
         return {
             'type': 'ir.actions.act_window',
@@ -62,7 +55,6 @@ class SaleOrderRFQ(models.Model):
         }
 
     def open_so_to_ticket_wizard(self):
-        # sale_line_ids = self.order_line.filtered(lambda line: line.product_id.type in ['product']).mapped('id')
         sale_line_ids = self.order_line.filtered(lambda line: not line.display_type).mapped('id')
         return {
             'type': 'ir.actions.act_window',
@@ -75,11 +67,9 @@ class SaleOrderRFQ(models.Model):
         }
 
     def open_so_to_delivery_wizard(self):
-        # sale_line_ids = self.order_line.filtered(lambda line: line.product_id.type in ['product']).mapped('id')
         sale_line_ids = self.order_line.filtered(lambda line: not line.display_type and line.product_id.type in ['product']).mapped('id')
         picking_type = self.env['stock.picking.type'].search(
             [('code', '=', 'outgoing'), ('company_id', '=', self.company_id.id)], limit=1)
-        print(picking_type.name)
         return {
             'type': 'ir.actions.act_window',
             'name': 'Create Delivery',

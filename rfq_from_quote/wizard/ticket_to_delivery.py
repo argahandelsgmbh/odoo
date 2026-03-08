@@ -27,7 +27,7 @@ class TicketToDelivery(models.TransientModel):
         moves = {
             'picking_id': picking.id,
             'product_id': self.product_id.id,
-            'name': self.product_id.name,
+            'description_picking': self.product_id.name,
             'product_uom': self.product_id.uom_id.id,
             'location_id': self.picking_type_id.default_location_src_id.id,
             'location_dest_id': self.src_location_id.id,

@@ -15,7 +15,7 @@ class HelpdeskTicket(models.Model):
             'name': 'Tickets',
             'res_model': 'helpdesk.ticket',
             'domain': [('partner_id', '=', self.partner_id.id), ('id', '!=', self.id)],
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'type': 'ir.actions.act_window',
             'context': "{'create': False}"
         }
@@ -26,7 +26,7 @@ class HelpdeskTicket(models.Model):
             'name': 'Invoices',
             'res_model': 'account.move',
             'domain': [('partner_id', '=', self.partner_id.id)],
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'type': 'ir.actions.act_window',
             'context': "{'create': False}"
         }
@@ -37,7 +37,7 @@ class HelpdeskTicket(models.Model):
             'name': 'Sale Orders',
             'res_model': 'sale.order',
             'domain': [('partner_id', '=', self.partner_id.id)],
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'type': 'ir.actions.act_window',
             'context': "{'create': False}"
         }
@@ -48,14 +48,14 @@ class HelpdeskTicket(models.Model):
             'name': 'Delivery Orders',
             'res_model': 'stock.picking',
             'domain': [('origin', '=', self.name)],
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'type': 'ir.actions.act_window',
             'context': "{'create': False}"
         }
 
     def count_delivery(self):
         for rec in self:
-            rec.delivery_count = self.env['stock.picking'].search_count([('origin', '=', self.name),('group_id', '=',False)])
+            rec.delivery_count = self.env['stock.picking'].search_count([('origin', '=', self.name)])
             rec.sale_order_count = self.env['sale.order'].search_count([('partner_id', '=', self.partner_id.id)])
             rec.invoices_count = self.env['account.move'].search_count([('partner_id', '=', self.partner_id.id),('move_type', '=', 'out_invoice')])
             rec.all_ticket_count = self.env['helpdesk.ticket'].search_count([('partner_id', '=', self.partner_id.id),('id', '!=', self.id)])

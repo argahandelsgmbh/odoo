@@ -29,7 +29,7 @@ class SaleQuoteToDelivery(models.TransientModel):
             moves = {
                 'picking_id': picking.id,
                 'product_id': line.product_id.id,
-                'name': line.product_id.name,
+                'description_picking': line.product_id.name,
                 'product_uom': line.product_id.uom_id.id,
                 'location_id': self.picking_type_id.default_location_src_id.id,
                 'location_dest_id': self.picking_type_id.default_location_src_id.id,
