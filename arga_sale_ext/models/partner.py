@@ -12,7 +12,9 @@ class ResPartner(models.Model):
     
     partner_invoice_id = fields.Many2one('res.partner', 'Invoicing Address', check_company=True)
 
-    @api.model
-    def create(self, vals):
-        vals['ref'] = self.env['ir.sequence'].next_by_code('customer.number')
-        return super(ResPartner, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('ref'):
+                vals['ref'] = self.env['ir.sequence'].next_by_code('customer.number')
+        return super().create(vals_list)
