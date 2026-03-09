@@ -17,16 +17,17 @@
     # for the full list
     'category': 'Uncategorized',
     'license': 'OPL-1',
-    'version': '19.4',
+    'version': '19.3',
     'installable': True,
 
     # any module necessary for this one to work correctly
-    'depends': ['base',  'purchase'],
+    'depends': ['base',  'purchase', 'report_xlsx', 'sale_management'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         # 'views/views.xml',
+        'reports/po_export.xml',
 
     ],
 
