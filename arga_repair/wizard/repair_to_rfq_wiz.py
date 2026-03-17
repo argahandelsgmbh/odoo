@@ -77,7 +77,6 @@ class SaleQuoteToRfq(models.TransientModel):
         return {
             'name': name,
             'product_id': product_id.id,
-            'product_uom': product_id.uom_po_id.id,
             'product_qty': product_qty,
             'price_unit': price_unit,
             # 'tax_ids': [(6, 0, taxes_ids)],
