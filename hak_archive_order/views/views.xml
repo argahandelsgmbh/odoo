@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
           <xpath expr="//field[@name='user_id']" position="after">
                <field name="active"/>
-              <filter string="Website Order" name="filter_active" domain="[('active', '=', False)]"/>
+              <filter string="Website Order" name="filter_active" domain="[('name', 'ilike','WEB/SO')]"/>
             </xpath>
         </field>
     </record>
