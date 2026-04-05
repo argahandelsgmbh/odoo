@@ -22,6 +22,7 @@ Archive Website Order
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        'data/sequence.xml',
         'views/views.xml',
     ],
 

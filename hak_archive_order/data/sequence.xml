@@ -1,0 +1,9 @@
+<odoo>
+
+    <record id="seq_sale_order_website" model="ir.sequence">
+        <field name="name">Sale Order Website</field>
+        <field name="code">sale.order.website</field>
+        <field name="prefix">WEB/SO/</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>
