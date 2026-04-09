@@ -137,9 +137,9 @@ class IstikbalLogNotes(models.Model):
             if i.purchase_id and po:
                 for k in po.picking_ids:
                     if k.state not in ['cancel', 'done']:
-                        for mv in k.move_ids_without_package or k.move_lines:
+                        for mv in k.move_ids or k.move_lines:
                             mv.quantity = mv.product_uom_qty
                         k.button_validate()
-                        for mv in k.move_ids_without_package or k.move_lines:
+                        for mv in k.move_ids or k.move_lines:
                             mv._action_done()
                             i.is_received = True

@@ -24,7 +24,7 @@ class RepairToDeliveryWi(models.TransientModel):
             'location_dest_id': customer_location_id.id,
             'origin': self.repair_id.name,
             'picking_type_id': picking_type_id.id,
-            'move_ids_without_package': self.repair_line_ids,
+            'move_ids': self.repair_line_ids,
 
         }
         picking = self.env['stock.picking'].create(vals)
