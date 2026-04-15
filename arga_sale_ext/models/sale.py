@@ -9,6 +9,32 @@ class SaleOrderInh(models.Model):
     commitment_date = fields.Datetime('Liefertermin Bestätigt', copy=False)
     batch_payment_id = fields.Many2one('account.batch.payment')
 
+    po_receipt_status = fields.Selection([
+        ('pending', 'Not Received'),
+        ('partial', 'Partially Received'),
+        ('full', 'Fully Received'),
+    ], string='Receipt Status',
+        compute='_compute_receipt_status')
+
+    def _compute_receipt_status(self):
+        for order in self:
+            purchase_orders = self.env['purchase.order'].search([
+                ('origin', '=', order.name)
+            ])
+
+            if not purchase_orders:
+                order.po_receipt_status = 'pending'
+                continue
+
+            statuses = purchase_orders.mapped('receipt_status')
+
+            if all(s == 'full' for s in statuses):
+                order.po_receipt_status = 'full'
+            elif any(s in ['partial', 'full'] for s in statuses):
+                order.po_receipt_status = 'partial'
+            else:
+                order.po_receipt_status = 'pending'
+
     def write(self, vals):
         res = super(SaleOrderInh, self.with_context(from_sale=True)).write(vals)
         if vals.get('commitment_date'):
