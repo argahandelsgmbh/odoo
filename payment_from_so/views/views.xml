@@ -41,15 +41,21 @@
         </record>
 
 
-        <template id="report_invoice_document_inherit_downpayment_summary"
-              inherit_id="account.report_invoice_document">
+         <template id="report_invoice_document_inherit_downpayment_summary"
+                  inherit_id="account.report_invoice_document">
 
-        <!-- Replace payment communication block -->
-        <xpath expr="//p[@name='payment_communication']" position="replace">
-            <div class="col-4 mb-2">
-                <!--            <div class="mb-3">-->
+            <xpath expr="//div[@class='overflow-hidden']" position="attributes">
+                <attribute name="class">overflow-hidden row</attribute>
+            </xpath>
 
-                <table class="o_total_table table table-borderless">
+            <xpath expr="//div[@id='right-elements']" position="attributes">
+                <attribute name="class">col-6 mt-3</attribute>
+            </xpath>
+
+            <xpath expr="//div[@id='right-elements']" position="before">
+                <div class="col-6 mt-5" >
+                    <br/>
+                    <table class="o_total_table table table-borderless">
                     <tr>
                         <td class="colspan-2"><strong>Order Payment Summary</strong></td>
                     </tr>
@@ -80,16 +86,11 @@
                         </td>
                     </tr>
                 </table>
-                <p name="payment_communication" style="display: none;">
-                    Payment Communication: <span class="fw-bold" t-field="o.payment_reference">INV/2023/00001</span>
-                    <t t-if="o.partner_bank_id">
-                        <br/> on this account: <span t-field="o.partner_bank_id" class="fw-bold"/>
-                    </t>
-                </p>
-            </div>
-        </xpath>
+                </div>
+            </xpath>
 
-    </template>
+        </template>
+
 
     </data>
 </odoo>
