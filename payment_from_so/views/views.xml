@@ -41,8 +41,7 @@
         </record>
 
 
-         <template id="report_invoice_document_inherit_downpayment_summary"
-                  inherit_id="account.report_invoice_document">
+         <template id="report_invoice_document_inherit_downpayment_summaryy" inherit_id="account.report_invoice_document">
 
             <xpath expr="//div[@class='overflow-hidden']" position="attributes">
                 <attribute name="class">overflow-hidden row</attribute>
