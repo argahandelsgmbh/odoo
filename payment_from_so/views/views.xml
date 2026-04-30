@@ -62,20 +62,20 @@
                     <tr>
                         <td>Advance payments (down payments):</td>
                         <td class="text-end">
-                            <!--                         <span t-esc="so.total_payment" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>-->
+                                                    <span t-esc="so.total_payment" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                         </td>
                     </tr>
                     <tr>
                         <td>Already Paid:</td>
                         <td class="text-end">
-                            <!--                        <span t-esc="so.total_payment" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>-->
+                                                   <span t-esc="so.total_payment" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                         </td>
                     </tr>
                     <tr>
                         <td><strong>Remaining Balance:</strong></td>
                         <td class="text-end">
                             <strong>
-                                <!--                            <span t-esc="so.total_open_amount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>-->
+                                                           <span t-esc="so.total_open_amount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                             </strong>
                         </td>
                     </tr>
