@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Website Floating WhatsApp Button',
-    'version': '19.0.1.0.0',
+    'version': '19.2',
     'category': 'Website',
     'summary': 'Add a floating WhatsApp chat button to your website',
     'description': """
