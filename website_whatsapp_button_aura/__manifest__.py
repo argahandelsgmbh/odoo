@@ -22,7 +22,7 @@ Features:
     'author': 'Aura Odoo Tech',
     'website': 'https://auraodoo.tech',
     'license': 'LGPL-3',
-    'depends': ['website'],
+    'depends': ['website','whatsapp'],
     'data': [
         'security/ir.model.access.csv',
         'views/res_config_settings_views.xml',
