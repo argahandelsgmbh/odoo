@@ -4,7 +4,7 @@ from odoo import api, fields, models
 class WebsiteWhatsapp(models.Model):
     _inherit = 'whatsapp.message'
 
-    send_to = fields.Char(string="Sent")
+    sent_to = fields.Char(string="Sent")
 
 class Website(models.Model):
     _inherit = 'website'
