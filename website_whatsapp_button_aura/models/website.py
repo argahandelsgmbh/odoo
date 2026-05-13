@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models
 
-class WebsiteWhatsapp(models.Model):
+class WebsiteWhatsappInh(models.Model):
     _inherit = 'whatsapp.message'
 
     sent_to = fields.Char(string="Sent")
