@@ -21,7 +21,7 @@
         'installable': True,
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale', 'stock', 'account', 'purchase', 'project'],
+    'depends': ['base', 'sale', 'stock', 'account', 'purchase', 'project', 'sale_stock'],
 
     # always loaded
     'data': [
