@@ -45,15 +45,15 @@ class SaleOrderInh(models.Model):
 
                 
                 # In Production
-                if purchase_orders and order.po_receipt_status=='pending':
+                if purchase_orders and purchase_orders.receipt_status=='pending':
                    order.sale_order_status = 'production'
 
                 # Partially Received
-                if purchase_orders and order.po_receipt_status=='partial':
+                if purchase_orders and purchase_orders.receipt_status=='partial':
                    order.sale_order_status = 'partial_received'
 
                 # Ready in Warehouse
-                if purchase_orders and order.po_receipt_status=='full':
+                if purchase_orders and purchase_orders.receipt_status=='full':
                    order.sale_order_status = 'ready_warehouse'
 
                 available = True
