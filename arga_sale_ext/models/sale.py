@@ -74,7 +74,7 @@ class SaleOrderInh(models.Model):
 
                 # 100% Stock Order
                 if order.stock_val == 'stock' or available:
-                   order.stock_status = 'stock'
+                   order.sale_order_status = 'available_stock'
 
                 # Fully delivered
                 if order.order_line and all(
