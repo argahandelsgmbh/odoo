@@ -56,8 +56,8 @@ class SaleOrderInh(models.Model):
                 if purchase_orders and purchase_orders.receipt_status=='full':
                    order.sale_order_status = 'ready_warehouse'
 
-               available = True
-               for line in order.order_line.filtered(lambda l: not l.display_type):
+                available = True
+                for line in order.order_line.filtered(lambda l: not l.display_type):
                    product = line.product_id
     
                    # Skip services
