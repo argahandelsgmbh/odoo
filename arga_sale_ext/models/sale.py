@@ -45,7 +45,7 @@ class SaleOrderInh(models.Model):
 
                 
                 # In Production
-                if purchase_orders and purchase_orders.receipt_status=='pending':
+                if purchase_orders and purchase_orders.receipt_status=='pending' or order.is_po_created:
                    order.sale_order_status = 'production'
 
                 # Partially Received
