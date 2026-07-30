@@ -73,7 +73,7 @@ class SaleOrderInh(models.Model):
                       break
 
                 # 100% Stock Order
-                if order.stock_val == 'stock' or available:
+                if order.stock_val == 'stock' and available:
                    order.sale_order_status = 'available_stock'
     
                 # Delivery planned
