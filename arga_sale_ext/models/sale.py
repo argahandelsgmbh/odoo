@@ -75,25 +75,15 @@ class SaleOrderInh(models.Model):
                 # 100% Stock Order
                 if order.stock_val == 'stock' or available:
                    order.sale_order_status = 'available_stock'
-
-                # Fully delivered
-                if order.order_line and all(
-                        line.qty_delivered >= line.product_uom_qty
-                        for line in order.order_line
-                        if not line.display_type
-                ):
-                    order.sale_order_status = 'delivered'
-                    continue
     
                 # Delivery planned
-                outgoing = order.picking_ids.filtered(lambda p: p.picking_type_id.code == 'outgoing' and p.state in ('confirmed', 'assigned'))
-                if outgoing:
+                outgoing_pickings = order.picking_ids.filtered(lambda p: p.picking_type_id.code == 'outgoing')
+                if outgoing_pickings and all(p.state in ('confirmed', 'assigned') for p in outgoing_pickings)::
                    order.sale_order_status = 'delivery_planned'
 
-                # Delivered
-                outgoing = order.picking_ids.filtered(lambda p: p.picking_type_id.code == 'outgoing' and p.state == 'done')
-                if outgoing:
-                   order.sale_order_status = 'delivery_planned'
+                 # Fully delivered
+                if outgoing_pickings and all(p.state == 'done' for p in outgoing_pickings):
+                   order.sale_order_status = 'delivered'
 
                 
 
