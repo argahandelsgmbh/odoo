@@ -36,9 +36,7 @@ class SaleOrderInh(models.Model):
             if order.state in ['sale', 'done']:
               
 
-               purchase_orders = PurchaseOrder.search([
-                    ('origin', '=', order.name)
-                ],limit=1)
+                purchase_orders = PurchaseOrder.search([('origin', '=', order.name)],limit=1)
     
                 # Waiting for Purchase
                 if not purchase_orders:
