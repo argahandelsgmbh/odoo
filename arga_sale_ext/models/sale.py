@@ -78,7 +78,7 @@ class SaleOrderInh(models.Model):
     
                 # Delivery planned
                 outgoing_pickings = order.picking_ids.filtered(lambda p: p.picking_type_id.code == 'outgoing')
-                if outgoing_pickings and all(p.state in ('confirmed', 'assigned') for p in outgoing_pickings)::
+                if outgoing_pickings and all(p.state in ('confirmed', 'assigned') for p in outgoing_pickings):
                    order.sale_order_status = 'delivery_planned'
 
                  # Fully delivered
