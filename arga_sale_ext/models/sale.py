@@ -82,7 +82,7 @@ class SaleOrderInh(models.Model):
                    order.sale_order_status = 'delivery_planned'
 
                  # Fully delivered
-                if order.delivery_status=='full'):
+                if order.delivery_status=='full':
                    order.sale_order_status = 'delivered'
 
                 
