@@ -113,7 +113,7 @@ class SaleOrderInh(models.Model):
                 order.po_receipt_status = 'partial'
             else:
                 order.po_receipt_status = 'pending'
-            order._compute_sale_order_status()
+
 
     def write(self, vals):
         res = super(SaleOrderInh, self.with_context(from_sale=True)).write(vals)
