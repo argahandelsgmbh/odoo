@@ -32,7 +32,6 @@ class SaleOrderInh(models.Model):
         PurchaseOrder = self.env['purchase.order']
 
         for order in self:
-            order._compute_receipt_status()
             if order.state in ['sale', 'done']:
 
                 purchase_orders = PurchaseOrder.search([
@@ -123,6 +122,7 @@ class SaleOrderInh(models.Model):
                 order.po_receipt_status = 'partial'
             else:
                 order.po_receipt_status = 'pending'
+            order._compute_sale_order_status()
 
     def write(self, vals):
         res = super(SaleOrderInh, self.with_context(from_sale=True)).write(vals)
@@ -141,16 +141,3 @@ class SaleOrderInh(models.Model):
                             'delivery_date' : self.commitment_date
                         })
         return res
-
-# class SaleOrderLineInh(models.Model):
-#     _inherit = 'sale.order.line'
-#
-#     number = fields.Integer(string="Sr#")
-#
-#     @api.depends('sequence', 'order_id')
-#     def _compute_get_number(self):
-#         for order in self.mapped('order_id'):
-#             number = 1
-#             for line in order.order_line:
-#                 line.number = number
-#                 number += 1
