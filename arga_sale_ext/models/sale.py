@@ -36,7 +36,7 @@ class SaleOrderInh(models.Model):
 
                 purchase_orders = PurchaseOrder.search([
                     ('origin', '=', order.name)
-                ])
+                ],limit=1)
     
                 # Waiting for Purchase
                 if not purchase_orders:
