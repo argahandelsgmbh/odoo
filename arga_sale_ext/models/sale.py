@@ -19,15 +19,15 @@ class SaleOrderInh(models.Model):
         ('delivered', 'Delivered'),
     ], string="Workflow Status", compute="_compute_sale_order_status")
 
-    @api.depends(
-        'state',
-        'stock_val',
-        'picking_ids.state',
-        'picking_ids.picking_type_id.code',
-        'picking_ids.move_ids.product_uom_qty',
-        'picking_ids.move_ids.quantity',
-        'order_line.qty_delivered','po_receipt_status','delivery_status','is_po_created'
-    )
+    # @api.depends(
+    #     'state',
+    #     'stock_val',
+    #     'picking_ids.state',
+    #     'picking_ids.picking_type_id.code',
+    #     'picking_ids.move_ids.product_uom_qty',
+    #     'picking_ids.move_ids.quantity',
+    #     'order_line.qty_delivered','po_receipt_status','delivery_status','is_po_created'
+    # )
     def _compute_sale_order_status(self):
         PurchaseOrder = self.env['purchase.order']
 
