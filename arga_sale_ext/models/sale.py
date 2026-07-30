@@ -74,7 +74,8 @@ class SaleOrderInh(models.Model):
 
                 # 100% Stock Order
                 if order.stock_val == 'stock' and available:
-                   order.sale_order_status = 'available_stock'
+                   if not purchase_orders: 
+                      order.sale_order_status = 'available_stock'
     
                 # Delivery planned
                 outgoing_pickings = order.picking_ids.filtered(lambda p: p.picking_type_id.code == 'outgoing')
