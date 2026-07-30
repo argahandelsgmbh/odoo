@@ -17,7 +17,7 @@ class SaleOrderInh(models.Model):
         ('available_stock', 'Available from Stock'),
         ('delivery_planned', 'Delivery Planned'),
         ('delivered', 'Delivered'),
-    ], string="Workflow Status", compute="_compute_sale_order_status", store=True)
+    ], string="Workflow Status", compute="_compute_sale_order_status")
 
     @api.depends(
         'state',
