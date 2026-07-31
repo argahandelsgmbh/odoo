@@ -8,7 +8,7 @@
     'author': "HAK Technologies",
     'website': "http://www.haktechnologies.com",
     'images': ['static/description/icon.png'],
-    'depends': ['sale_management', 'purchase', 'helpdesk', 'stock', 'helpdesk_sale_timesheet','helpdesk_to_po'],
+    'depends': ['sale_management', 'purchase', 'helpdesk', 'stock', 'helpdesk_sale_timesheet','helpdesk_to_po', 'arga_sale_ext'],
     'data': [
         'security/ir.model.access.csv',
         'wizard/so_to_rfq_wiz_view.xml',
