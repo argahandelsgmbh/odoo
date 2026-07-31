@@ -10,6 +10,7 @@
                      <field name="commitment_date" optional="show"/>
                     <field name="stock_val" optional="show"/>
                     <field name="batch_payment_id" optional="show"/>
+                     <field name="sale_order_status"/>
                 </xpath>
             </field>
         </record>
@@ -22,6 +23,7 @@
                 <xpath expr="//field[@name='state']" position="after">
                      <field name="commitment_date" optional="show"/>
                     <field name="stock_val" optional="show"/>
+                     <field name="sale_order_status"/>
                      <field name="batch_payment_id" optional="show"/>
                 </xpath>
             </field>
