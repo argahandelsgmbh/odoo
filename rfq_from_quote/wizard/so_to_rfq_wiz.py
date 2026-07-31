@@ -63,6 +63,7 @@ class SaleQuoteToRfq(models.TransientModel):
                 new_po_ids.button_confirm()
         self.sale_id.is_po_created = True
         self.sale_id.is_po_created = True
+        self.sale_id._compute_sale_order_status()
 
     def _prepare_purchase_order_line(self, name, product_id, product_qty=0.0, price_unit=0.0, taxes_ids=False):
         self.ensure_one()

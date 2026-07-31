@@ -22,95 +22,73 @@ class SaleOrderInh(models.Model):
     @api.depends(
         'state',
         'stock_val',
-        'picking_ids.state',
-        'picking_ids.picking_type_id.code',
-        'picking_ids.move_ids.product_uom_qty',
-        'picking_ids.move_ids.quantity',
-        'order_line.qty_delivered','po_receipt_status'
+        'order_line.qty_delivered',
     )
     def _compute_sale_order_status(self):
         PurchaseOrder = self.env['purchase.order']
 
         for order in self:
-            order._compute_receipt_status()
-            status = 'waiting_purchase'
+            order.sale_order_status = False
 
-            # Ignore quotations
-            if order.state not in ['sale', 'done']:
-                order.sale_order_status = False
+            if order.state not in ('sale', 'done'):
                 continue
 
-            # Fully delivered
+            # Delivered
             if order.order_line and all(
-                    line.qty_delivered >= line.product_uom_qty
+                    line.display_type or line.qty_delivered >= line.product_uom_qty
                     for line in order.order_line
-                    if not line.display_type
             ):
                 order.sale_order_status = 'delivered'
                 continue
 
-            # Delivery planned
-            outgoing = order.picking_ids.filtered(
-                lambda p: p.picking_type_id.code == 'outgoing'
-                          and p.state not in ('done', 'cancel')
-            )
-            if outgoing:
-                if all(
-                        line.qty_delivered >= line.product_uom_qty
-                        for line in order.order_line
-                        if not line.display_type
-                ):
-                    order.sale_order_status = 'delivery_planned'
-                    continue
-
-            # 100% Stock Order
+            # 100% Stock
             if order.stock_val == 'stock':
                 order.sale_order_status = 'available_stock'
                 continue
 
+            # Find PO created from this Sale Order
             purchase_orders = PurchaseOrder.search([
                 ('origin', '=', order.name)
             ])
 
-            # Waiting for Purchase
+            # No PO created
             if not purchase_orders:
                 order.sale_order_status = 'waiting_purchase'
                 continue
 
-            incoming_pickings = purchase_orders.picking_ids.filtered(
-                lambda p: p.picking_type_id.code == 'incoming'
-                          and p.state != 'cancel'
-            )
+            receipt_statuses = purchase_orders.mapped('receipt_status')
 
-            # Nothing received yet
-            if not incoming_pickings or all(
-                    p.state != 'done' and
-                    sum(p.move_ids.mapped('quantity')) == 0
-                    for p in incoming_pickings
-            ):
-                order.sale_order_status = 'production'
+            # Partial received
+            if any(status == 'partial' for status in receipt_statuses):
+                order.sale_order_status = 'partial_received'
                 continue
 
-            total_qty = sum(incoming_pickings.move_ids.mapped('product_uom_qty'))
-            received_qty = sum(incoming_pickings.move_ids.mapped('quantity'))
-
-            if received_qty == 0:
-                status = 'production'
-            elif received_qty < total_qty:
-                status = 'partial_received'
-            else:
-                status = 'ready_warehouse'
-
-            # If delivery has already been created after stock is ready
-            if status == 'ready_warehouse':
-                delivery = order.picking_ids.filtered(
+            # Fully received
+            if receipt_statuses and all(
+                    status == 'full' for status in receipt_statuses
+            ):
+                outgoing = order.picking_ids.filtered(
                     lambda p: p.picking_type_id.code == 'outgoing'
                               and p.state not in ('done', 'cancel')
                 )
-                if delivery:
-                    status = 'delivery_planned'
 
-            order.sale_order_status = status
+                if outgoing:
+                    # Check if delivery is ready (stock reserved/available)
+                    ready_delivery = outgoing.filtered(
+                        lambda p: p.state in ('assigned', 'confirmed')
+                    )
+
+                    if ready_delivery:
+                        order.sale_order_status = 'delivery_planned'
+                    else:
+                        order.sale_order_status = 'ready_warehouse'
+                else:
+                    order.sale_order_status = 'ready_warehouse'
+
+                continue
+
+            # PO exists but nothing received
+            order.sale_order_status = 'production'
 
     po_receipt_status = fields.Selection([
         ('pending', 'Not Received'),
@@ -154,6 +132,30 @@ class SaleOrderInh(models.Model):
                         k.with_context(from_sale=True).update({
                             'delivery_date' : self.commitment_date
                         })
+        return res
+
+
+class StockPicking(models.Model):
+    _inherit = 'stock.picking'
+
+    def button_validate(self):
+        res = super().button_validate()
+
+        sale_orders = self.env['sale.order']
+
+        for picking in self:
+            if picking.picking_type_id.code == 'incoming' and picking.purchase_id:
+                origin = picking.purchase_id.origin
+
+                if origin:
+                    orders = self.env['sale.order'].search([
+                        ('name', '=', origin)
+                    ])
+                    sale_orders |= orders
+
+        if sale_orders:
+            sale_orders._compute_sale_order_status()
+
         return res
 
 # class SaleOrderLineInh(models.Model):
