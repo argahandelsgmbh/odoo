@@ -21,17 +21,9 @@ class SaleOrderInh(models.Model):
 
 
     def action_recompute_sale_order_status(self):
-        orders = self
+        for order in self:
+            order._compute_sale_order_status()
 
-        # If no records are selected, process all confirmed orders
-        if not orders:
-            orders = self.search([
-                ('state', 'in', ['sale', 'done'])
-            ])
-
-        orders._compute_sale_order_status()
-
-        return True
 
     @api.depends(
         'state',
