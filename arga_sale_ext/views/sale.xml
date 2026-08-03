@@ -1,6 +1,18 @@
 <odoo>
     <data>
 
+            <record id="action_recompute_sale_order_status" model="ir.actions.server">
+        <field name="name">Update Work Flow Sale Order Status</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">action</field>
+        <field name="state">code</field>
+        <field name="code">
+action = records.action_recompute_sale_order_status()
+        </field>
+    </record>
+</odoo>
+
         <record id="quotation_inherit_arga_tree" model="ir.ui.view">
             <field name="name">sale order</field>
             <field name="model">sale.order</field>
@@ -10,7 +22,7 @@
                      <field name="commitment_date" optional="show"/>
                     <field name="stock_val" optional="show"/>
                     <field name="batch_payment_id" optional="show"/>
-                     <field name="sale_order_status"/>
+                     <field name="sale_order_status" optional="show"/>
                 </xpath>
             </field>
         </record>
@@ -23,7 +35,7 @@
                 <xpath expr="//field[@name='state']" position="after">
                      <field name="commitment_date" optional="show"/>
                     <field name="stock_val" optional="show"/>
-                     <field name="sale_order_status"/>
+                     <field name="sale_order_status" optional="show"/>
                      <field name="batch_payment_id" optional="show"/>
                 </xpath>
             </field>
@@ -38,7 +50,7 @@
                 <xpath expr="//field[@name='payment_term_id']" position="after">
                     <field name="commitment_date" readonly="0" context="{'from_sale': True}"/>
                      <field name="stock_val" optional="show"/>
-                     <field name="sale_order_status"/>
+                     <field name="sale_order_status" optional="show"/>
                      <field name="po_receipt_status"/>
                 </xpath>
             </field>
