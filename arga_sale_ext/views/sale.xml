@@ -11,7 +11,6 @@
 action = records.action_recompute_sale_order_status()
         </field>
     </record>
-</odoo>
 
         <record id="quotation_inherit_arga_tree" model="ir.ui.view">
             <field name="name">sale order</field>
