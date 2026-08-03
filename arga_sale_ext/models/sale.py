@@ -19,6 +19,20 @@ class SaleOrderInh(models.Model):
         ('delivered', 'Delivered'),
     ], string="Workflow Status", compute="_compute_sale_order_status", store=True)
 
+
+    def action_recompute_sale_order_status(self):
+        orders = self
+
+        # If no records are selected, process all confirmed orders
+        if not orders:
+            orders = self.search([
+                ('state', 'in', ['sale', 'done'])
+            ])
+
+        orders._compute_sale_order_status()
+
+        return True
+
     @api.depends(
         'state',
         'stock_val',
