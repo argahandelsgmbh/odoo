@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Arga Customization",
+    'name': "Arga Sale Cust",
 
     'summary': """
-        Arga Customizations""",
+        Arga Sale Cust""",
 
     'description': """
     """,
